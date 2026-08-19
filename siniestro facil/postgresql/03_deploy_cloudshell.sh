@@ -7,8 +7,8 @@ CLOUDSQL_DATABASE="${CLOUDSQL_DATABASE:-DMCSINIESTROFACIL}"
 EXPECTED_TABLES="${EXPECTED_TABLES:-21}"
 
 SCRIPT_DIR="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd)"
-DDL_FILE="$SCRIPT_DIR/siniestro facil/postgresql/01_schema.sql"
-TEST_FILE="$SCRIPT_DIR/siniestro facil/postgresql/02_test_constraints.sql"
+DDL_FILE="$SCRIPT_DIR/01_schema.sql"
+TEST_FILE="$SCRIPT_DIR/02_test_constraints.sql"
 CONTROL_SQL=""
 
 cleanup() {
