@@ -113,7 +113,7 @@ Las pruebas terminan con `ROLLBACK` y no deben dejar datos de prueba.
 
 - La conexión reporta la base `DMCSINIESTROFACIL`.
 - La instancia está en estado `RUNNABLE`.
-- El esquema `siniestro_facil` contiene 21 tablas base después del despliegue.
+- El esquema `siniestro_facil` contiene 22 tablas base después del despliegue.
 - El DDL finaliza sin errores con `ON_ERROR_STOP`.
 - Todas las pruebas emiten mensajes `OK`.
 - La suite de pruebas finaliza con `ROLLBACK`.
