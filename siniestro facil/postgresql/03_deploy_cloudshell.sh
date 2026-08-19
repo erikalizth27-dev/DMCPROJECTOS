@@ -4,7 +4,7 @@ set -Eeuo pipefail
 GCP_PROJECT_ID="${GCP_PROJECT_ID:-project-77c17016-86bc-4fc4-a97}"
 CLOUDSQL_INSTANCE="${CLOUDSQL_INSTANCE:-dmcappasistidaia}"
 CLOUDSQL_DATABASE="${CLOUDSQL_DATABASE:-DMCSINIESTROFACIL}"
-EXPECTED_TABLES="${EXPECTED_TABLES:-21}"
+EXPECTED_TABLES="${EXPECTED_TABLES:-22}"
 CLOUDSQL_LOCAL_PORT="${CLOUDSQL_LOCAL_PORT:-}"
 
 SCRIPT_DIR="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd)"
@@ -102,24 +102,20 @@ chmod 600 "$CONTROL_SQL"
 cat >"$CONTROL_SQL" <<SQL
 \set ON_ERROR_STOP on
 \echo 'Validando conexión y estado inicial...'
-SELECT current_database() = '$CLOUDSQL_DATABASE' AS database_correcta \gset
-\if :database_correcta
-\else
-    \echo 'ERROR: conexión realizada a una base diferente.'
-    \quit 2
-\endif
+SELECT CASE
+    WHEN current_database() = '$CLOUDSQL_DATABASE' THEN 1
+    ELSE 1 / 0
+END AS conexion_validada;
 
-SELECT EXISTS (
-    SELECT 1
-    FROM information_schema.tables
-    WHERE table_schema = 'siniestro_facil'
-      AND table_type = 'BASE TABLE'
-) AS schema_tiene_tablas \gset
-
-\if :schema_tiene_tablas
-    \echo 'ERROR: el esquema siniestro_facil ya contiene tablas. Se requiere una migración.'
-    \quit 3
-\endif
+SELECT CASE
+    WHEN NOT EXISTS (
+        SELECT 1
+        FROM information_schema.tables
+        WHERE table_schema = 'siniestro_facil'
+          AND table_type = 'BASE TABLE'
+    ) THEN 1
+    ELSE 1 / 0
+END AS esquema_vacio_validado;
 
 \echo 'Desplegando modelo físico...'
 \i '$DDL_FILE'
@@ -132,18 +128,15 @@ FROM information_schema.tables
 WHERE table_schema = 'siniestro_facil'
   AND table_type = 'BASE TABLE';
 
-SELECT count(*) = $EXPECTED_TABLES AS cantidad_correcta
+SELECT CASE
+    WHEN count(*) = $EXPECTED_TABLES THEN 1
+    ELSE 1 / 0
+END AS cantidad_tablas_validada
 FROM information_schema.tables
 WHERE table_schema = 'siniestro_facil'
-  AND table_type = 'BASE TABLE'
-\gset
+  AND table_type = 'BASE TABLE';
 
-\if :cantidad_correcta
-    \echo 'OK: modelo desplegado y validado con $EXPECTED_TABLES tablas.'
-\else
-    \echo 'ERROR: la cantidad de tablas no coincide con $EXPECTED_TABLES.'
-    \quit 4
-\endif
+\echo 'OK: modelo desplegado y validado con $EXPECTED_TABLES tablas.'
 SQL
 
 echo "Conectando y ejecutando despliegue..."
