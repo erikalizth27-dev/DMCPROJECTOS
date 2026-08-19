@@ -2,7 +2,7 @@
 
 ## Resultado de la validación
 
-El modelo lógico de `07_modelo_logico.md` contiene 21 entidades y todas se materializan en PostgreSQL. El DDL ejecutable está en [`postgresql/01_schema.sql`](postgresql/01_schema.sql) y las pruebas de integridad en [`postgresql/02_test_constraints.sql`](postgresql/02_test_constraints.sql).
+El modelo lógico de `07_modelo_logico.md` contiene 22 entidades y todas se materializan en PostgreSQL. El DDL ejecutable está en [`postgresql/01_schema.sql`](postgresql/01_schema.sql) y las pruebas de integridad en [`postgresql/02_test_constraints.sql`](postgresql/02_test_constraints.sql).
 
 Se conserva la semántica del modelo lógico con una única normalización de nombres: `SEÑAL_RIESGO.id_señal/tipo_señal` se implementa como `senal_riesgo.id_senal/tipo_senal` para mantener identificadores SQL portables sin necesidad de comillas.
 
