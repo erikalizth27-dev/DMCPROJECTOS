@@ -5,6 +5,7 @@ GCP_PROJECT_ID="${GCP_PROJECT_ID:-project-77c17016-86bc-4fc4-a97}"
 CLOUDSQL_INSTANCE="${CLOUDSQL_INSTANCE:-dmcappasistidaia}"
 CLOUDSQL_DATABASE="${CLOUDSQL_DATABASE:-DMCSINIESTROFACIL}"
 EXPECTED_TABLES="${EXPECTED_TABLES:-21}"
+CLOUDSQL_LOCAL_PORT="${CLOUDSQL_LOCAL_PORT:-}"
 
 SCRIPT_DIR="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd)"
 DDL_FILE="$SCRIPT_DIR/01_schema.sql"
@@ -24,12 +25,24 @@ fail() {
     exit 1
 }
 
-for command_name in gcloud git; do
+for command_name in gcloud git python3; do
     command -v "$command_name" >/dev/null 2>&1 || fail "No se encontró $command_name."
 done
 
 [[ -f "$DDL_FILE" ]] || fail "No existe el DDL: $DDL_FILE"
 [[ -f "$TEST_FILE" ]] || fail "No existen las pruebas: $TEST_FILE"
+
+if [[ -z "$CLOUDSQL_LOCAL_PORT" ]]; then
+    CLOUDSQL_LOCAL_PORT="$(python3 - <<'PY'
+import socket
+with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as sock:
+    sock.bind(('127.0.0.1', 0))
+    print(sock.getsockname()[1])
+PY
+)"
+fi
+
+[[ "$CLOUDSQL_LOCAL_PORT" =~ ^[0-9]+$ ]] || fail "Puerto local inválido: $CLOUDSQL_LOCAL_PORT"
 
 ACTIVE_ACCOUNT="$(gcloud auth list --filter='status:ACTIVE' --format='value(account)' | head -n 1)"
 [[ -n "$ACTIVE_ACCOUNT" ]] || fail "No existe una cuenta activa en gcloud."
@@ -70,6 +83,7 @@ echo "  Motor:          $DATABASE_VERSION"
 echo "  Región:         $INSTANCE_REGION"
 echo "  Connection:     $CONNECTION_NAME"
 echo "  Base de datos:  $CLOUDSQL_DATABASE"
+echo "  Puerto local:   $CLOUDSQL_LOCAL_PORT"
 echo "  DDL:            $DDL_FILE"
 echo "  Pruebas:        $TEST_FILE"
 echo
@@ -137,6 +151,7 @@ gcloud sql connect "$CLOUDSQL_INSTANCE" \
     --project="$GCP_PROJECT_ID" \
     --user=postgres \
     --database="$CLOUDSQL_DATABASE" \
+    --port="$CLOUDSQL_LOCAL_PORT" \
     --quiet <"$CONTROL_SQL"
 
 echo "Despliegue finalizado correctamente."
