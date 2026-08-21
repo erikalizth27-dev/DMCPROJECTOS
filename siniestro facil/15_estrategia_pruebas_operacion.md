@@ -22,7 +22,9 @@
 - Alertas operativas sin datos personales.
 - Retención de logs, métricas y auditoría `POR CONFIRMAR`.
 
-## CI/CD en Google Cloud
+## CI/CD en Google Cloud — diferido
+
+Esta sección describe una estrategia futura. Su implementación no forma parte de Sprint 0 ni del alcance actualmente autorizado.
 
 1. Cloud Build valida formato y contrato OpenAPI.
 2. Pruebas unitarias y análisis estático.
