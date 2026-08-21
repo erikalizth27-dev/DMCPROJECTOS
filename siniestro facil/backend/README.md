@@ -34,6 +34,14 @@ Endpoints iniciales:
 `/health/ready` ejecuta `SELECT 1`, comprueba el esquema `siniestro_facil` y
 devuelve HTTP 503 si PostgreSQL o el esquema no están disponibles.
 
+Los contratos Pydantic de Sprint 0 se encuentran en
+
+```text
+src/siniestro_facil/api/schemas.py
+```
+
+Rechazan campos desconocidos y aplican las validaciones iniciales del OpenAPI.
+
 ## Validaciones
 
 ```bash
