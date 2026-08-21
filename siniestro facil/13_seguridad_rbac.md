@@ -13,14 +13,15 @@
 
 | Capacidad | Asegurado/reportante | Operador | Ajustador | Taller/grúa | Investigador fraude | Supervisor |
 |---|---:|---:|---:|---:|---:|---:|
-| Crear reporte | Sí | Sí | No | POR CONFIRMAR | No | Sí |
+| Crear reporte | Sí | Sí | No | No; sólo aporta a casos con orden | No | Sí |
 | Consultar vista del caso | Propio | Asignado/autorizado | Asignado | Alcance de orden | Autorizado | Sí |
 | Adjuntar evidencia | Propio | Sí | Sí | Según orden | Sí | Sí |
 | Cambiar estado | No | Según transición | Según transición | Estados propios | No | Sí |
 | Registrar presupuesto | No | No | No | Taller autorizado | No | Sí |
 | Revisar alertas | No | Resumen permitido | Resumen permitido | No | Sí | Sí |
 | Consultar información ampliada | No | No | POR CONFIRMAR | No | Sí | Sí |
-| Autorizar pago | No | POR CONFIRMAR | POR CONFIRMAR | No | No | Sí |
+| Preparar solicitud de pago | No | Sí | Sí | No | No | Sí |
+| Autorizar pago | No | No | No | No | No | Sí |
 | Consultar auditoría completa | Propia limitada | Operativa | Operativa | Propia limitada | Investigación | Sí |
 | Configurar política antifraude | No | No | No | No | Rol responsable | Sí |
 
@@ -30,5 +31,6 @@
 - Separación entre autorización para recomendar y autorización para decidir.
 - Reautenticación o control reforzado para pagos y cambios de política: `POR CONFIRMAR`.
 - Rate limiting y bloqueo por abuso: valores `POR CONFIRMAR`.
+- La persona que prepara una solicitud de pago no puede autorizarla.
+- El supervisor confirma rechazo de cobertura, reapertura y autorización de pago.
 - Cifrado en tránsito obligatorio; gestión de llaves y cifrado en reposo dependen de la plataforma seleccionada.
-
