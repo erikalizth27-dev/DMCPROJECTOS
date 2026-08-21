@@ -2,7 +2,7 @@
 
 ## Avance general
 
-**66% completado**.
+**72% completado**.
 
 El porcentaje se calcula sobre los siete frentes definidos en `20_plan_detallado_sprint_0.md`. No incluye CI/CD, observabilidad ni operación GCP, porque fueron retirados expresamente del alcance.
 
@@ -14,9 +14,9 @@ El porcentaje se calcula sobre los siete frentes definidos en `20_plan_detallado
 | 4. Datos y migraciones | 75% | 22 tablas desplegadas, constraints probados, datos sintéticos y readiness real | Fusionar PR #1 y definir mecanismo formal de migraciones |
 | 5. Seguridad, RBAC y auditoría | 72% | Política ejecutable por rol y alcance, separación de pagos y 9 pruebas específicas | Aprobar proveedor de identidad, claims y detalle visible por rol |
 | 6. Esqueleto backend local | 90% | Python/FastAPI, configuración, errores, correlación, dominio, idempotencia, contratos, RBAC y readiness PostgreSQL | Ejecutar suite completa y validaciones negativas en Cloud Shell |
-| 7. Refinamiento de Sprint 1 | 25% | Épicas e historias candidatas identificadas | Descomponer, estimar, priorizar y comprobar Definition of Ready |
+| 7. Refinamiento de Sprint 1 | 65% | Seis incrementos verticales, prioridad, tamaño relativo, pruebas y trazabilidad definidos | Resolver cinco vacíos y estimar con la capacidad real del equipo |
 
-Promedio ponderado y redondeado: **66%**.
+Promedio ponderado y redondeado: **72%**.
 
 ## Completado
 
@@ -26,6 +26,8 @@ Promedio ponderado y redondeado: **66%**.
 - Contratos Pydantic para siniestros, estados, evidencias, asistencia, presupuestos, alertas y pagos.
 - Cinco pruebas adicionales de validación de contratos aprobadas localmente.
 - Política RBAC ejecutable y nueve pruebas de autorización y separación de funciones.
+- Backlog de Sprint 1 refinado en seis incrementos verticales.
+- Matriz de trazabilidad Sprint 1 con cinco vacíos explícitos.
 - Esqueleto Python 3.12/FastAPI.
 - Configuración por ambiente sin secretos en GitHub.
 - Manejo uniforme de errores y `correlationId`.
