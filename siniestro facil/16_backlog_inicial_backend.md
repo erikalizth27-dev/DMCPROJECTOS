@@ -37,5 +37,22 @@
 
 ## Regla de priorización
 
-No se asignan puntos ni duración sin conocer capacidad del equipo, duración de sprint y dependencias disponibles. Cada historia debe cumplir `10_definition_of_ready_backend.md` antes de comprometerse.
+Cada historia debe cumplir `10_definition_of_ready_backend.md` antes de comprometerse.
 
+## Plan recomendado del piloto
+
+- Duración del sprint: 2 semanas.
+- Horizonte backend: 7 sprints / 14 semanas.
+- Equipo recomendado: Product Owner o analista, líder técnico, dos desarrolladores backend, QA de automatización y especialista GCP/DevOps.
+
+| Sprint | Resultado esperado |
+|---|---|
+| 0 | SPEC consolidadas, OpenAPI, RBAC, ambientes y CI/CD |
+| 1 | Registro, consulta y deduplicación |
+| 2 | Cobertura, estados y evidencias en Cloud Storage |
+| 3 | Asistencia, proveedores, reintentos y Pub/Sub |
+| 4 | Inspección, presupuestos y autorizaciones |
+| 5 | Fraude, alertas, relaciones y revisión humana |
+| 6 | Pagos, auditoría, indicadores, seguridad y estabilización |
+
+La estimación final se recalibra con la capacidad real del equipo al terminar Sprint 0.
