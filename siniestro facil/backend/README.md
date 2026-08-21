@@ -42,6 +42,14 @@ src/siniestro_facil/api/schemas.py
 
 Rechazan campos desconocidos y aplican las validaciones iniciales del OpenAPI.
 
+La política RBAC inicial y la separación de funciones para pagos están en:
+
+```text
+src/siniestro_facil/domain/authorization.py
+```
+
+La autorización comprueba tanto el permiso del rol como el alcance del recurso.
+
 ## Validaciones
 
 ```bash
