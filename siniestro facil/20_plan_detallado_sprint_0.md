@@ -2,7 +2,7 @@
 
 ## Propósito
 
-Preparar la base funcional, técnica y operativa para que Sprint 1 comience con historias que cumplan la Definition of Ready, ambientes GCP utilizables y un flujo de entrega verificable.
+Preparar la base funcional y técnica para que Sprint 1 comience con historias que cumplan la Definition of Ready. CI/CD, observabilidad y operación en GCP quedan fuera de este sprint.
 
 ## Duración y equipo
 
@@ -21,10 +21,8 @@ Sprint 0 no entrega funcionalidad de negocio completa a usuarios finales. Entreg
 2. Arquitectura GCP aprobada para el piloto.
 3. Contrato OpenAPI inicial validado.
 4. Modelo físico PostgreSQL y pruebas disponibles en `main`.
-5. Ambientes de desarrollo y pruebas preparados en GCP.
-6. Pipeline CI/CD mínimo funcionando.
-7. Seguridad, auditoría y observabilidad definidas.
-8. Historias de Sprint 1 refinadas, estimadas y listas.
+5. Seguridad y auditoría funcional definidas.
+6. Historias de Sprint 1 refinadas, estimadas y listas.
 
 ## Frente 1 — Consolidación SDD
 
@@ -53,13 +51,13 @@ Product Owner/analista, con revisión del líder técnico y QA.
 ### Actividades
 
 - Confirmar Cloud Run como plataforma del backend del piloto.
-- Definir proyectos o separación de ambientes `dev`, `test` y `prod`.
+- Documentar la separación futura de ambientes `dev`, `test` y `prod`, sin implementarla en Sprint 0.
 - Confirmar región de cómputo, datos, backups y evidencias.
-- Diseñar conexión Cloud Run–Cloud SQL con cuenta de servicio y mínimo privilegio.
+- Diseñar conceptualmente la conexión Cloud Run–Cloud SQL con cuenta de servicio y mínimo privilegio.
 - Diseñar buckets de Cloud Storage, versionado, retención y autorización de carga.
 - Definir tópicos, suscripciones y dead-letter topics de Pub/Sub.
 - Identificar procesos que utilizarán Cloud Tasks y Cloud Scheduler.
-- Definir uso de Secret Manager, Artifact Registry y Google Cloud Observability.
+- Documentar el uso futuro de Secret Manager, Artifact Registry y Google Cloud Observability, sin configurarlos.
 - Elaborar diagrama de arquitectura y registro de decisiones.
 
 ### Entregables
@@ -108,7 +106,6 @@ Líder técnico y desarrolladores backend, con validación de QA.
 - Ejecutar DDL y pruebas de constraints en una base de pruebas.
 - Definir convención y herramienta de migraciones sin compartir credenciales.
 - Definir usuario de runtime separado del usuario de migraciones.
-- Validar conexión desde Cloud Run a Cloud SQL.
 - Incorporar carga y validación de datos sintéticos.
 - Documentar backup, restauración y recuperación `POR CONFIRMAR` con objetivos RPO/RTO.
 
@@ -118,7 +115,6 @@ Líder técnico y desarrolladores backend, con validación de QA.
 - Migración inicial reproducible.
 - Suite de constraints aprobada.
 - Datos sintéticos y validación.
-- Evidencia de conexión Cloud Run–Cloud SQL en ambiente no productivo.
 
 ### Responsable principal
 
@@ -132,8 +128,8 @@ Desarrollador backend, líder técnico y especialista GCP/DevOps.
 - Seleccionar el mecanismo de identidad para usuarios finales e internos.
 - Definir claims, roles y alcance de acceso a casos.
 - Definir separación de funciones para pagos y decisiones sensibles.
-- Configurar cuentas de servicio por componente.
-- Definir manejo de secretos y rotación.
+- Diseñar cuentas de servicio por componente, sin configurarlas.
+- Definir conceptualmente el manejo de secretos y rotación.
 - Definir datos prohibidos en logs.
 - Diseñar auditoría de consultas y descargas sensibles.
 - Preparar casos de prueba contra acceso horizontal y escalamiento de privilegios.
@@ -155,50 +151,22 @@ Líder técnico, especialista GCP/DevOps y QA, con aprobación del Product Owner
 
 - Crear la estructura inicial del backend después de seleccionar lenguaje y framework.
 - Incorporar configuración por ambiente.
-- Implementar endpoint técnico de salud sin acceso a datos sensibles.
 - Incorporar manejo uniforme de errores y `correlationId`.
-- Configurar logs estructurados y trazas.
 - Preparar dobles de prueba para pólizas, talleres, mensajería, mapas y pagos.
 - Establecer convenciones de código, ramas, commits y revisión.
 - Configurar umbrales de calidad iniciales.
 
 ### Entregables
 
-- Servicio mínimo ejecutándose localmente y en Cloud Run `dev`.
-- Health check.
-- Manejo de errores y observabilidad base.
+- Esqueleto del servicio ejecutándose localmente.
+- Manejo uniforme de errores.
 - Guía de desarrollo y contribución.
 
 ### Responsable principal
 
 Desarrolladores backend y líder técnico.
 
-## Frente 7 — CI/CD y operación
-
-### Actividades
-
-- Configurar Cloud Build para validación, pruebas y construcción.
-- Publicar imágenes inmutables en Artifact Registry.
-- Ejecutar pruebas PostgreSQL en un entorno aislado.
-- Desplegar automáticamente en Cloud Run `dev`.
-- Definir promoción controlada hacia `test` y `prod`.
-- Configurar smoke tests posteriores al despliegue.
-- Crear panel y alertas técnicas mínimas en Cloud Monitoring.
-- Documentar rollback a una revisión anterior.
-
-### Entregables
-
-- Pipeline ejecutado correctamente desde un pull request.
-- Imagen en Artifact Registry.
-- Revisión desplegada en Cloud Run `dev`.
-- Smoke test y rollback demostrados.
-- Panel técnico inicial.
-
-### Responsable principal
-
-Especialista GCP/DevOps con apoyo de backend y QA.
-
-## Frente 8 — Refinamiento de Sprint 1
+## Frente 7 — Refinamiento de Sprint 1
 
 ### Actividades
 
@@ -229,9 +197,9 @@ Product Owner y equipo completo.
 | 3 | Arquitectura GCP e IAM | Diagrama y recursos definidos |
 | 4 | OpenAPI, errores e idempotencia | Contrato API revisado |
 | 5 | Modelo físico, migraciones y pruebas | Persistencia validada |
-| 6 | Esqueleto backend y conexión Cloud SQL | Servicio mínimo operativo |
-| 7 | Cloud Storage, Pub/Sub y adaptadores simulados | Integraciones base preparadas |
-| 8 | CI/CD, seguridad y observabilidad | Pipeline y controles funcionando |
+| 6 | Esqueleto backend local | Estructura y convenciones preparadas |
+| 7 | Contratos de Cloud Storage, Pub/Sub y adaptadores simulados | Interfaces documentadas |
+| 8 | Seguridad, RBAC y auditoría funcional | Controles funcionales definidos |
 | 9 | Refinamiento y estimación de Sprint 1 | Backlog listo |
 | 10 | Revisión, demostración y retrospectiva | Criterios de salida evaluados |
 
@@ -241,12 +209,23 @@ Product Owner y equipo completo.
 - Las decisiones recomendadas están aprobadas o marcadas con responsable y fecha límite.
 - OpenAPI pasa validación automática.
 - El modelo PostgreSQL se despliega y sus pruebas finalizan correctamente en un ambiente de pruebas.
-- El servicio mínimo se despliega en Cloud Run y responde al health check.
-- Cloud Run accede a Cloud SQL sin usar el usuario administrador.
-- Los secretos se leen desde Secret Manager.
-- Un pull request ejecuta automáticamente validaciones y pruebas.
-- Logs y trazas contienen `correlationId` y no contienen datos sensibles.
+- El esqueleto del servicio se ejecuta localmente y no almacena credenciales en el repositorio.
+- La arquitectura futura de conexión con Cloud SQL y Secret Manager está documentada.
+- El modelo de auditoría funcional define actor, acción, fecha, recurso y resultado.
 - Las historias comprometidas para Sprint 1 cumplen la Definition of Ready.
+
+## Actividades explícitamente diferidas
+
+No se realizarán durante Sprint 0:
+
+- Configuración de Cloud Build o Cloud Deploy.
+- Publicación de imágenes en Artifact Registry.
+- Despliegue del backend en Cloud Run.
+- Configuración de ambientes operativos GCP.
+- Cloud Logging, Monitoring, Trace, paneles o alertas.
+- Smoke tests de despliegue, promoción y rollback.
+
+Estas actividades se planificarán cuando el equipo autorice iniciar la fase DevOps y operativa.
 
 ## Riesgos y bloqueos
 
