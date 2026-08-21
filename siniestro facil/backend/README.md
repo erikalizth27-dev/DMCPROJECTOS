@@ -31,6 +31,9 @@ Endpoints iniciales:
 - `GET /health/live`
 - `GET /health/ready`
 
+`/health/ready` ejecuta `SELECT 1`, comprueba el esquema `siniestro_facil` y
+devuelve HTTP 503 si PostgreSQL o el esquema no están disponibles.
+
 ## Validaciones
 
 ```bash
@@ -40,3 +43,7 @@ python -m pytest
 
 La conexión con servicios GCP, CI/CD y observabilidad se mantiene diferida según `20_plan_detallado_sprint_0.md`.
 
+## Validación manual con Cloud SQL Proxy
+
+El proxy y el backend deben ejecutarse en terminales separadas. La contraseña se
+mantiene únicamente en memoria y nunca se escribe en `.env` ni en GitHub.
