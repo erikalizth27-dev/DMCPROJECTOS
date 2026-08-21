@@ -27,7 +27,7 @@ Toda transición exige rol autorizado, motivo, versión actual del caso y evento
 | listo_para_entrega | cerrado | Entrega confirmada, mecanismo POR CONFIRMAR |
 | indemnizado | cerrado | Pago confirmado |
 | observado | evidencia_pendiente, en_evaluacion, presupuesto_recibido, rechazado | Resolución de observación |
-| rechazado | cerrado | Apelación/reapertura POR CONFIRMAR |
+| rechazado | en_evaluacion, cerrado | Reapertura exclusiva de supervisor, con motivo y auditoría |
 
 ## Asistencia
 
@@ -44,6 +44,26 @@ Toda transición exige rol autorizado, motivo, versión actual del caso y evento
 - Media/baja: aumenta prioridad sin detener el flujo.
 - Rechazo de cobertura, confirmación de fraude y autorización de pago requieren decisión humana.
 - Todo pago emitido referencia una autorización.
+- El operador o ajustador prepara la solicitud; un supervisor distinto autoriza el pago.
+
+## Presupuestos
+
+- La vigencia predeterminada es 30 días calendario desde la recepción.
+- El taller puede declarar una vigencia distinta y ésta prevalece si es válida.
+- Un presupuesto vencido pasa a `observado` y requiere confirmación o actualización; nunca se autoriza automáticamente.
+
+## Participación de taller y corredor en el piloto
+
+- No crean directamente un expediente.
+- Pueden aportar información a un caso existente cuando tengan una orden o referencia válida.
+- Si comunican un caso nuevo, un operador busca duplicados y registra el expediente conservando el canal de origen.
+
+## Entrega y cierre
+
+- El taller registra `listo_para_entrega`.
+- El asegurado confirma la recepción mediante la aplicación, enlace seguro o código de un solo uso.
+- El backend registra actor, fecha y medio y cambia el caso a `cerrado`.
+- Si no puede confirmarse digitalmente, un operador adjunta evidencia y un supervisor autoriza el cierre manual.
 
 ## Idempotencia y concurrencia
 
@@ -51,4 +71,3 @@ Toda transición exige rol autorizado, motivo, versión actual del caso y evento
 - Misma clave y mismo contenido devuelve el resultado previo.
 - Misma clave con contenido diferente devuelve conflicto.
 - Cambios de estado deben indicar la versión conocida del caso; una versión desactualizada devuelve conflicto.
-
