@@ -8,7 +8,8 @@
 - Aprobar matriz RBAC.
 - Cerrar máquina de estados y reglas de reapertura.
 - Definir proveedores de identidad, evidencia, mensajería, mapas y pagos.
-- Preparar repositorio backend, CI y ambientes.
+- Preparar estructura del repositorio backend y convenciones de desarrollo local.
+- Documentar CI/CD, observabilidad y ambientes GCP como trabajo diferido, sin implementarlos.
 
 ## Épica 1 — Registro y consulta
 
@@ -47,12 +48,22 @@ Cada historia debe cumplir `10_definition_of_ready_backend.md` antes de comprome
 
 | Sprint | Resultado esperado |
 |---|---|
-| 0 | SPEC consolidadas, OpenAPI, RBAC, ambientes y CI/CD |
+| 0 | SPEC consolidadas, OpenAPI, RBAC, arquitectura GCP y base de desarrollo local |
 | 1 | Registro, consulta y deduplicación |
 | 2 | Cobertura, estados y evidencias en Cloud Storage |
 | 3 | Asistencia, proveedores, reintentos y Pub/Sub |
 | 4 | Inspección, presupuestos y autorizaciones |
 | 5 | Fraude, alertas, relaciones y revisión humana |
-| 6 | Pagos, auditoría, indicadores, seguridad y estabilización |
+| 6 | Pagos, auditoría, indicadores, seguridad y estabilización funcional |
+
+## Trabajo diferido fuera del plan actual
+
+- Implementación de CI/CD.
+- Despliegue operativo en Cloud Run.
+- Artifact Registry y promoción entre ambientes.
+- Observabilidad con Cloud Logging, Monitoring y Trace.
+- Paneles, alertas, smoke tests y procedimientos de rollback.
+
+Estas actividades requieren una autorización posterior para incorporarse a un sprint.
 
 La estimación final se recalibra con la capacidad real del equipo al terminar Sprint 0.
