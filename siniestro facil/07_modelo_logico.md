@@ -18,6 +18,7 @@
 | id_asegurado (FK, nulo si es tercero) | identificador | Entrevista 1, P6 |
 | es_titular | booleano | Entrevista 1, P6 ("persona autorizada... si el titular no puede hacerlo") |
 | medio_contacto | texto | Entrevista 2, P2 |
+| relacion_asegurado | enumerado (familiar, dependiente, testigo, otro); nulo si es titular | [PROPUESTA DM-01 — `26_decisiones_modelado_sprint_0.md`] |
 
 ## POLIZA
 | Atributo | Tipo | Origen |
@@ -57,6 +58,9 @@
 | danos_aparentes | texto | Entrevista 2, P1 |
 | estado_actual | enumerado (ver catálogo `ESTADO_SINIESTRO`) | Entrevista 2, P4 |
 | canal_origen | texto | Entrevista 2, P6 (implica canal: teléfono, correo, app, corredor) |
+| version | entero no negativo, inicial 0 | [PROPUESTA DM-02 — control de concurrencia optimista] |
+
+> `siguientePaso` se calcula y no se persiste, según DM-03.
 
 ## ESTADO_SINIESTRO (catálogo)
 | Valor | Origen |
@@ -224,6 +228,18 @@
 | id_usuario (PK) | identificador | [estructural] |
 | rol | enumerado (operador, ajustador, investigador_fraude, supervisor) | Entrevistas 2 y 3 (actores mencionados) |
 
+## ASIGNACION_SINIESTRO
+| Atributo | Tipo | Origen |
+|---|---|---|
+| id_asignacion (PK) | identificador | [estructural] |
+| id_siniestro (FK) | identificador | HU-11, HU-12 |
+| id_usuario (FK) | identificador | HU-11, HU-12 |
+| motivo | texto | HU-12 (razón del cambio) |
+| asignado_en | fecha/hora | [estructural para historial] |
+| finalizado_en | fecha/hora, nulo si activa | [estructural para historial] |
+
+Regla: sólo puede existir una asignación activa por siniestro.
+
 ## Diagrama entidad-relación lógico (mermaid)
 
 ```mermaid
@@ -266,6 +282,7 @@ erDiagram
         string ubicacion_evento
         string tipo_evento
         string estado_actual
+        int version
     }
     PARTICIPANTE {
         int id_participante PK
@@ -366,6 +383,14 @@ erDiagram
         int id_usuario PK
         string rol
     }
+    ASIGNACION_SINIESTRO {
+        int id_asignacion PK
+        int id_siniestro FK
+        int id_usuario FK
+        string motivo
+        datetime asignado_en
+        datetime finalizado_en
+    }
 
     ASEGURADO ||--o{ POLIZA : posee
     ASEGURADO ||--o{ REPORTANTE : "puede ser"
@@ -394,4 +419,6 @@ erDiagram
     SINIESTRO ||--o{ EVENTO_LINEA_TIEMPO : audita
     USUARIO_INTERNO ||--o{ EVENTO_LINEA_TIEMPO : ejecuta
     USUARIO_INTERNO ||--o{ AUTORIZACION : otorga
+    SINIESTRO ||--o{ ASIGNACION_SINIESTRO : tiene
+    USUARIO_INTERNO ||--o{ ASIGNACION_SINIESTRO : responsable
 ```

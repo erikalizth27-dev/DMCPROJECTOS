@@ -1,0 +1,335 @@
+openapi: 3.1.0
+info:
+  title: Siniestro Fácil Backend API
+  version: 0.1.0-draft
+  description: >-
+    Contrato inicial para planning. Las operaciones marcadas POR CONFIRMAR
+    dependen de las decisiones de 17_preguntas_abiertas_backend.md.
+servers:
+  - url: /api/v1
+security:
+  - bearerAuth: []
+tags:
+  - name: Siniestros
+  - name: Evidencias
+  - name: Asistencia
+  - name: Presupuestos
+  - name: Fraude
+  - name: Pagos
+  - name: Auditoria
+paths:
+  /siniestros:
+    post:
+      tags: [Siniestros]
+      summary: Registrar un siniestro
+      operationId: crearSiniestro
+      parameters:
+        - $ref: '#/components/parameters/IdempotencyKey'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: {$ref: '#/components/schemas/CrearSiniestro'}
+      responses:
+        '201':
+          description: Siniestro creado
+          content:
+            application/json:
+              schema: {$ref: '#/components/schemas/Siniestro'}
+        '409': {$ref: '#/components/responses/Conflicto'}
+        '422': {$ref: '#/components/responses/ReglaNegocio'}
+  /siniestros/{siniestroId}:
+    parameters:
+      - $ref: '#/components/parameters/SiniestroId'
+    get:
+      tags: [Siniestros]
+      summary: Consultar la vista única de un siniestro
+      operationId: obtenerSiniestro
+      responses:
+        '200':
+          description: Vista del siniestro según el rol
+          content:
+            application/json:
+              schema: {$ref: '#/components/schemas/Siniestro'}
+        '404': {$ref: '#/components/responses/NoEncontrado'}
+  /siniestros/{siniestroId}/estado:
+    post:
+      tags: [Siniestros]
+      summary: Solicitar una transición de estado
+      operationId: cambiarEstadoSiniestro
+      parameters:
+        - $ref: '#/components/parameters/SiniestroId'
+        - $ref: '#/components/parameters/IdempotencyKey'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CambiarEstado'
+      responses:
+        '200': {description: Estado actualizado}
+        '409': {$ref: '#/components/responses/Conflicto'}
+        '422': {$ref: '#/components/responses/ReglaNegocio'}
+  /siniestros/{siniestroId}/evidencias:
+    post:
+      tags: [Evidencias]
+      summary: Registrar evidencia ya almacenada
+      operationId: registrarEvidencia
+      parameters:
+        - $ref: '#/components/parameters/SiniestroId'
+        - $ref: '#/components/parameters/IdempotencyKey'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: {$ref: '#/components/schemas/RegistrarEvidencia'}
+      responses:
+        '201': {description: Evidencia registrada}
+        '409': {$ref: '#/components/responses/Conflicto'}
+  /siniestros/{siniestroId}/asistencias:
+    post:
+      tags: [Asistencia]
+      summary: Solicitar asistencia
+      operationId: solicitarAsistencia
+      parameters:
+        - $ref: '#/components/parameters/SiniestroId'
+        - $ref: '#/components/parameters/IdempotencyKey'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: {$ref: '#/components/schemas/SolicitarAsistencia'}
+      responses:
+        '202': {description: Solicitud aceptada para procesamiento}
+        '422': {$ref: '#/components/responses/ReglaNegocio'}
+  /siniestros/{siniestroId}/presupuestos:
+    post:
+      tags: [Presupuestos]
+      summary: Registrar presupuesto y diagnóstico
+      operationId: registrarPresupuesto
+      parameters:
+        - $ref: '#/components/parameters/SiniestroId'
+        - $ref: '#/components/parameters/IdempotencyKey'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: {$ref: '#/components/schemas/RegistrarPresupuesto'}
+      responses:
+        '201': {description: Presupuesto registrado}
+        '422': {$ref: '#/components/responses/ReglaNegocio'}
+  /siniestros/{siniestroId}/alertas:
+    get:
+      tags: [Fraude]
+      summary: Consultar alertas autorizadas para el rol
+      operationId: listarAlertas
+      parameters:
+        - $ref: '#/components/parameters/SiniestroId'
+        - $ref: '#/components/parameters/Limite'
+        - $ref: '#/components/parameters/Cursor'
+      responses:
+        '200':
+          description: Alertas visibles para el usuario
+          content:
+            application/json:
+              schema:
+                type: array
+                items: {$ref: '#/components/schemas/Alerta'}
+  /alertas/{alertaId}/revision:
+    post:
+      tags: [Fraude]
+      summary: Registrar revisión humana de una alerta
+      operationId: revisarAlerta
+      parameters:
+        - name: alertaId
+          in: path
+          required: true
+          schema: {type: integer, format: int64}
+        - $ref: '#/components/parameters/IdempotencyKey'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: {$ref: '#/components/schemas/RevisarAlerta'}
+      responses:
+        '200': {description: Revisión registrada}
+        '422': {$ref: '#/components/responses/ReglaNegocio'}
+  /siniestros/{siniestroId}/pagos:
+    post:
+      tags: [Pagos]
+      summary: Registrar un pago autorizado
+      operationId: registrarPago
+      parameters:
+        - $ref: '#/components/parameters/SiniestroId'
+        - $ref: '#/components/parameters/IdempotencyKey'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: {$ref: '#/components/schemas/RegistrarPago'}
+      responses:
+        '201': {description: Pago registrado}
+        '422': {$ref: '#/components/responses/ReglaNegocio'}
+  /siniestros/{siniestroId}/linea-tiempo:
+    get:
+      tags: [Auditoria]
+      summary: Consultar la línea de tiempo autorizada
+      operationId: obtenerLineaTiempo
+      parameters:
+        - $ref: '#/components/parameters/SiniestroId'
+        - $ref: '#/components/parameters/Limite'
+        - $ref: '#/components/parameters/Cursor'
+      responses:
+        '200':
+          description: Eventos visibles para el rol
+          content:
+            application/json:
+              schema:
+                type: array
+                items: {$ref: '#/components/schemas/EventoLineaTiempo'}
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      description: Formato final del token POR CONFIRMAR con el proveedor de identidad.
+  parameters:
+    SiniestroId:
+      name: siniestroId
+      in: path
+      required: true
+      schema: {type: integer, format: int64}
+    IdempotencyKey:
+      name: Idempotency-Key
+      in: header
+      required: true
+      schema: {type: string, minLength: 16, maxLength: 128}
+    Limite:
+      name: limite
+      in: query
+      required: false
+      schema: {type: integer, minimum: 1, maximum: 100, default: 20}
+    Cursor:
+      name: cursor
+      in: query
+      required: false
+      schema: {type: string, minLength: 1}
+  schemas:
+    CrearSiniestro:
+      type: object
+      required: [placa, fechaEvento, ubicacionEvento, tipoEvento, medioContacto]
+      properties:
+        numeroPoliza: {type: string}
+        numeroDocumento: {type: string}
+        placa: {type: string}
+        fechaEvento: {type: string, format: date-time}
+        ubicacionEvento: {type: string}
+        tipoEvento: {type: string}
+        medioContacto: {type: string}
+      anyOf:
+        - required: [numeroPoliza]
+        - required: [numeroDocumento]
+    Siniestro:
+      type: object
+      required: [id, estadoActual, fechaEvento, tipoEvento]
+      properties:
+        id: {type: integer, format: int64}
+        estadoActual: {$ref: '#/components/schemas/EstadoSiniestro'}
+        fechaEvento: {type: string, format: date-time}
+        tipoEvento: {type: string}
+        siguientePaso: {type: string}
+    RegistrarEvidencia:
+      type: object
+      required: [tipoEvidencia, contenidoOriginalUri, hash]
+      properties:
+        tipoEvidencia: {type: string}
+        contenidoOriginalUri: {type: string, format: uri}
+        hash: {type: string}
+        fechaCaptura: {type: string, format: date-time}
+        fuente: {type: string}
+        versionDerivadaDe: {type: integer, format: int64}
+      additionalProperties: false
+    CambiarEstado:
+      type: object
+      required: [estadoDestino, motivo, version]
+      properties:
+        estadoDestino: {$ref: '#/components/schemas/EstadoSiniestro'}
+        motivo: {type: string, minLength: 1, maxLength: 500}
+        version: {type: integer, minimum: 0}
+      additionalProperties: false
+    SolicitarAsistencia:
+      type: object
+      required: [tipoProveedor, ubicacion]
+      properties:
+        tipoProveedor: {type: string, minLength: 1, maxLength: 30}
+        ubicacion: {type: string, minLength: 1, maxLength: 255}
+      additionalProperties: false
+    RegistrarPresupuesto:
+      type: object
+      required: [proveedorId, vigenciaDesde, vigenciaHasta]
+      properties:
+        proveedorId: {type: integer, format: int64, minimum: 1}
+        diagnostico: {type: string}
+        vigenciaDesde: {type: string, format: date}
+        vigenciaHasta: {type: string, format: date}
+      additionalProperties: false
+    RevisarAlerta:
+      type: object
+      required: [estadoRevision, justificacion]
+      properties:
+        estadoRevision:
+          type: string
+          enum: [confirmada, descartada, en_solicitud_info]
+        justificacion: {type: string, minLength: 1, maxLength: 2000}
+      additionalProperties: false
+    RegistrarPago:
+      type: object
+      required: [autorizacionId, monto]
+      properties:
+        autorizacionId: {type: integer, format: int64, minimum: 1}
+        monto: {type: number, exclusiveMinimum: 0, multipleOf: 0.01}
+      additionalProperties: false
+    Alerta:
+      type: object
+      required: [id, tipo, severidad, estadoRevision]
+      properties:
+        id: {type: integer, format: int64}
+        tipo: {type: string}
+        severidad: {type: string}
+        estadoRevision: {type: string}
+    EventoLineaTiempo:
+      type: object
+      required: [id, tipoEvento, fecha]
+      properties:
+        id: {type: integer, format: int64}
+        tipoEvento: {type: string}
+        fecha: {type: string, format: date-time}
+        detalle: {type: object}
+    EstadoSiniestro:
+      type: string
+      enum: [reportado, validando_cobertura, asistencia_coordinada, evidencia_pendiente, en_evaluacion, inspeccion_programada, presupuesto_recibido, autorizado, observado, rechazado, en_reparacion, listo_para_entrega, indemnizado, cerrado]
+    Error:
+      type: object
+      required: [codigo, mensaje, correlationId]
+      properties:
+        codigo: {type: string}
+        mensaje: {type: string}
+        correlationId: {type: string}
+        detalles: {type: array, items: {type: string}}
+  responses:
+    NoEncontrado:
+      description: Recurso no encontrado o no visible para el rol
+      content:
+        application/json:
+          schema: {$ref: '#/components/schemas/Error'}
+    Conflicto:
+      description: Conflicto de estado, duplicidad o idempotencia
+      content:
+        application/json:
+          schema: {$ref: '#/components/schemas/Error'}
+    ReglaNegocio:
+      description: Solicitud válida sintácticamente que incumple una regla de negocio
+      content:
+        application/json:
+          schema: {$ref: '#/components/schemas/Error'}
