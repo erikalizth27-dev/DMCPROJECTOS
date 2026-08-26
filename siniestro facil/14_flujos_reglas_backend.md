@@ -43,8 +43,9 @@ Toda transición exige rol autorizado, motivo, versión actual del caso y evento
 - Alta: deriva a investigación antes de continuar.
 - Media/baja: aumenta prioridad sin detener el flujo.
 - Rechazo de cobertura, confirmación de fraude y autorización de pago requieren decisión humana.
-- Todo pago emitido referencia una autorización.
-- El operador o ajustador prepara la solicitud; un supervisor distinto autoriza el pago.
+- El operador o ajustador crea una solicitud de pago mediante un comando idempotente.
+- Un supervisor distinto del preparador autoriza la solicitud mediante un segundo comando idempotente.
+- Todo pago emitido referencia la solicitud y su autorización humana.
 
 ## Presupuestos
 
@@ -67,7 +68,14 @@ Toda transición exige rol autorizado, motivo, versión actual del caso y evento
 
 ## Idempotencia y concurrencia
 
-- Crear siniestro, solicitar asistencia, registrar evidencia, revisar alerta y emitir pago requieren `Idempotency-Key`.
+- Crear siniestro, solicitar asistencia, registrar evidencia, revisar alerta, preparar pago y autorizar pago requieren `Idempotency-Key`.
 - Misma clave y mismo contenido devuelve el resultado previo.
 - Misma clave con contenido diferente devuelve conflicto.
-- Cambios de estado deben indicar la versión conocida del caso; una versión desactualizada devuelve conflicto.
+- Cambios de estado deben indicar la versión conocida del caso; una versión desactualizada devuelve HTTP 409 y no modifica datos.
+- Un cambio exitoso incrementa `siniestro.version` atómicamente.
+
+## Persistencia de asignaciones
+
+- Cada siniestro tiene como máximo una asignación activa.
+- Reasignar finaliza la asignación vigente y crea otra con responsable, fechas y motivo.
+- `siguientePaso` se deriva del estado, rol, evidencias y acciones abiertas; no se almacena.
