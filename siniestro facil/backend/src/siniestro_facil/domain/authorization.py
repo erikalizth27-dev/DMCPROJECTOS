@@ -18,7 +18,9 @@ class Action(StrEnum):
     CONSULTAR_SINIESTRO = "consultar_siniestro"
     ADJUNTAR_EVIDENCIA = "adjuntar_evidencia"
     CAMBIAR_ESTADO = "cambiar_estado"
+    SOLICITAR_ASISTENCIA = "solicitar_asistencia"
     REGISTRAR_PRESUPUESTO = "registrar_presupuesto"
+    CONSULTAR_ALERTA_RESUMEN = "consultar_alerta_resumen"
     REVISAR_ALERTA = "revisar_alerta"
     CONSULTAR_INFORMACION_AMPLIADA = "consultar_informacion_ampliada"
     PREPARAR_PAGO = "preparar_pago"
@@ -35,6 +37,7 @@ ROLE_PERMISSIONS: dict[PrincipalRole, frozenset[Action]] = {
             Action.CREAR_SINIESTRO,
             Action.CONSULTAR_SINIESTRO,
             Action.ADJUNTAR_EVIDENCIA,
+            Action.SOLICITAR_ASISTENCIA,
             Action.CONFIRMAR_ENTREGA,
             Action.CONSULTAR_AUDITORIA,
         }
@@ -45,6 +48,8 @@ ROLE_PERMISSIONS: dict[PrincipalRole, frozenset[Action]] = {
             Action.CONSULTAR_SINIESTRO,
             Action.ADJUNTAR_EVIDENCIA,
             Action.CAMBIAR_ESTADO,
+            Action.SOLICITAR_ASISTENCIA,
+            Action.CONSULTAR_ALERTA_RESUMEN,
             Action.PREPARAR_PAGO,
             Action.CONSULTAR_AUDITORIA,
         }
@@ -54,6 +59,8 @@ ROLE_PERMISSIONS: dict[PrincipalRole, frozenset[Action]] = {
             Action.CONSULTAR_SINIESTRO,
             Action.ADJUNTAR_EVIDENCIA,
             Action.CAMBIAR_ESTADO,
+            Action.SOLICITAR_ASISTENCIA,
+            Action.CONSULTAR_ALERTA_RESUMEN,
             Action.PREPARAR_PAGO,
             Action.CONSULTAR_AUDITORIA,
         }
@@ -71,6 +78,7 @@ ROLE_PERMISSIONS: dict[PrincipalRole, frozenset[Action]] = {
         {
             Action.CONSULTAR_SINIESTRO,
             Action.ADJUNTAR_EVIDENCIA,
+            Action.CONSULTAR_ALERTA_RESUMEN,
             Action.REVISAR_ALERTA,
             Action.CONSULTAR_INFORMACION_AMPLIADA,
             Action.CONSULTAR_AUDITORIA,
@@ -90,6 +98,19 @@ def authorize(role: PrincipalRole, action: Action, *, resource_in_scope: bool) -
         raise AuthorizationDenied("Accion no permitida para el rol")
     if not resource_in_scope and role is not PrincipalRole.SUPERVISOR:
         raise AuthorizationDenied("Recurso fuera del alcance autorizado")
+
+
+class AlertDetailLevel(StrEnum):
+    RESUMEN = "resumen"
+    DETALLE = "detalle"
+
+
+def alert_detail_level(role: PrincipalRole) -> AlertDetailLevel:
+    if Action.CONSULTAR_INFORMACION_AMPLIADA in ROLE_PERMISSIONS[role]:
+        return AlertDetailLevel.DETALLE
+    if Action.CONSULTAR_ALERTA_RESUMEN in ROLE_PERMISSIONS[role]:
+        return AlertDetailLevel.RESUMEN
+    raise AuthorizationDenied("Accion no permitida para el rol")
 
 
 @dataclass(frozen=True, slots=True)
