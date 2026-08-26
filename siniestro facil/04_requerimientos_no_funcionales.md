@@ -47,6 +47,9 @@ Las políticas que determinan el tratamiento de alertas (bloqueo de pago, deriva
 ## RNF-15 Escalabilidad del piloto hacia operación nacional
 El sistema debe concebirse para operar inicialmente en un piloto acotado (una ciudad, grupo controlado de talleres) con capacidad de expandirse posteriormente a todo el país. *(Entrevista 1, P10)*
 
+## RNF-16 Retención de auditoría
+Los eventos y accesos sensibles deben conservarse durante cinco años desde el cierre del siniestro. Cumplir el plazo no activa eliminación automática; cualquier eliminación o anonimización requiere revisión normativa y política corporativa antes de producción. *(DM-05 aprobada el 25 de agosto de 2026)*
+
 ## Pendientes explícitos (sin fuente para fijar valor)
 Los siguientes atributos fueron mencionados como relevantes pero sin un valor o mecanismo concreto en las entrevistas, por lo que no se fija ningún número aquí (ver `discrepancias.md`):
 - SLA por región y por tipo de siniestro para cada etapa (primera respuesta, llegada de grúa, revisión de cobertura, asignación, inspección, recepción de presupuesto, autorización, cierre). *(Entrevista 2, P8: "Cada etapa tiene un compromiso distinto según el tipo de siniestro y la ubicación", sin cifras.)*
