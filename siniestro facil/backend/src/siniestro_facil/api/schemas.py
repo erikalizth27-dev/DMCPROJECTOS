@@ -3,6 +3,7 @@ from __future__ import annotations
 from datetime import date, datetime
 from decimal import Decimal
 from enum import StrEnum
+from typing import Literal
 
 from pydantic import BaseModel, ConfigDict, Field, HttpUrl, model_validator
 
@@ -81,9 +82,23 @@ class RevisarAlertaRequest(ApiModel):
     justificacion: str = Field(min_length=1, max_length=2000)
 
 
-class RegistrarPagoRequest(ApiModel):
-    autorizacion_id: int = Field(alias="autorizacionId", gt=0)
+class AlertaResumenResponse(ApiModel):
+    id: int = Field(gt=0)
+    severidad: str = Field(min_length=1)
+    estado_revision: str = Field(alias="estadoRevision", min_length=1)
+
+
+class AlertaDetalleResponse(AlertaResumenResponse):
+    tipo: str = Field(min_length=1)
+    detalle: dict[str, object] = Field(default_factory=dict)
+
+
+class PrepararSolicitudPagoRequest(ApiModel):
     monto: Decimal = Field(gt=0, max_digits=14, decimal_places=2)
+
+
+class AutorizarSolicitudPagoRequest(ApiModel):
+    confirmacion_humana: Literal[True] = Field(alias="confirmacionHumana")
 
 
 class ErrorResponse(ApiModel):
