@@ -2,7 +2,7 @@
 
 ## Avance general
 
-**92% completado**.
+**94% completado**.
 
 El porcentaje se calcula sobre los siete frentes definidos en `20_plan_detallado_sprint_0.md`. No incluye CI/CD, observabilidad ni operación GCP, porque fueron retirados expresamente del alcance.
 
@@ -13,10 +13,10 @@ El porcentaje se calcula sobre los siete frentes definidos en `20_plan_detallado
 | 3. Contrato OpenAPI | 100% | OpenAPI 0.2.0-draft aprobado por Product Owner; 11 operaciones, 14 esquemas, 13 ejemplos y 4 pruebas | Aplicar control formal de cambios a futuras versiones |
 | 4. Datos y migraciones | 100% | 22 tablas desplegadas, constraints probados, datos sintéticos y revisión Alembic `20260825_01` aplicada y validada en Cloud SQL | Fusionar PR #1 y conservar la evidencia como línea base |
 | 5. Seguridad, RBAC y auditoría | 100% | RBAC, Identity Platform/IAM, claims mínimos, alcance y controles aprobados | Mantener trazabilidad y denegación por defecto |
-| 6. Esqueleto backend local | 98% | Contrato de claims y configuración implementados; última línea base 42/42 | Ejecutar suite ampliada esperada de 53 pruebas |
+| 6. Esqueleto backend local | 100% | Contrato de claims, configuración y suite completa 53/53 aprobados en Cloud Shell | Mantener la línea base verde |
 | 7. Refinamiento de Sprint 1 | 75% | Seis incrementos verticales, trazabilidad y propuestas concretas para los cinco vacíos | Aprobar las propuestas y estimar con la capacidad real del equipo |
 
-Promedio ponderado y redondeado: **92%**.
+Promedio ponderado y redondeado: **94%**.
 
 ## Completado
 
@@ -55,15 +55,16 @@ Promedio ponderado y redondeado: **92%**.
 - Contrato OpenAPI 0.2.0-draft aprobado formalmente por el Product Owner.
 - ID-01 a ID-06 aprobadas y propagadas a configuración, seguridad y OpenAPI.
 - Contrato de claims verificados implementado con once pruebas nuevas.
+- Suite de identidad y backend aprobada en Cloud Shell: 53/53 pruebas.
+- Plan de cierre controlado de la dependencia PR #1 documentado.
 
 ## Pendiente para llegar a 100%
 
-1. Fusionar PR #1 o resolver formalmente su dependencia.
+1. Autorizar y ejecutar el cierre controlado de PR #1 según `39_plan_cierre_dependencia_pr1.md`.
 2. Propagar las cinco decisiones ya materializadas al resto de criterios y contratos.
-3. Ejecutar la suite ampliada esperada de 53 pruebas.
-4. Mantener Alembic como mecanismo obligatorio para las próximas migraciones.
-5. Descomponer y estimar las historias de Sprint 1.
-6. Verificar la Definition of Ready de cada historia comprometida.
+3. Mantener Alembic como mecanismo obligatorio para las próximas migraciones.
+4. Descomponer y estimar las historias de Sprint 1.
+5. Verificar la Definition of Ready de cada historia comprometida.
 
 ## Pull requests relacionados
 
