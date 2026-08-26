@@ -2,7 +2,7 @@
 
 ## Estado
 
-DM-01 a DM-04 están **MATERIALIZADAS** y validadas mediante la revisión Alembic `20260825_01`. DM-05 permanece **PENDIENTE DE APROBACIÓN**.
+DM-01 a DM-04 están **MATERIALIZADAS** y validadas mediante la revisión Alembic `20260825_01`. DM-05 está **APROBADA** como política documental, sin automatización de borrado.
 
 ## DM-01 — Relación del tercero autorizado — MATERIALIZADA
 
@@ -55,9 +55,9 @@ Se crea `asignacion_siniestro` para materializar HU-11 y HU-12.
 
 Sólo puede existir una asignación activa por siniestro.
 
-## DM-05 — Retención de auditoría — PENDIENTE
+## DM-05 — Retención de auditoría — APROBADA
 
-Se recomienda conservar eventos y accesos sensibles durante cinco años desde el cierre del siniestro, alineado provisionalmente con la retención de evidencia.
+Se aprueba conservar eventos y accesos sensibles durante cinco años desde el cierre del siniestro.
 
 - No implica eliminar automáticamente al cumplir el plazo.
 - La eliminación o anonimización requiere política aprobada y proceso separado.
@@ -70,5 +70,5 @@ Se recomienda conservar eventos y accesos sensibles durante cinco años desde el
 - OpenAPI: `version` ya es obligatoria al cambiar estado.
 - Sprint 1: concurrencia, asignación y cálculo de siguiente paso quedan desbloqueados.
 - HU-04 conserva pendiente el mecanismo que demuestra autorización del tercero; la relación declarada ya está resuelta.
-- DM-05 no debe implementarse como eliminación automática hasta obtener aprobación.
+- DM-05 no habilita eliminación automática. Cualquier eliminación o anonimización requiere revisión normativa y una decisión separada antes de producción.
 
