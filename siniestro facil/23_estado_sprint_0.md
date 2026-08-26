@@ -14,7 +14,7 @@ El porcentaje se calcula sobre los siete frentes definidos en `20_plan_detallado
 | 4. Datos y migraciones | 100% | PR #1 fusionado en main; 22 tablas, constraints, datos sintéticos y Alembic validados | Conservar la evidencia y usar Alembic para cambios futuros |
 | 5. Seguridad, RBAC y auditoría | 100% | RBAC, Identity Platform/IAM, claims mínimos, alcance y controles aprobados | Mantener trazabilidad y denegación por defecto |
 | 6. Esqueleto backend local | 100% | Contrato de claims, configuración y suite completa 53/53 aprobados en Cloud Shell | Mantener la línea base verde |
-| 7. Refinamiento de Sprint 1 | 90% | DoR actualizado y S1-BE-06 habilitada por DM-05; condiciones restantes explícitas | Estimar con capacidad real y confirmar historias comprometidas |
+| 7. Refinamiento de Sprint 1 | 95% | S1-BE-01, S1-BE-02 y S1-BE-03 comprometidas por 18 puntos; trazabilidad y alcance registrados | Resolver las dos condiciones pendientes de DoR |
 
 Promedio ponderado y redondeado: **99%**.
 
@@ -61,11 +61,12 @@ Promedio ponderado y redondeado: **99%**.
 - DM-01 a DM-05 aprobadas y propagadas a criterios, reglas, seguridad, backlog y trazabilidad.
 - DM-05 fija retención de auditoría por cinco años desde el cierre, sin eliminación automática y con revisión normativa previa a producción.
 - Alembic formalizado como política obligatoria para cambios incrementales.
+- Compromiso de Sprint 1 aprobado: S1-BE-01, S1-BE-02 y S1-BE-03 por 18 puntos.
 
 ## Pendiente para llegar a 100%
 
-1. Estimar las historias de Sprint 1 con la capacidad real del equipo.
-2. Confirmar la Definition of Ready y el compromiso final de Sprint 1.
+1. Aprobar o rechazar el adaptador simulado de pólizas para S1-BE-01.
+2. Aprobar o reemplazar la regla provisional de duplicidad por placa y fecha para S1-BE-02.
 
 ## Pull requests relacionados
 
