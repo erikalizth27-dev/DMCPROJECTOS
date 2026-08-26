@@ -147,8 +147,8 @@ Puede desarrollarse la persistencia y validación estructural; no debe afirmar q
 
 | Incremento | Estado | Razón |
 |---|---|---|
-| S1-BE-01 | Casi listo | Falta confirmar adaptador de pólizas |
-| S1-BE-02 | Condicional | Regla de deduplicación todavía provisional |
+| S1-BE-01 | Listo | Adaptador simulado de pólizas aprobado en S1-DEC-01 |
+| S1-BE-02 | Listo | Regla provisional aprobada en S1-DEC-02; revisión humana y sin fusión automática |
 | S1-BE-03 | Listo | Identidad, alcance y visibilidad por rol aprobados; contrato y pruebas definidos |
 | S1-BE-04 | Condicional | Relación persistida; falta mecanismo para demostrar autorización del tercero |
 | S1-BE-05 | Listo | `siniestro.version`, HTTP 409 y regla atómica definidos |
@@ -161,4 +161,4 @@ El sprint se considera exitoso si S1-BE-01, S1-BE-02 y S1-BE-03 cumplen sus crit
 
 ## Registro de aprobación
 
-El compromiso de S1-BE-01, S1-BE-02 y S1-BE-03 por 18 puntos fue aprobado el 25 de agosto de 2026. La aprobación no resuelve todavía el adaptador de pólizas ni la regla provisional de duplicidad; ambos permanecen como condiciones de Definition of Ready.
+El compromiso de S1-BE-01, S1-BE-02 y S1-BE-03 por 18 puntos fue aprobado el 25 de agosto de 2026. S1-DEC-01 y S1-DEC-02 fueron aprobadas posteriormente. Los tres incrementos comprometidos cumplen la Definition of Ready.
