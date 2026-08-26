@@ -1,0 +1,164 @@
+# Backlog refinado — Sprint 1 Backend
+
+## Objetivo propuesto
+
+Permitir registrar un siniestro elegible de forma idempotente, detectar posibles duplicados y consultar una vista inicial del caso respetando el alcance del usuario.
+
+## Duración
+
+- 2 semanas.
+- Compromiso aprobado: 18 puntos para S1-BE-01, S1-BE-02 y S1-BE-03.
+- Los puntos constituyen la línea base relativa del Sprint 1; no equivalen directamente a días.
+
+## Alcance comprometido — 18 puntos
+
+### S1-BE-01 — Registrar siniestro con datos mínimos
+
+| Campo | Definición |
+|---|---|
+| Historias | HU-01, HU-03, HU-08 |
+| Prioridad | Obligatoria |
+| Estimación aprobada | 8 puntos |
+| Endpoint | `POST /api/v1/siniestros` |
+| Tablas | asegurado, reportante, poliza, vehiculo, siniestro, evento_linea_tiempo |
+| Dependencias | Modelo físico disponible; consulta de pólizas real o adaptador simulado |
+
+Actividades:
+
+- Validar `numeroPoliza` o `numeroDocumento`.
+- Validar placa, fecha, ubicación, tipo de evento y contacto.
+- Verificar alcance vehicular del piloto.
+- Aplicar `Idempotency-Key` y huella del contenido.
+- Crear el caso en estado `reportado`.
+- Registrar el evento inicial en la misma transacción.
+- Responder HTTP 201, 409 o 422 según el contrato.
+
+Pruebas mínimas:
+
+- Creación válida por póliza.
+- Creación válida por documento.
+- Datos mínimos incompletos.
+- Caso fuera del alcance.
+- Reintento con igual clave e igual contenido.
+- Igual clave con contenido diferente.
+- Rollback si falla el evento de auditoría.
+
+### S1-BE-02 — Detectar posible duplicado
+
+| Campo | Definición |
+|---|---|
+| Historia | HU-10 |
+| Prioridad | Obligatoria |
+| Estimación aprobada | 5 puntos |
+| Endpoint | `POST /api/v1/siniestros` |
+| Tablas | siniestro, vehiculo, poliza |
+| Regla provisional | Misma placa y mismo día del evento |
+
+Actividades:
+
+- Buscar coincidencias antes de crear el expediente.
+- No fusionar ni descartar automáticamente.
+- Devolver HTTP 409 con código de negocio y referencia permitida por el rol.
+- Permitir una decisión posterior del operador, fuera de este incremento.
+
+Pruebas mínimas:
+
+- Coincidencia exacta de placa y día.
+- Misma placa en día diferente.
+- Placa diferente el mismo día.
+- Dos solicitudes concurrentes.
+- Respuesta sin exposición de información no autorizada.
+
+### S1-BE-03 — Consultar vista inicial del siniestro
+
+| Campo | Definición |
+|---|---|
+| Historias | HU-06, HU-28 |
+| Prioridad | Obligatoria |
+| Estimación aprobada | 5 puntos |
+| Endpoint | `GET /api/v1/siniestros/{siniestroId}` |
+| Tablas | siniestro, poliza, vehiculo, cobertura, reportante |
+| Dependencia | Principal con claims ID-01 a ID-06; adaptador criptográfico temporal |
+
+Actividades:
+
+- Consultar caso por identificador.
+- Aplicar autorización por rol y alcance.
+- Ocultar información no permitida al asegurado.
+- Devolver estado actual y siguiente paso.
+- Registrar consulta sensible cuando corresponda.
+- No distinguir externamente entre recurso inexistente y recurso no visible.
+
+Pruebas mínimas:
+
+- Asegurado consulta su caso.
+- Asegurado intenta consultar otro caso.
+- Operador consulta caso asignado.
+- Taller sin orden válida.
+- Supervisor consulta transversal auditada.
+- Caso inexistente.
+
+### S1-BE-04 — Reporte por tercero autorizado
+
+| Campo | Definición |
+|---|---|
+| Historia | HU-04 |
+| Prioridad | Condicional |
+| Tamaño | M |
+| Endpoint | `POST /api/v1/siniestros` |
+| Tablas | reportante, asegurado, siniestro |
+| Condición | Relación declarada persistida; validación de autorización del tercero aún pendiente |
+
+Actividades:
+
+- Registrar reportante diferente del asegurado.
+- Conservar contacto y relación declarada en `reportante.relacion_asegurado`.
+- Impedir autorizaciones de pago o cobertura por el solo hecho de reportar.
+- Auditar el canal y el actor que realizó el reporte.
+
+Puede desarrollarse la persistencia y validación estructural; no debe afirmar que la relación declarada demuestra autorización hasta definir ese mecanismo.
+
+## Fuera del compromiso inicial
+
+### S1-BE-05 — Transición inicial de estado
+
+- Historia relacionada: HU-08.
+- Tamaño: M.
+- Endpoint: `POST /api/v1/siniestros/{siniestroId}/estado`.
+- Estados iniciales: `reportado` → `validando_cobertura` o `rechazado`.
+- Requiere versión conocida, motivo, RBAC y confirmación humana para rechazo.
+
+### S1-BE-06 — Auditoría de comandos y consultas
+
+- Historias relacionadas: HU-16, HU-28.
+- Tamaño: M.
+- Registra actor, acción, fecha, recurso, resultado y `correlationId`.
+- No registra tokens, documentos completos, contraseñas ni evidencia binaria.
+
+## Orden de implementación aprobado
+
+1. S1-BE-01.
+2. S1-BE-02.
+3. S1-BE-03.
+4. S1-BE-04 únicamente si se cierra su bloqueo.
+5. S1-BE-05 y S1-BE-06 según capacidad demostrada.
+
+## Definition of Ready — evaluación actual
+
+| Incremento | Estado | Razón |
+|---|---|---|
+| S1-BE-01 | Listo | Adaptador simulado de pólizas aprobado en S1-DEC-01 |
+| S1-BE-02 | Listo | Regla provisional aprobada en S1-DEC-02; revisión humana y sin fusión automática |
+| S1-BE-03 | Listo | Identidad, alcance y visibilidad por rol aprobados; contrato y pruebas definidos |
+| S1-BE-04 | Condicional | Relación persistida; falta mecanismo para demostrar autorización del tercero |
+| S1-BE-05 | Listo | `siniestro.version`, HTTP 409 y regla atómica definidos |
+| S1-BE-06 | Listo | Auditoría y retención de cinco años aprobadas; sin eliminación automática |
+
+## Criterio de éxito del sprint
+
+El sprint se considera exitoso si S1-BE-01, S1-BE-02 y S1-BE-03 cumplen sus criterios, las pruebas pasan contra PostgreSQL y no se amplía alcance con decisiones todavía no aprobadas.
+
+
+## Registro de aprobación
+
+El compromiso de S1-BE-01, S1-BE-02 y S1-BE-03 por 18 puntos fue aprobado el 25 de agosto de 2026. S1-DEC-01 y S1-DEC-02 fueron aprobadas posteriormente. Los tres incrementos comprometidos cumplen la Definition of Ready.

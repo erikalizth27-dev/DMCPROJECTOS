@@ -23,7 +23,8 @@
 - **Dado** que el titular de la póliza no puede reportar el caso,
   **cuando** una persona autorizada realiza el reporte,
   **entonces** el sistema permite registrar el caso identificando que el reportante es distinto al asegurado. *(Entrevista 1, P6)*
-- **[Pendiente]** Las entrevistas no describen cómo se valida o define "persona autorizada". *(ver discrepancias.md)*
+- **Dado** que el reportante no es titular, **cuando** se registra el reporte, **entonces** se exige una relación declarada (`familiar`, `dependiente`, `testigo` u `otro`); si es titular, la relación queda vacía. *(DM-01 materializada)*
+- **[Pendiente]** La relación declarada no demuestra autorización; el mecanismo para validar "persona autorizada" sigue abierto. *(ver discrepancias.md)*
 
 ## HU-05 — Adjuntar evidencias desde la aplicación
 - **Dado** que estoy en el proceso de reporte o seguimiento,
@@ -36,6 +37,7 @@
   **entonces** veo el estado actual y el siguiente paso, sin necesidad de llamar. *(Entrevista 1, P3, P4)*
 - **Dado** que el proceso tiene subestados internos,
   **entonces** el asegurado ve únicamente los estados relevantes para él, no los subestados internos. *(Entrevista 2, P4)*
+- **Dado** el estado, rol, evidencias pendientes y acciones abiertas, **cuando** se consulta el caso, **entonces** `siguientePaso` se calcula sin persistir un valor que pueda quedar obsoleto. *(DM-03 materializada)*
 
 ## HU-07 — Recibir asistencia coordinada
 - **Dado** que el caso lo requiere,
@@ -67,7 +69,12 @@
 ## HU-12 — Reasignar un caso conservando el historial
 - **Dado** un caso asignado,
   **cuando** se reasigna,
-  **entonces** el sistema conserva el historial de asignaciones previas y la razón del cambio. *(Entrevista 2, P5)*
+  **entonces** finaliza la asignación activa, crea una nueva y conserva responsable, fechas y razón del cambio. *(Entrevista 2, P5; DM-04 materializada)*
+- **Dado** un siniestro, **entonces** no puede tener más de una asignación activa simultánea. *(DM-04)*
+
+## Regla transversal — Concurrencia optimista
+- **Dado** un comando que modifica un siniestro, **cuando** su `version` no coincide con la persistida, **entonces** se rechaza con HTTP 409 sin sobrescribir cambios concurrentes. *(DM-02 materializada)*
+- **Dado** un cambio exitoso, **entonces** la versión se incrementa de forma atómica. *(DM-02)*
 
 ## HU-13 — Registrar autorizaciones que hoy se dan por teléfono
 - **Dado** que se otorga una autorización,
