@@ -152,7 +152,7 @@ Puede desarrollarse la persistencia y validación estructural; no debe afirmar q
 | S1-BE-03 | Listo | Identidad, alcance y visibilidad por rol aprobados; contrato y pruebas definidos |
 | S1-BE-04 | Condicional | Relación persistida; falta mecanismo para demostrar autorización del tercero |
 | S1-BE-05 | Listo | `siniestro.version`, HTTP 409 y regla atómica definidos |
-| S1-BE-06 | Casi listo | Auditoría definida; retención de cinco años aún requiere aprobación |
+| S1-BE-06 | Listo | Auditoría y retención de cinco años aprobadas; sin eliminación automática |
 
 ## Criterio de éxito del sprint
 
