@@ -48,6 +48,30 @@ class OpenApiSpecTest(unittest.TestCase):
             references,
         )
 
+    def test_commands_and_error_responses_have_synthetic_examples(self) -> None:
+        schemas = self.document["components"]["schemas"]
+        command_schemas = {
+            "CrearSiniestro",
+            "RegistrarEvidencia",
+            "CambiarEstado",
+            "SolicitarAsistencia",
+            "RegistrarPresupuesto",
+            "RevisarAlerta",
+            "PrepararSolicitudPago",
+            "AutorizarSolicitudPago",
+        }
+
+        for schema_name in command_schemas:
+            self.assertIn("example", schemas[schema_name], schema_name)
+
+        responses = self.document["components"]["responses"]
+        for response_name, response in responses.items():
+            media_type = response["content"]["application/json"]
+            self.assertIn("example", media_type, response_name)
+            serialized = str(media_type["example"]).lower()
+            self.assertNotIn("password", serialized)
+            self.assertNotIn("secret", serialized)
+
 
 if __name__ == "__main__":
     unittest.main()
