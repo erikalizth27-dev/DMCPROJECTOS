@@ -78,7 +78,7 @@ Pruebas mínimas:
 | Tamaño | M |
 | Endpoint | `GET /api/v1/siniestros/{siniestroId}` |
 | Tablas | siniestro, poliza, vehiculo, cobertura, reportante |
-| Dependencia | Principal autenticado proporcionado por adaptador temporal |
+| Dependencia | Principal con claims ID-01 a ID-06; adaptador criptográfico temporal |
 
 Actividades:
 
@@ -107,16 +107,16 @@ Pruebas mínimas:
 | Tamaño | M |
 | Endpoint | `POST /api/v1/siniestros` |
 | Tablas | reportante, asegurado, siniestro |
-| Bloqueo | Aprobación formal de la definición de tercero autorizado |
+| Condición | Relación declarada persistida; validación de autorización del tercero aún pendiente |
 
 Actividades:
 
 - Registrar reportante diferente del asegurado.
-- Conservar contacto y relación declarada cuando el modelo sea ampliado.
+- Conservar contacto y relación declarada en `reportante.relacion_asegurado`.
 - Impedir autorizaciones de pago o cobertura por el solo hecho de reportar.
 - Auditar el canal y el actor que realizó el reporte.
 
-No se compromete hasta resolver el atributo para la relación declarada o decidir documentarla fuera de la tabla `reportante`.
+Puede desarrollarse la persistencia y validación estructural; no debe afirmar que la relación declarada demuestra autorización hasta definir ese mecanismo.
 
 ## Alcance adicional si existe capacidad
 
@@ -149,10 +149,10 @@ No se compromete hasta resolver el atributo para la relación declarada o decidi
 |---|---|---|
 | S1-BE-01 | Casi listo | Falta confirmar adaptador de pólizas |
 | S1-BE-02 | Condicional | Regla de deduplicación todavía provisional |
-| S1-BE-03 | Condicional | Falta cerrar detalle visible por rol e identidad temporal |
-| S1-BE-04 | Bloqueado | Falta decisión sobre relación declarada del tercero |
-| S1-BE-05 | Casi listo | Falta definir control de versión persistido |
-| S1-BE-06 | Casi listo | Falta aprobar retención de auditoría |
+| S1-BE-03 | Listo | Identidad, alcance y visibilidad por rol aprobados; contrato y pruebas definidos |
+| S1-BE-04 | Condicional | Relación persistida; falta mecanismo para demostrar autorización del tercero |
+| S1-BE-05 | Listo | `siniestro.version`, HTTP 409 y regla atómica definidos |
+| S1-BE-06 | Casi listo | Auditoría definida; retención de cinco años aún requiere aprobación |
 
 ## Criterio de éxito del sprint
 
