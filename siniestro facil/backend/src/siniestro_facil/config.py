@@ -11,6 +11,8 @@ class Settings:
     app_version: str = "0.1.0"
     database_url: str | None = None
     database_schema: str = "siniestro_facil"
+    identity_issuer: str | None = None
+    identity_audience: str | None = None
     log_level: str = "INFO"
 
     @classmethod
@@ -21,6 +23,8 @@ class Settings:
             app_version=os.getenv("APP_VERSION", "0.1.0"),
             database_url=os.getenv("DATABASE_URL"),
             database_schema=os.getenv("DATABASE_SCHEMA", "siniestro_facil"),
+            identity_issuer=os.getenv("IDENTITY_ISSUER"),
+            identity_audience=os.getenv("IDENTITY_AUDIENCE"),
             log_level=os.getenv("LOG_LEVEL", "INFO").upper(),
         )
 
@@ -32,3 +36,10 @@ class Settings:
             errors.append("DATABASE_SCHEMA debe ser siniestro_facil")
         return errors
 
+    def identity_configuration_errors(self) -> list[str]:
+        errors: list[str] = []
+        if not self.identity_issuer:
+            errors.append("IDENTITY_ISSUER no configurado")
+        if not self.identity_audience:
+            errors.append("IDENTITY_AUDIENCE no configurada")
+        return errors
