@@ -1,7 +1,7 @@
 openapi: 3.1.0
 info:
   title: Siniestro Fácil Backend API
-  version: 0.1.0-draft
+  version: 0.2.0-draft
   description: >-
     Contrato inicial para planning. Las operaciones marcadas POR CONFIRMAR
     dependen de las decisiones de 17_preguntas_abiertas_backend.md.
@@ -256,6 +256,13 @@ components:
       anyOf:
         - required: [numeroPoliza]
         - required: [numeroDocumento]
+      example:
+        numeroPoliza: POL-SYN-001
+        placa: SYN0001
+        fechaEvento: '2026-08-25T14:30:00Z'
+        ubicacionEvento: Ubicación sintética de prueba
+        tipoEvento: colision
+        medioContacto: synthetic@example.invalid
     Siniestro:
       type: object
       required: [id, estadoActual, fechaEvento, tipoEvento]
@@ -265,6 +272,12 @@ components:
         fechaEvento: {type: string, format: date-time}
         tipoEvento: {type: string}
         siguientePaso: {type: string}
+      example:
+        id: 1001
+        estadoActual: reportado
+        fechaEvento: '2026-08-25T14:30:00Z'
+        tipoEvento: colision
+        siguientePaso: validar_cobertura
     RegistrarEvidencia:
       type: object
       required: [tipoEvidencia, contenidoOriginalUri, hash]
@@ -276,6 +289,12 @@ components:
         fuente: {type: string}
         versionDerivadaDe: {type: integer, format: int64}
       additionalProperties: false
+      example:
+        tipoEvidencia: fotografia
+        contenidoOriginalUri: https://example.invalid/evidencias/SYN-001.jpg
+        hash: sha256-sintetico-no-real
+        fechaCaptura: '2026-08-25T14:35:00Z'
+        fuente: asegurado
     CambiarEstado:
       type: object
       required: [estadoDestino, motivo, version]
@@ -284,6 +303,10 @@ components:
         motivo: {type: string, minLength: 1, maxLength: 500}
         version: {type: integer, minimum: 0}
       additionalProperties: false
+      example:
+        estadoDestino: validando_cobertura
+        motivo: Inicio de validación
+        version: 0
     SolicitarAsistencia:
       type: object
       required: [tipoProveedor, ubicacion]
@@ -291,6 +314,9 @@ components:
         tipoProveedor: {type: string, minLength: 1, maxLength: 30}
         ubicacion: {type: string, minLength: 1, maxLength: 255}
       additionalProperties: false
+      example:
+        tipoProveedor: grua
+        ubicacion: Ubicación sintética de prueba
     RegistrarPresupuesto:
       type: object
       required: [proveedorId, vigenciaDesde, vigenciaHasta]
@@ -300,6 +326,11 @@ components:
         vigenciaDesde: {type: string, format: date}
         vigenciaHasta: {type: string, format: date}
       additionalProperties: false
+      example:
+        proveedorId: 501
+        diagnostico: Diagnóstico sintético
+        vigenciaDesde: '2026-08-25'
+        vigenciaHasta: '2026-09-24'
     RevisarAlerta:
       type: object
       required: [estadoRevision, justificacion]
@@ -309,12 +340,17 @@ components:
           enum: [confirmada, descartada, en_solicitud_info]
         justificacion: {type: string, minLength: 1, maxLength: 2000}
       additionalProperties: false
+      example:
+        estadoRevision: en_solicitud_info
+        justificacion: Requiere evidencia adicional
     PrepararSolicitudPago:
       type: object
       required: [monto]
       properties:
         monto: {type: number, exclusiveMinimum: 0, multipleOf: 0.01}
       additionalProperties: false
+      example:
+        monto: 1250.50
     AutorizarSolicitudPago:
       type: object
       required: [confirmacionHumana]
@@ -324,6 +360,8 @@ components:
           const: true
           description: Confirmación explícita del supervisor.
       additionalProperties: false
+      example:
+        confirmacionHumana: true
     AlertaResumen:
       type: object
       required: [id, severidad, estadoRevision]
@@ -332,6 +370,10 @@ components:
         severidad: {type: string}
         estadoRevision: {type: string}
       additionalProperties: false
+      example:
+        id: 701
+        severidad: alta
+        estadoRevision: pendiente
     AlertaDetalle:
       allOf:
         - $ref: '#/components/schemas/AlertaResumen'
@@ -341,6 +383,13 @@ components:
             tipo: {type: string}
             detalle: {type: object}
           additionalProperties: false
+      example:
+        id: 701
+        severidad: alta
+        estadoRevision: pendiente
+        tipo: coincidencia
+        detalle:
+          regla: R-SYN-01
     EventoLineaTiempo:
       type: object
       required: [id, tipoEvento, fecha]
@@ -349,6 +398,12 @@ components:
         tipoEvento: {type: string}
         fecha: {type: string, format: date-time}
         detalle: {type: object}
+      example:
+        id: 801
+        tipoEvento: siniestro_reportado
+        fecha: '2026-08-25T14:31:00Z'
+        detalle:
+          origen: ejemplo_sintetico
     EstadoSiniestro:
       type: string
       enum: [reportado, validando_cobertura, asistencia_coordinada, evidencia_pendiente, en_evaluacion, inspeccion_programada, presupuesto_recibido, autorizado, observado, rechazado, en_reparacion, listo_para_entrega, indemnizado, cerrado]
@@ -360,29 +415,59 @@ components:
         mensaje: {type: string}
         correlationId: {type: string}
         detalles: {type: array, items: {type: string}}
+      example:
+        codigo: SF-SYN-ERROR
+        mensaje: Mensaje sintético sin información sensible
+        correlationId: corr-syn-0001
+        detalles: []
   responses:
     NoAutenticado:
       description: Token ausente, inválido o vencido
       content:
         application/json:
           schema: {$ref: '#/components/schemas/Error'}
+          example:
+            codigo: AUTH-001
+            mensaje: Autenticación requerida
+            correlationId: corr-syn-0001
+            detalles: []
     Prohibido:
       description: El rol autenticado no puede ejecutar la operación
       content:
         application/json:
           schema: {$ref: '#/components/schemas/Error'}
+          example:
+            codigo: AUTH-003
+            mensaje: Operación no permitida para el rol
+            correlationId: corr-syn-0001
+            detalles: []
     NoEncontrado:
       description: Recurso no encontrado o no visible para el rol
       content:
         application/json:
           schema: {$ref: '#/components/schemas/Error'}
+          example:
+            codigo: RESOURCE-404
+            mensaje: Recurso no encontrado
+            correlationId: corr-syn-0001
+            detalles: []
     Conflicto:
       description: Conflicto de estado, duplicidad o idempotencia
       content:
         application/json:
           schema: {$ref: '#/components/schemas/Error'}
+          example:
+            codigo: CONFLICT-409
+            mensaje: Conflicto con el estado actual
+            correlationId: corr-syn-0001
+            detalles: []
     ReglaNegocio:
       description: Solicitud válida sintácticamente que incumple una regla de negocio
       content:
         application/json:
           schema: {$ref: '#/components/schemas/Error'}
+          example:
+            codigo: BUSINESS-422
+            mensaje: Regla de negocio incumplida
+            correlationId: corr-syn-0001
+            detalles: []
