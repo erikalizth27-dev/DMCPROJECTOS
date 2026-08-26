@@ -32,8 +32,8 @@
 ## Vacíos funcionales restantes
 
 1. La relación declarada del tercero no demuestra por sí sola que esté autorizado.
-2. La integración real con el sistema de pólizas requiere API o adaptador.
-3. La regla de deduplicación por placa y día sigue siendo provisional.
+2. La integración real con pólizas queda pendiente para una fase posterior; Sprint 1 usará el adaptador simulado aprobado en S1-DEC-01.
+3. La regla provisional de placa y fecha fue aprobada en S1-DEC-02, con revisión humana y sin fusión automática.
 4. La eliminación o anonimización futura requiere una decisión separada y revisión normativa; no forma parte del alcance aprobado de DM-05.
 
 Los incrementos afectados conservan estas condiciones en su Definition of Ready.
@@ -47,4 +47,4 @@ Los incrementos afectados conservan estas condiciones en su Definition of Ready.
 | S1-BE-03 | 5 puntos | Incluido |
 | **Total** | **18 puntos** | **Sprint 1** |
 
-La trazabilidad funcional está completa. El inicio de S1-BE-01 y S1-BE-02 permanece condicionado a resolver sus dos decisiones de Definition of Ready.
+La trazabilidad funcional está completa. S1-DEC-01 y S1-DEC-02 están aprobadas; S1-BE-01, S1-BE-02 y S1-BE-03 cumplen la Definition of Ready.
