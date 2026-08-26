@@ -219,7 +219,9 @@ components:
       type: http
       scheme: bearer
       bearerFormat: JWT
-      description: Formato final del token POR CONFIRMAR con el proveedor de identidad.
+      description: >-
+        JWT emitido por Identity Platform. Claims requeridos: sub, role,
+        actor_type, tenant_id, auth_time, iss, aud, iat y exp.
   parameters:
     SiniestroId:
       name: siniestroId
