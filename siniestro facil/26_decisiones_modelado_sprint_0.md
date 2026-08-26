@@ -2,9 +2,9 @@
 
 ## Estado
 
-`PROPUESTAS PARA APROBACIÓN` antes de desplegar la migración.
+DM-01 a DM-04 están **MATERIALIZADAS** y validadas mediante la revisión Alembic `20260825_01`. DM-05 permanece **PENDIENTE DE APROBACIÓN**.
 
-## DM-01 — Relación del tercero autorizado
+## DM-01 — Relación del tercero autorizado — MATERIALIZADA
 
 Se agrega `reportante.relacion_asegurado`.
 
@@ -15,7 +15,7 @@ Se agrega `reportante.relacion_asegurado`.
 
 Origen: cierre simulado de la definición de persona autorizada y HU-04.
 
-## DM-02 — Concurrencia optimista
+## DM-02 — Concurrencia optimista — MATERIALIZADA
 
 Se agrega `siniestro.version` como entero no negativo, iniciado en cero.
 
@@ -26,7 +26,7 @@ Se agrega `siniestro.version` como entero no negativo, iniciado en cero.
 
 Esta regla evita que dos operadores sobrescriban cambios concurrentes.
 
-## DM-03 — Siguiente paso calculado
+## DM-03 — Siguiente paso calculado — MATERIALIZADA
 
 `siguientePaso` no se almacena como columna.
 
@@ -40,7 +40,7 @@ Se calcula usando:
 
 La respuesta puede variar por rol sin duplicar estado persistente. Las reglas se versionarán si pasan a ser configurables.
 
-## DM-04 — Historial de asignaciones
+## DM-04 — Historial de asignaciones — MATERIALIZADA
 
 Se crea `asignacion_siniestro` para materializar HU-11 y HU-12.
 
@@ -55,7 +55,7 @@ Se crea `asignacion_siniestro` para materializar HU-11 y HU-12.
 
 Sólo puede existir una asignación activa por siniestro.
 
-## DM-05 — Retención de auditoría
+## DM-05 — Retención de auditoría — PENDIENTE
 
 Se recomienda conservar eventos y accesos sensibles durante cinco años desde el cierre del siniestro, alineado provisionalmente con la retención de evidencia.
 
@@ -68,5 +68,7 @@ Se recomienda conservar eventos y accesos sensibles durante cinco años desde el
 - Modelo lógico: agrega dos atributos y una entidad.
 - Modelo físico: requiere migración PostgreSQL.
 - OpenAPI: `version` ya es obligatoria al cambiar estado.
-- Sprint 1: desbloquea concurrencia y asignación; HU-04 queda lista tras aprobación.
+- Sprint 1: concurrencia, asignación y cálculo de siguiente paso quedan desbloqueados.
+- HU-04 conserva pendiente el mecanismo que demuestra autorización del tercero; la relación declarada ya está resuelta.
+- DM-05 no debe implementarse como eliminación automática hasta obtener aprobación.
 
