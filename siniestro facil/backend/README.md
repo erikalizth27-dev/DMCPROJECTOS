@@ -97,3 +97,16 @@ La conexión con servicios GCP, CI/CD y observabilidad se mantiene diferida seg�
 
 El proxy y el backend deben ejecutarse en terminales separadas. La contraseña se
 mantiene únicamente en memoria y nunca se escribe en `.env` ni en GitHub.
+
+
+## Validaciones HTTP negativas de readiness
+
+Con el ambiente virtual activo, los dos escenarios negativos se ejecutan en un
+solo paso y sin conexión a Cloud SQL:
+
+```bash
+bash scripts/02_validate_readiness_negative.sh
+```
+
+El script exige HTTP 503 y valida los errores de `DATABASE_URL` ausente y
+`DATABASE_SCHEMA` inválido. Los servidores temporales se cierran al finalizar.
