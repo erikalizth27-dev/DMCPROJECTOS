@@ -2,21 +2,21 @@
 
 ## Avance general
 
-**96% completado**.
+**98% completado**.
 
 El porcentaje se calcula sobre los siete frentes definidos en `20_plan_detallado_sprint_0.md`. No incluye CI/CD, observabilidad ni operación GCP, porque fueron retirados expresamente del alcance.
 
 | Frente | Avance | Evidencia | Pendiente principal |
 |---|---:|---|---|
-| 1. Consolidación SDD | 80% | SPEC backend, decisiones de modelado y AR-01/02/03 aprobadas y propagadas | Completar propagación funcional restante y aprobación final del Product Owner |
+| 1. Consolidación SDD | 95% | DM-01 a DM-04 propagadas a criterios, reglas, backlog y trazabilidad; DM-05 aislada | Aprobar o rechazar retención DM-05 |
 | 2. Diseño de arquitectura GCP | 85% | Identity Platform para personas e IAM para servicios aprobados; arquitectura completamente GCP | Confirmar regiones y separación de ambientes |
 | 3. Contrato OpenAPI | 100% | OpenAPI 0.2.0-draft aprobado por Product Owner; 11 operaciones, 14 esquemas, 13 ejemplos y 4 pruebas | Aplicar control formal de cambios a futuras versiones |
 | 4. Datos y migraciones | 100% | PR #1 fusionado en main; 22 tablas, constraints, datos sintéticos y Alembic validados | Conservar la evidencia y usar Alembic para cambios futuros |
 | 5. Seguridad, RBAC y auditoría | 100% | RBAC, Identity Platform/IAM, claims mínimos, alcance y controles aprobados | Mantener trazabilidad y denegación por defecto |
 | 6. Esqueleto backend local | 100% | Contrato de claims, configuración y suite completa 53/53 aprobados en Cloud Shell | Mantener la línea base verde |
-| 7. Refinamiento de Sprint 1 | 75% | Seis incrementos verticales, trazabilidad y propuestas concretas para los cinco vacíos | Aprobar las propuestas y estimar con la capacidad real del equipo |
+| 7. Refinamiento de Sprint 1 | 85% | DoR actualizado: S1-BE-03 y S1-BE-05 listos; condiciones restantes explícitas | Estimar con capacidad real y confirmar historias comprometidas |
 
-Promedio ponderado y redondeado: **96%**.
+Promedio ponderado y redondeado: **98%**.
 
 ## Completado
 
@@ -58,13 +58,14 @@ Promedio ponderado y redondeado: **96%**.
 - Suite de identidad y backend aprobada en Cloud Shell: 53/53 pruebas.
 - Plan de cierre controlado de la dependencia PR #1 documentado.
 - PR #1 fusionado en `main` mediante squash; dependencia de PR #2 cerrada.
+- DM-01 a DM-04 propagadas a criterios, reglas, backlog y trazabilidad.
+- Alembic formalizado como política obligatoria para cambios incrementales.
 
 ## Pendiente para llegar a 100%
 
-1. Propagar las cinco decisiones ya materializadas al resto de criterios y contratos.
-2. Mantener Alembic como mecanismo obligatorio para las próximas migraciones.
-3. Descomponer y estimar las historias de Sprint 1.
-4. Verificar la Definition of Ready de cada historia comprometida.
+1. Aprobar o rechazar DM-05: retención de auditoría recomendada por cinco años.
+2. Estimar las historias de Sprint 1 con la capacidad real del equipo.
+3. Confirmar la Definition of Ready y el compromiso final de Sprint 1.
 
 ## Pull requests relacionados
 
