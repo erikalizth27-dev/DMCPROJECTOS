@@ -19,11 +19,13 @@
 | Consultar vista del caso | Propio | Asignado/autorizado | Asignado | Alcance de orden | Autorizado | Sí |
 | Adjuntar evidencia | Propio | Sí | Sí | Según orden | Sí | Sí |
 | Cambiar estado | No | Según transición | Según transición | Estados propios | No | Sí |
+| Solicitar asistencia | Caso propio | Caso asignado | Caso asignado | No | No | Sí |
 | Registrar presupuesto | No | No | No | Taller autorizado | No | Sí |
-| Revisar alertas | No | Resumen permitido | Resumen permitido | No | Sí | Sí |
+| Consultar alertas | No | Resumen | Resumen | No | Detalle | Detalle |
+| Revisar alertas | No | No | No | No | Sí | Sí |
 | Consultar información ampliada | No | No | POR CONFIRMAR | No | Sí | Sí |
 | Preparar solicitud de pago | No | Sí | Sí | No | No | Sí |
-| Autorizar pago | No | No | No | No | No | Sí |
+| Autorizar solicitud de pago | No | No | No | No | No | Sí |
 | Consultar auditoría completa | Propia limitada | Operativa | Operativa | Propia limitada | Investigación | Sí |
 | Configurar política antifraude | No | No | No | No | Rol responsable | Sí |
 
@@ -34,6 +36,8 @@
 - Reautenticación o control reforzado para pagos y cambios de política: `POR CONFIRMAR`.
 - Rate limiting y bloqueo por abuso: valores `POR CONFIRMAR`.
 - La persona que prepara una solicitud de pago no puede autorizarla.
+- Asistencia: asegurado en caso propio; operador/ajustador en caso asignado; supervisor transversal.
+- Alertas: operador/ajustador ven resumen; investigador/supervisor ven detalle.
 - El supervisor confirma rechazo de cobertura, reapertura y autorización de pago.
 
 ## Alcance de recursos
@@ -57,6 +61,8 @@ La política ejecutable se encuentra en
 - reapertura de rechazos;
 - confirmación de entrega;
 - auditoría y política antifraude.
+
+Las decisiones AR-01, AR-02 y AR-03 fueron aprobadas el 25 de agosto de 2026.
 
 Las pruebas verifican acceso propio, acceso fuera de alcance, prohibición de
 creación para taller, revisión de alertas, autorización exclusiva del supervisor
