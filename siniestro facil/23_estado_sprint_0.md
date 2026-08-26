@@ -59,9 +59,9 @@ Promedio ponderado y redondeado: **89%**.
 1. Fusionar PR #1 o resolver formalmente su dependencia.
 2. Propagar las cinco decisiones ya materializadas al resto de criterios y contratos.
 3. Aprobar proveedor de identidad y claims.
-5. Mantener Alembic como mecanismo obligatorio para las próximas migraciones.
-6. Descomponer y estimar las historias de Sprint 1.
-7. Verificar la Definition of Ready de cada historia comprometida.
+4. Mantener Alembic como mecanismo obligatorio para las próximas migraciones.
+5. Descomponer y estimar las historias de Sprint 1.
+6. Verificar la Definition of Ready de cada historia comprometida.
 
 ## Pull requests relacionados
 
