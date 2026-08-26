@@ -19,12 +19,21 @@
 - Un cambio de datos actualiza modelo lógico, físico, migración y prueba de constraint.
 - Ningún incremento se marca terminado si pierde el vínculo con su HU y RF.
 
-## Vacíos detectados
+## Resolución de vacíos
 
-1. El modelo `reportante` no contiene la relación declarada del tercero con el asegurado.
-2. `siniestro` no tiene una columna explícita de versión para concurrencia optimista.
-3. El siguiente paso visible no está materializado; debe derivarse de estado y reglas o modelarse.
-4. La asignación del caso no está materializada en una entidad específica, aunque HU-11/HU-12 exigen historial.
-5. La auditoría de consultas sensibles requiere definir retención y detalle permitido.
+| ID | Resolución | Estado |
+|---|---|---|
+| DM-01 | `reportante.relacion_asegurado` con catálogo y regla titular/no titular | Materializada |
+| DM-02 | `siniestro.version` para concurrencia optimista y HTTP 409 | Materializada |
+| DM-03 | `siguientePaso` derivado; no persistido | Materializada |
+| DM-04 | `asignacion_siniestro` e índice de una asignación activa | Materializada |
+| DM-05 | Retención recomendada de auditoría por cinco años | Pendiente de aprobación |
 
-Estos vacíos deben resolverse antes de comprometer los incrementos afectados.
+## Vacíos funcionales restantes
+
+1. La relación declarada del tercero no demuestra por sí sola que esté autorizado.
+2. La integración real con el sistema de pólizas requiere API o adaptador.
+3. La regla de deduplicación por placa y día sigue siendo provisional.
+4. DM-05 requiere aprobación regulatoria/funcional antes de fijar retención.
+
+Los incrementos afectados conservan estas condiciones en su Definition of Ready.
