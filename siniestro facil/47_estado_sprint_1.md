@@ -2,14 +2,14 @@
 
 ## Avance general
 
-**12% completado**.
+**15% completado**.
 
 El Sprint 1 tiene una duración planificada de dos semanas y un compromiso aprobado de 18 puntos.
 
 | Fase | Peso | Estado | Acumulado |
 |---|---:|---|---:|
 | Preparación, alcance y Definition of Ready | 5% | Completada | 5% |
-| Fundaciones de persistencia y pruebas | 10% | Implementadas; pendientes de validación en Cloud Shell | 12% |
+| Fundaciones de persistencia y pruebas | 10% | Completadas; 63/63 pruebas aprobadas | 15% |
 | S1-BE-01 — Registrar siniestro | 30% | Pendiente | 5% |
 | S1-BE-02 — Detectar posibles duplicados | 20% | Pendiente | 5% |
 | S1-BE-03 — Consultar vista inicial | 20% | Pendiente | 5% |
@@ -41,8 +41,8 @@ El Sprint 1 tiene una duración planificada de dos semanas y un compromiso aprob
 - Adaptador en memoria de pólizas conforme a S1-DEC-01.
 - Diez pruebas nuevas para búsquedas, vigencia, metadatos y transacciones.
 
-El bloque alcanzará 15% cuando Cloud Shell confirme compilación y 63/63 pruebas.
+Cloud Shell confirmó compilación correcta y 63/63 pruebas aprobadas en 1.02 s.
 
 ## Próximo incremento
 
-Validar las fundaciones en Cloud Shell y comenzar S1-BE-01.
+Implementar S1-BE-01: registro transaccional e idempotente del siniestro.
