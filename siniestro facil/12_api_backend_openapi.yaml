@@ -134,7 +134,11 @@ paths:
             application/json:
               schema:
                 type: array
-                items: {$ref: '#/components/schemas/Alerta'}
+                items:
+                  oneOf:
+                    - $ref: '#/components/schemas/AlertaResumen'
+                    - $ref: '#/components/schemas/AlertaDetalle'
+                  description: Resumen para operador/ajustador; detalle para investigador/supervisor.
   /alertas/{alertaId}/revision:
     post:
       tags: [Fraude]
@@ -154,11 +158,11 @@ paths:
       responses:
         '200': {description: Revisión registrada}
         '422': {$ref: '#/components/responses/ReglaNegocio'}
-  /siniestros/{siniestroId}/pagos:
+  /siniestros/{siniestroId}/solicitudes-pago:
     post:
       tags: [Pagos]
-      summary: Registrar un pago autorizado
-      operationId: registrarPago
+      summary: Preparar una solicitud de pago
+      operationId: prepararSolicitudPago
       parameters:
         - $ref: '#/components/parameters/SiniestroId'
         - $ref: '#/components/parameters/IdempotencyKey'
@@ -166,9 +170,31 @@ paths:
         required: true
         content:
           application/json:
-            schema: {$ref: '#/components/schemas/RegistrarPago'}
+            schema: {$ref: '#/components/schemas/PrepararSolicitudPago'}
       responses:
-        '201': {description: Pago registrado}
+        '201': {description: Solicitud de pago preparada}
+        '403': {$ref: '#/components/responses/Prohibido'}
+        '422': {$ref: '#/components/responses/ReglaNegocio'}
+  /solicitudes-pago/{solicitudPagoId}/autorizacion:
+    post:
+      tags: [Pagos]
+      summary: Autorizar una solicitud de pago
+      operationId: autorizarSolicitudPago
+      parameters:
+        - name: solicitudPagoId
+          in: path
+          required: true
+          schema: {type: integer, format: int64, minimum: 1}
+        - $ref: '#/components/parameters/IdempotencyKey'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: {$ref: '#/components/schemas/AutorizarSolicitudPago'}
+      responses:
+        '200': {description: Solicitud de pago autorizada}
+        '403': {$ref: '#/components/responses/Prohibido'}
+        '404': {$ref: '#/components/responses/NoEncontrado'}
         '422': {$ref: '#/components/responses/ReglaNegocio'}
   /siniestros/{siniestroId}/linea-tiempo:
     get:
@@ -283,21 +309,38 @@ components:
           enum: [confirmada, descartada, en_solicitud_info]
         justificacion: {type: string, minLength: 1, maxLength: 2000}
       additionalProperties: false
-    RegistrarPago:
+    PrepararSolicitudPago:
       type: object
-      required: [autorizacionId, monto]
+      required: [monto]
       properties:
-        autorizacionId: {type: integer, format: int64, minimum: 1}
         monto: {type: number, exclusiveMinimum: 0, multipleOf: 0.01}
       additionalProperties: false
-    Alerta:
+    AutorizarSolicitudPago:
       type: object
-      required: [id, tipo, severidad, estadoRevision]
+      required: [confirmacionHumana]
+      properties:
+        confirmacionHumana:
+          type: boolean
+          const: true
+          description: Confirmación explícita del supervisor.
+      additionalProperties: false
+    AlertaResumen:
+      type: object
+      required: [id, severidad, estadoRevision]
       properties:
         id: {type: integer, format: int64}
-        tipo: {type: string}
         severidad: {type: string}
         estadoRevision: {type: string}
+      additionalProperties: false
+    AlertaDetalle:
+      allOf:
+        - $ref: '#/components/schemas/AlertaResumen'
+        - type: object
+          required: [tipo, detalle]
+          properties:
+            tipo: {type: string}
+            detalle: {type: object}
+          additionalProperties: false
     EventoLineaTiempo:
       type: object
       required: [id, tipoEvento, fecha]
@@ -318,6 +361,16 @@ components:
         correlationId: {type: string}
         detalles: {type: array, items: {type: string}}
   responses:
+    NoAutenticado:
+      description: Token ausente, inválido o vencido
+      content:
+        application/json:
+          schema: {$ref: '#/components/schemas/Error'}
+    Prohibido:
+      description: El rol autenticado no puede ejecutar la operación
+      content:
+        application/json:
+          schema: {$ref: '#/components/schemas/Error'}
     NoEncontrado:
       description: Recurso no encontrado o no visible para el rol
       content:
