@@ -37,3 +37,14 @@
 4. La eliminación o anonimización futura requiere una decisión separada y revisión normativa; no forma parte del alcance aprobado de DM-05.
 
 Los incrementos afectados conservan estas condiciones en su Definition of Ready.
+
+## Compromiso aprobado
+
+| Incremento | Estimación | Compromiso |
+|---|---:|---|
+| S1-BE-01 | 8 puntos | Incluido |
+| S1-BE-02 | 5 puntos | Incluido |
+| S1-BE-03 | 5 puntos | Incluido |
+| **Total** | **18 puntos** | **Sprint 1** |
+
+La trazabilidad funcional está completa. El inicio de S1-BE-01 y S1-BE-02 permanece condicionado a resolver sus dos decisiones de Definition of Ready.
