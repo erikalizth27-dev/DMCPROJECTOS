@@ -1,3 +1,4 @@
+from dataclasses import replace
 from datetime import date, datetime, timezone
 from decimal import Decimal
 import unittest
@@ -70,9 +71,7 @@ class RegisterClaimServiceTest(unittest.TestCase):
         self.assertEqual(409, caught.exception.status_code)
 
     def test_rejects_unknown_policy(self) -> None:
-        command = RegisterClaimCommand(
-            **{**self.command.__dict__, "numero_poliza": "POL-UNKNOWN"}
-        )
+        command = replace(self.command, numero_poliza="POL-UNKNOWN")
         with self.assertRaisesRegex(ClaimRegistrationError, "póliza elegible"):
             self.service.execute(
                 command,
