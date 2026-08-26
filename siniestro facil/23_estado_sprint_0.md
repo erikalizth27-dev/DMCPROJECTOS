@@ -2,7 +2,7 @@
 
 ## Avance general
 
-**85% completado**.
+**86% completado**.
 
 El porcentaje se calcula sobre los siete frentes definidos en `20_plan_detallado_sprint_0.md`. No incluye CI/CD, observabilidad ni operación GCP, porque fueron retirados expresamente del alcance.
 
@@ -13,19 +13,19 @@ El porcentaje se calcula sobre los siete frentes definidos en `20_plan_detallado
 | 3. Contrato OpenAPI | 90% | OpenAPI válido con 11 rutas, pagos separados, alertas por nivel y matriz endpoint–rol | Completar ejemplos y aprobación contractual final |
 | 4. Datos y migraciones | 100% | 22 tablas desplegadas, constraints probados, datos sintéticos y revisión Alembic `20260825_01` aplicada y validada en Cloud SQL | Fusionar PR #1 y conservar la evidencia como línea base |
 | 5. Seguridad, RBAC y auditoría | 88% | AR-01/02/03 aprobadas; asistencia, separación de pagos y visibilidad de alertas implementadas | Aprobar proveedor de identidad y claims definitivos |
-| 6. Esqueleto backend local | 95% | Contratos y RBAC actualizados; última línea base aprobada fue 30/30 | Ejecutar suite ampliada esperada de 41 pruebas en Cloud Shell |
+| 6. Esqueleto backend local | 100% | Contratos y RBAC actualizados; compilación y suite 41/41 aprobadas en Cloud Shell | Mantener la línea base verde ante nuevos cambios |
 | 7. Refinamiento de Sprint 1 | 75% | Seis incrementos verticales, trazabilidad y propuestas concretas para los cinco vacíos | Aprobar las propuestas y estimar con la capacidad real del equipo |
 
-Promedio ponderado y redondeado: **85%**.
+Promedio ponderado y redondeado: **86%**.
 
 ## Completado
 
 - Plan y alcance de Sprint 0.
 - Arquitectura backend y GCP documentada.
-- Contrato OpenAPI ampliado y validado con 10 operaciones y 12 esquemas.
+- Contrato OpenAPI ampliado y validado con 11 operaciones y 14 esquemas.
 - Contratos Pydantic para siniestros, estados, evidencias, asistencia, presupuestos, alertas y pagos.
-- Cinco pruebas adicionales de validación de contratos aprobadas localmente.
-- Política RBAC ejecutable y nueve pruebas de autorización y separación de funciones.
+- Nueve pruebas de contratos Pydantic aprobadas en Cloud Shell.
+- Política RBAC ejecutable y catorce pruebas de autorización y separación de funciones.
 - Backlog de Sprint 1 refinado en seis incrementos verticales.
 - Matriz de trazabilidad Sprint 1 con cinco vacíos explícitos.
 - Cinco decisiones de modelado propuestas y documentadas para aprobación.
@@ -44,7 +44,8 @@ Promedio ponderado y redondeado: **85%**.
 - Datos sintéticos cargados.
 - Readiness integrado con Cloud SQL y esquema `siniestro_facil`.
 - Prueba positiva de readiness HTTP 200 registrada.
-- Compilación y suite backend completa aprobadas en Cloud Shell: 30/30 pruebas.
+- Línea base anterior de 30/30 pruebas preservada.
+- Nueva suite posterior a AR-01/02/03 aprobada en Cloud Shell: 41/41 pruebas.
 - Dos escenarios negativos de readiness aprobados con HTTP 503.
 - Matriz endpoint–rol creada y AR-01, AR-02 y AR-03 aprobadas.
 - Pagos separados en preparación/autorización y alertas modeladas por nivel de detalle.
@@ -54,7 +55,7 @@ Promedio ponderado y redondeado: **85%**.
 
 1. Fusionar PR #1 o resolver formalmente su dependencia.
 2. Propagar las cinco decisiones ya materializadas al resto de criterios y contratos.
-3. Ejecutar la suite ampliada esperada de 41 pruebas y completar ejemplos OpenAPI.
+3. Completar ejemplos OpenAPI y obtener aprobación contractual final.
 4. Aprobar proveedor de identidad y claims.
 5. Mantener Alembic como mecanismo obligatorio para las próximas migraciones.
 6. Descomponer y estimar las historias de Sprint 1.
