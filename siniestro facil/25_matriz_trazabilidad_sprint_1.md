@@ -27,13 +27,13 @@
 | DM-02 | `siniestro.version` para concurrencia optimista y HTTP 409 | Materializada |
 | DM-03 | `siguientePaso` derivado; no persistido | Materializada |
 | DM-04 | `asignacion_siniestro` e índice de una asignación activa | Materializada |
-| DM-05 | Retención recomendada de auditoría por cinco años | Pendiente de aprobación |
+| DM-05 | Conservar auditoría durante cinco años desde el cierre, sin eliminación automática y con revisión normativa previa a producción | Aprobada |
 
 ## Vacíos funcionales restantes
 
 1. La relación declarada del tercero no demuestra por sí sola que esté autorizado.
 2. La integración real con el sistema de pólizas requiere API o adaptador.
 3. La regla de deduplicación por placa y día sigue siendo provisional.
-4. DM-05 requiere aprobación regulatoria/funcional antes de fijar retención.
+4. La eliminación o anonimización futura requiere una decisión separada y revisión normativa; no forma parte del alcance aprobado de DM-05.
 
 Los incrementos afectados conservan estas condiciones en su Definition of Ready.
