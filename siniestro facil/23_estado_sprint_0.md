@@ -56,6 +56,7 @@ Promedio ponderado y redondeado: **99%**.
 - ID-01 a ID-06 aprobadas y propagadas a configuración, seguridad y OpenAPI.
 - Contrato de claims verificados implementado con once pruebas nuevas.
 - Suite de identidad y backend aprobada en Cloud Shell: 53/53 pruebas.
+- Validación final repetida en Cloud Shell: compilación correcta y 53/53 pruebas aprobadas en 0.51 s.
 - Plan de cierre controlado de la dependencia PR #1 documentado.
 - PR #1 fusionado en `main` mediante squash; dependencia de PR #2 cerrada.
 - DM-01 a DM-05 aprobadas y propagadas a criterios, reglas, seguridad, backlog y trazabilidad.
