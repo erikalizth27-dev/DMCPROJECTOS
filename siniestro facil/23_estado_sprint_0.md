@@ -2,21 +2,21 @@
 
 ## Avance general
 
-**99% completado**.
+**100% completado**.
 
 El porcentaje se calcula sobre los siete frentes definidos en `20_plan_detallado_sprint_0.md`. No incluye CI/CD, observabilidad ni operación GCP, porque fueron retirados expresamente del alcance.
 
 | Frente | Avance | Evidencia | Pendiente principal |
 |---|---:|---|---|
 | 1. Consolidación SDD | 100% | DM-01 a DM-05 aprobadas y propagadas a criterios, reglas, seguridad, backlog y trazabilidad | Aplicar control de cambios a futuras decisiones |
-| 2. Diseño de arquitectura GCP | 85% | Identity Platform para personas e IAM para servicios aprobados; arquitectura completamente GCP | Confirmar regiones y separación de ambientes |
+| 2. Diseño de arquitectura GCP | 100% | Arquitectura objetivo completamente GCP e identidad aprobada; regiones y ambientes quedan diferidos a operación | Aplicar decisiones operativas fuera del alcance de Sprint 0 |
 | 3. Contrato OpenAPI | 100% | OpenAPI 0.2.0-draft aprobado por Product Owner; 11 operaciones, 14 esquemas, 13 ejemplos y 4 pruebas | Aplicar control formal de cambios a futuras versiones |
 | 4. Datos y migraciones | 100% | PR #1 fusionado en main; 22 tablas, constraints, datos sintéticos y Alembic validados | Conservar la evidencia y usar Alembic para cambios futuros |
 | 5. Seguridad, RBAC y auditoría | 100% | RBAC, Identity Platform/IAM, claims mínimos, alcance y controles aprobados | Mantener trazabilidad y denegación por defecto |
 | 6. Esqueleto backend local | 100% | Contrato de claims, configuración y suite completa 53/53 aprobados en Cloud Shell | Mantener la línea base verde |
-| 7. Refinamiento de Sprint 1 | 95% | S1-BE-01, S1-BE-02 y S1-BE-03 comprometidas por 18 puntos; trazabilidad y alcance registrados | Resolver las dos condiciones pendientes de DoR |
+| 7. Refinamiento de Sprint 1 | 100% | S1-BE-01, S1-BE-02 y S1-BE-03 listos y comprometidos por 18 puntos; S1-DEC-01/02 aprobadas | Iniciar Sprint 1 |
 
-Promedio ponderado y redondeado: **99%**.
+Promedio ponderado y redondeado: **100%**.
 
 ## Completado
 
@@ -63,11 +63,11 @@ Promedio ponderado y redondeado: **99%**.
 - DM-05 fija retención de auditoría por cinco años desde el cierre, sin eliminación automática y con revisión normativa previa a producción.
 - Alembic formalizado como política obligatoria para cambios incrementales.
 - Compromiso de Sprint 1 aprobado: S1-BE-01, S1-BE-02 y S1-BE-03 por 18 puntos.
+- S1-DEC-01 y S1-DEC-02 aprobadas; los tres incrementos comprometidos cumplen Definition of Ready.
 
-## Pendiente para llegar a 100%
+## Cierre
 
-1. Aprobar o rechazar el adaptador simulado de pólizas para S1-BE-01.
-2. Aprobar o reemplazar la regla provisional de duplicidad por placa y fecha para S1-BE-02.
+No quedan actividades pendientes dentro del alcance aprobado del Sprint 0. CI/CD, observabilidad, operación GCP, regiones y separación de ambientes permanecen diferidos y no condicionan este cierre.
 
 ## Pull requests relacionados
 
