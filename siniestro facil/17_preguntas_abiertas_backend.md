@@ -7,7 +7,7 @@ Las respuestas propuestas a las siete preguntas iniciales están en `19_decision
 ## Necesarias antes de integrar servicios reales
 
 1. ¿Se aprueba Cloud Run para el backend del piloto o existe una obligación de utilizar GKE?
-2. ¿Se utilizará Identity Platform, Identity-Aware Proxy u otro proveedor compatible para usuarios finales, y qué actores tendrán cuentas propias?
+2. ¿Se aprueba la propuesta ID-01 a ID-06 de `36_propuesta_identidad_claims.md`, basada en Identity Platform para personas e IAM para servicios?
 3. ¿Qué bucket, región y política de retención de Cloud Storage se usarán para evidencias?
 4. ¿Qué proveedores externos se usarán para mensajería, mapas, talleres y pagos, aunque su integración se ejecute desde GCP?
 5. ¿Existen APIs actuales para consultar póliza, cobertura, vehículo y deducible?
