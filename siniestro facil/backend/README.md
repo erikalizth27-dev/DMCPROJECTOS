@@ -57,6 +57,27 @@ python -m compileall -q src tests
 python -m pytest
 ```
 
+## Migraciones con Alembic
+
+Alembic toma la conexión exclusivamente de `DATABASE_URL`. Para inspeccionar el
+estado sin ejecutar cambios:
+
+```bash
+alembic current
+alembic history
+```
+
+La revisión inicial está en
+`alembic/versions/20260825_01_sprint0_modelado.py`. Sólo después de aprobar las
+decisiones de `26_decisiones_modelado_sprint_0.md`, se podrá ejecutar:
+
+```bash
+alembic upgrade head
+```
+
+No ejecutes `alembic downgrade` sobre una base con datos sin respaldo y
+autorización explícita, porque elimina los objetos creados por la revisión.
+
 La conexión con servicios GCP, CI/CD y observabilidad se mantiene diferida según `20_plan_detallado_sprint_0.md`.
 
 ## Validación manual con Cloud SQL Proxy
