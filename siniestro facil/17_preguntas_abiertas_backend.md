@@ -4,10 +4,10 @@
 
 Las respuestas propuestas a las siete preguntas iniciales están en `19_decisiones_recomendadas_piloto.md` y ya fueron propagadas a las especificaciones backend. Permanecen como línea base recomendada hasta que el Product Owner las apruebe explícitamente.
 
-## Necesarias para cerrar la Definition of Ready del Sprint 1
+## Definition of Ready del Sprint 1 — RESUELTA
 
-- **S1-DEC-01:** ¿Se aprueba utilizar un adaptador simulado de pólizas para S1-BE-01 hasta disponer de la API real?
-- **S1-DEC-02:** ¿Se aprueba detectar posibles duplicados por coincidencia de placa y fecha del evento, con revisión humana y sin fusión automática?
+- **S1-DEC-01 APROBADA:** adaptador simulado de pólizas hasta disponer de la API real.
+- **S1-DEC-02 APROBADA:** posibles duplicados por placa y fecha del evento, con revisión humana y sin fusión automática.
 
 ## Necesarias antes de integrar servicios reales
 
@@ -24,6 +24,7 @@ Las respuestas propuestas a las siete preguntas iniciales están en `19_decision
 - AR-02: preparación y autorización de pagos como comandos separados.
 - AR-03: alertas con resumen operativo y detalle restringido.
 - ID-01 a ID-06: Identity Platform, IAM, claims mínimos, alcance en PostgreSQL y controles de validación.
+- S1-DEC-01 y S1-DEC-02: adaptador simulado de pólizas y detección provisional de duplicados.
 
 ## Necesarias antes de producción
 
