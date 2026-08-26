@@ -11,7 +11,13 @@ Las respuestas propuestas a las siete preguntas iniciales están en `19_decision
 3. ¿Qué bucket, región y política de retención de Cloud Storage se usarán para evidencias?
 4. ¿Qué proveedores externos se usarán para mensajería, mapas, talleres y pagos, aunque su integración se ejecute desde GCP?
 5. ¿Existen APIs actuales para consultar póliza, cobertura, vehículo y deducible?
-6. ¿Qué información puede ver cada rol en la vista única del caso?
+6. **RESUELTA PARCIALMENTE:** en alertas, operador/ajustador ven resumen e investigador/supervisor ven detalle. La vista única general conserva definición de campos pendiente.
+
+## Decisiones aprobadas el 25 de agosto de 2026
+
+- AR-01: autorización para solicitar asistencia por alcance.
+- AR-02: preparación y autorización de pagos como comandos separados.
+- AR-03: alertas con resumen operativo y detalle restringido.
 
 ## Necesarias antes de producción
 
