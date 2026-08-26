@@ -78,6 +78,19 @@ alembic upgrade head
 No ejecutes `alembic downgrade` sobre una base con datos sin respaldo y
 autorización explícita, porque elimina los objetos creados por la revisión.
 
+### Ejecución desde Cloud Shell
+
+No basta con tener la conexión en otra terminal: `DATABASE_URL` debe existir en el
+proceso que ejecuta Alembic. El script prepara el proxy y la variable temporalmente:
+
+```bash
+bash scripts/01_migrate_cloudsql.sh
+```
+
+El script valida proyecto, instancia y base; pide escribir `MIGRAR`; solicita la
+contraseña sin mostrarla; ejecuta `alembic upgrade head`; confirma la revisión
+`20260825_01`; y limpia conexión, contraseña y proxy al terminar.
+
 La conexión con servicios GCP, CI/CD y observabilidad se mantiene diferida según `20_plan_detallado_sprint_0.md`.
 
 ## Validación manual con Cloud SQL Proxy
