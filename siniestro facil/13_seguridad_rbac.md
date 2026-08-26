@@ -48,6 +48,7 @@
 - Taller: casos asociados a una orden válida.
 - Investigador de fraude: casos autorizados para investigación.
 - Supervisor: acceso transversal sujeto a auditoría.
+- Los eventos y accesos sensibles se conservan cinco años desde el cierre; no existe eliminación automática y la política se revisa antes de producción.
 
 ## Implementación Sprint 0
 
