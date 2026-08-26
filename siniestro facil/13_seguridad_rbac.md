@@ -7,7 +7,8 @@
 - Un identificador válido no implica autorización para consultar el recurso.
 - Consultas y descargas sensibles registran usuario, fecha, recurso, acción y resultado.
 - Tokens, secretos, documentos completos y evidencia binaria no se escriben en logs.
-- El proveedor de identidad y formato definitivo de claims están `POR CONFIRMAR`.
+- Identity Platform es el proveedor humano aprobado; IAM y cuentas de servicio identifican cargas.
+- Claims aprobados: `sub`, `role`, `actor_type`, `tenant_id`, `auth_time` y claims JWT estándar.
 - La política se implementa independientemente del proveedor de identidad.
 - Toda autorización evalúa dos condiciones: permiso del rol y alcance sobre el recurso.
 
@@ -33,7 +34,7 @@
 
 - Autenticación obligatoria salvo endpoints técnicos expresamente públicos.
 - Separación entre autorización para recomendar y autorización para decidir.
-- Reautenticación o control reforzado para pagos y cambios de política: `POR CONFIRMAR`.
+- `auth_time` habilita control de autenticación reciente para pagos y cambios sensibles; el umbral operativo se definirá antes de producción.
 - Rate limiting y bloqueo por abuso: valores `POR CONFIRMAR`.
 - La persona que prepara una solicitud de pago no puede autorizarla.
 - Asistencia: asegurado en caso propio; operador/ajustador en caso asignado; supervisor transversal.
@@ -62,7 +63,7 @@ La política ejecutable se encuentra en
 - confirmación de entrega;
 - auditoría y política antifraude.
 
-Las decisiones AR-01, AR-02 y AR-03 fueron aprobadas el 25 de agosto de 2026.
+Las decisiones AR-01, AR-02 y AR-03, e ID-01 a ID-06, fueron aprobadas el 25 de agosto de 2026.
 
 Las pruebas verifican acceso propio, acceso fuera de alcance, prohibición de
 creación para taller, revisión de alertas, autorización exclusiva del supervisor
