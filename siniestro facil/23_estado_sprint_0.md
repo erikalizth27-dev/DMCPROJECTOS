@@ -2,7 +2,7 @@
 
 ## Avance general
 
-**78% completado**.
+**79% completado**.
 
 El porcentaje se calcula sobre los siete frentes definidos en `20_plan_detallado_sprint_0.md`. No incluye CI/CD, observabilidad ni operación GCP, porque fueron retirados expresamente del alcance.
 
@@ -13,10 +13,10 @@ El porcentaje se calcula sobre los siete frentes definidos en `20_plan_detallado
 | 3. Contrato OpenAPI | 65% | OpenAPI 3.1 válido, 10 rutas, 10 operaciones, 12 esquemas, cuerpos y paginación inicial | Completar ejemplos, respuestas detalladas y matriz endpoint–rol |
 | 4. Datos y migraciones | 100% | 22 tablas desplegadas, constraints probados, datos sintéticos y revisión Alembic `20260825_01` aplicada y validada en Cloud SQL | Fusionar PR #1 y conservar la evidencia como línea base |
 | 5. Seguridad, RBAC y auditoría | 72% | Política ejecutable por rol y alcance, separación de pagos y 9 pruebas específicas | Aprobar proveedor de identidad, claims y detalle visible por rol |
-| 6. Esqueleto backend local | 92% | Python/FastAPI, configuración, dominio, contratos, RBAC, readiness y estructura Alembic | Ejecutar suite completa y validaciones negativas en Cloud Shell |
+| 6. Esqueleto backend local | 100% | Python/FastAPI, configuración, dominio, contratos, RBAC, readiness, Alembic y suite 30/30 aprobada en Cloud Shell | Registrar los dos escenarios HTTP negativos de readiness |
 | 7. Refinamiento de Sprint 1 | 75% | Seis incrementos verticales, trazabilidad y propuestas concretas para los cinco vacíos | Aprobar las propuestas y estimar con la capacidad real del equipo |
 
-Promedio ponderado y redondeado: **78%**.
+Promedio ponderado y redondeado: **79%**.
 
 ## Completado
 
@@ -44,18 +44,18 @@ Promedio ponderado y redondeado: **78%**.
 - Datos sintéticos cargados.
 - Readiness integrado con Cloud SQL y esquema `siniestro_facil`.
 - Prueba positiva de readiness HTTP 200 registrada.
+- Compilación y suite backend completa aprobadas en Cloud Shell: 30/30 pruebas.
 
 ## Pendiente para llegar a 100%
 
-1. Ejecutar y registrar la suite backend completa actualizada en Cloud Shell.
-2. Ejecutar y registrar los dos casos negativos de readiness.
-3. Fusionar PR #1 o resolver formalmente su dependencia.
-4. Propagar las cinco decisiones ya materializadas al resto de criterios y contratos.
-5. Completar y aprobar OpenAPI.
-6. Aprobar RBAC e identidad.
-7. Mantener Alembic como mecanismo obligatorio para las próximas migraciones.
-8. Descomponer y estimar las historias de Sprint 1.
-9. Verificar la Definition of Ready de cada historia comprometida.
+1. Ejecutar y registrar los dos casos negativos HTTP de readiness.
+2. Fusionar PR #1 o resolver formalmente su dependencia.
+3. Propagar las cinco decisiones ya materializadas al resto de criterios y contratos.
+4. Completar y aprobar OpenAPI.
+5. Aprobar RBAC e identidad.
+6. Mantener Alembic como mecanismo obligatorio para las próximas migraciones.
+7. Descomponer y estimar las historias de Sprint 1.
+8. Verificar la Definition of Ready de cada historia comprometida.
 
 ## Pull requests relacionados
 
