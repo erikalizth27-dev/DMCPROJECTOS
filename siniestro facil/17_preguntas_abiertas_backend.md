@@ -7,7 +7,7 @@ Las respuestas propuestas a las siete preguntas iniciales están en `19_decision
 ## Necesarias antes de integrar servicios reales
 
 1. ¿Se aprueba Cloud Run para el backend del piloto o existe una obligación de utilizar GKE?
-2. ¿Se aprueba la propuesta ID-01 a ID-06 de `36_propuesta_identidad_claims.md`, basada en Identity Platform para personas e IAM para servicios?
+2. **RESUELTA:** ID-01 a ID-06 aprobadas; Identity Platform para personas, IAM para servicios y claims mínimos definidos.
 3. ¿Qué bucket, región y política de retención de Cloud Storage se usarán para evidencias?
 4. ¿Qué proveedores externos se usarán para mensajería, mapas, talleres y pagos, aunque su integración se ejecute desde GCP?
 5. ¿Existen APIs actuales para consultar póliza, cobertura, vehículo y deducible?
@@ -18,6 +18,7 @@ Las respuestas propuestas a las siete preguntas iniciales están en `19_decision
 - AR-01: autorización para solicitar asistencia por alcance.
 - AR-02: preparación y autorización de pagos como comandos separados.
 - AR-03: alertas con resumen operativo y detalle restringido.
+- ID-01 a ID-06: Identity Platform, IAM, claims mínimos, alcance en PostgreSQL y controles de validación.
 
 ## Necesarias antes de producción
 
