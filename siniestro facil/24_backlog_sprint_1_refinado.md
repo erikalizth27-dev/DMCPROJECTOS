@@ -7,10 +7,10 @@ Permitir registrar un siniestro elegible de forma idempotente, detectar posibles
 ## Duración
 
 - 2 semanas.
-- La capacidad definitiva se confirma en la planificación con el equipo.
-- Los tamaños son relativos y no equivalen todavía a días ni puntos de velocidad.
+- Compromiso aprobado: 18 puntos para S1-BE-01, S1-BE-02 y S1-BE-03.
+- Los puntos constituyen la línea base relativa del Sprint 1; no equivalen directamente a días.
 
-## Alcance comprometible
+## Alcance comprometido — 18 puntos
 
 ### S1-BE-01 — Registrar siniestro con datos mínimos
 
@@ -18,7 +18,7 @@ Permitir registrar un siniestro elegible de forma idempotente, detectar posibles
 |---|---|
 | Historias | HU-01, HU-03, HU-08 |
 | Prioridad | Obligatoria |
-| Tamaño | L |
+| Estimación aprobada | 8 puntos |
 | Endpoint | `POST /api/v1/siniestros` |
 | Tablas | asegurado, reportante, poliza, vehiculo, siniestro, evento_linea_tiempo |
 | Dependencias | Modelo físico disponible; consulta de pólizas real o adaptador simulado |
@@ -49,7 +49,7 @@ Pruebas mínimas:
 |---|---|
 | Historia | HU-10 |
 | Prioridad | Obligatoria |
-| Tamaño | M |
+| Estimación aprobada | 5 puntos |
 | Endpoint | `POST /api/v1/siniestros` |
 | Tablas | siniestro, vehiculo, poliza |
 | Regla provisional | Misma placa y mismo día del evento |
@@ -75,7 +75,7 @@ Pruebas mínimas:
 |---|---|
 | Historias | HU-06, HU-28 |
 | Prioridad | Obligatoria |
-| Tamaño | M |
+| Estimación aprobada | 5 puntos |
 | Endpoint | `GET /api/v1/siniestros/{siniestroId}` |
 | Tablas | siniestro, poliza, vehiculo, cobertura, reportante |
 | Dependencia | Principal con claims ID-01 a ID-06; adaptador criptográfico temporal |
@@ -118,7 +118,7 @@ Actividades:
 
 Puede desarrollarse la persistencia y validación estructural; no debe afirmar que la relación declarada demuestra autorización hasta definir ese mecanismo.
 
-## Alcance adicional si existe capacidad
+## Fuera del compromiso inicial
 
 ### S1-BE-05 — Transición inicial de estado
 
@@ -135,7 +135,7 @@ Puede desarrollarse la persistencia y validación estructural; no debe afirmar q
 - Registra actor, acción, fecha, recurso, resultado y `correlationId`.
 - No registra tokens, documentos completos, contraseñas ni evidencia binaria.
 
-## Orden recomendado
+## Orden de implementación aprobado
 
 1. S1-BE-01.
 2. S1-BE-02.
@@ -158,3 +158,7 @@ Puede desarrollarse la persistencia y validación estructural; no debe afirmar q
 
 El sprint se considera exitoso si S1-BE-01, S1-BE-02 y S1-BE-03 cumplen sus criterios, las pruebas pasan contra PostgreSQL y no se amplía alcance con decisiones todavía no aprobadas.
 
+
+## Registro de aprobación
+
+El compromiso de S1-BE-01, S1-BE-02 y S1-BE-03 por 18 puntos fue aprobado el 25 de agosto de 2026. La aprobación no resuelve todavía el adaptador de pólizas ni la regla provisional de duplicidad; ambos permanecen como condiciones de Definition of Ready.
