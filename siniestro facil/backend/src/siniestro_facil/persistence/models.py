@@ -3,7 +3,7 @@ from __future__ import annotations
 from datetime import date, datetime
 from decimal import Decimal
 
-from sqlalchemy import BigInteger, Boolean, Date, DateTime, ForeignKey, Numeric, String, Text
+from sqlalchemy import BigInteger, Boolean, Date, DateTime, ForeignKey, JSON, Numeric, String, Text
 from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column
 
 
@@ -111,4 +111,4 @@ class EventoLineaTiempo(Base):
     id_usuario: Mapped[int | None] = mapped_column(BigInteger)
     tipo_evento: Mapped[str] = mapped_column(String(50), nullable=False)
     fecha: Mapped[datetime] = mapped_column(DateTime(timezone=True), nullable=False)
-    detalle: Mapped[dict[str, object] | None]
+    detalle: Mapped[dict[str, object] | None] = mapped_column(JSON)
