@@ -2,7 +2,7 @@
 
 ## Avance general
 
-**87% completado**.
+**88% completado**.
 
 El porcentaje se calcula sobre los siete frentes definidos en `20_plan_detallado_sprint_0.md`. No incluye CI/CD, observabilidad ni operación GCP, porque fueron retirados expresamente del alcance.
 
@@ -10,13 +10,13 @@ El porcentaje se calcula sobre los siete frentes definidos en `20_plan_detallado
 |---|---:|---|---|
 | 1. Consolidación SDD | 80% | SPEC backend, decisiones de modelado y AR-01/02/03 aprobadas y propagadas | Completar propagación funcional restante y aprobación final del Product Owner |
 | 2. Diseño de arquitectura GCP | 70% | Arquitectura, topología y servicios documentados | Confirmar Cloud Run, identidad, regiones y separación de ambientes |
-| 3. Contrato OpenAPI | 98% | OpenAPI 0.2.0-draft válido con 11 operaciones, 14 esquemas, pagos separados y 13 ejemplos sintéticos | Ejecutar prueba 42 y obtener aprobación contractual final |
+| 3. Contrato OpenAPI | 99% | OpenAPI 0.2.0-draft válido, 13 ejemplos y cuatro pruebas OpenAPI aprobadas en Cloud Shell | Obtener aprobación contractual final del Product Owner |
 | 4. Datos y migraciones | 100% | 22 tablas desplegadas, constraints probados, datos sintéticos y revisión Alembic `20260825_01` aplicada y validada en Cloud SQL | Fusionar PR #1 y conservar la evidencia como línea base |
 | 5. Seguridad, RBAC y auditoría | 88% | AR-01/02/03 aprobadas; asistencia, separación de pagos y visibilidad de alertas implementadas | Aprobar proveedor de identidad y claims definitivos |
-| 6. Esqueleto backend local | 98% | Línea base 41/41 aprobada y nueva prueba OpenAPI agregada | Ejecutar suite ampliada esperada de 42 pruebas |
+| 6. Esqueleto backend local | 100% | Compilación y suite completa 42/42 aprobadas en Cloud Shell | Mantener la línea base verde ante nuevos cambios |
 | 7. Refinamiento de Sprint 1 | 75% | Seis incrementos verticales, trazabilidad y propuestas concretas para los cinco vacíos | Aprobar las propuestas y estimar con la capacidad real del equipo |
 
-Promedio ponderado y redondeado: **87%**.
+Promedio ponderado y redondeado: **88%**.
 
 ## Completado
 
@@ -51,12 +51,13 @@ Promedio ponderado y redondeado: **87%**.
 - Pagos separados en preparación/autorización y alertas modeladas por nivel de detalle.
 - OpenAPI validado con 11 rutas, 11 operaciones únicas y 14 esquemas.
 - Ocho ejemplos de comandos y cinco ejemplos de error agregados sin datos reales.
+- Suite con ejemplos OpenAPI aprobada en Cloud Shell: 42/42 pruebas.
 
 ## Pendiente para llegar a 100%
 
 1. Fusionar PR #1 o resolver formalmente su dependencia.
 2. Propagar las cinco decisiones ya materializadas al resto de criterios y contratos.
-3. Ejecutar la suite esperada de 42 pruebas y obtener aprobación contractual final de OpenAPI.
+3. Obtener aprobación contractual final de OpenAPI.
 4. Aprobar proveedor de identidad y claims.
 5. Mantener Alembic como mecanismo obligatorio para las próximas migraciones.
 6. Descomponer y estimar las historias de Sprint 1.
