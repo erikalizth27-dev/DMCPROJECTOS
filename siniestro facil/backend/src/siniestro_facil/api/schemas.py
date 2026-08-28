@@ -50,6 +50,20 @@ class CambiarEstadoResponse(ApiModel):
     version: int = Field(ge=1)
 
 
+class VerificarCoberturaRequest(ApiModel):
+    version: int = Field(ge=0)
+
+
+class VerificarCoberturaResponse(ApiModel):
+    siniestro_id: int = Field(alias="siniestroId")
+    cobertura_activa: bool = Field(alias="coberturaActiva")
+    deducible: Decimal
+    estado_validacion: str = Field(alias="estadoValidacion")
+    estado_actual: EstadoSiniestro = Field(alias="estadoActual")
+    version: int = Field(ge=1)
+    requiere_revision_humana: bool = Field(alias="requiereRevisionHumana")
+
+
 class RegistrarEvidenciaRequest(ApiModel):
     tipo_evidencia: str = Field(alias="tipoEvidencia", min_length=1, max_length=50)
     contenido_original_uri: HttpUrl = Field(alias="contenidoOriginalUri")
