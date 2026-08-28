@@ -18,6 +18,11 @@ async def business_error_handler(request: Request, exc: BusinessError) -> JSONRe
     correlation_id = getattr(request.state, "correlation_id", str(uuid4()))
     return JSONResponse(
         status_code=exc.status_code,
-        content={"codigo": exc.code, "mensaje": exc.message, "correlationId": correlation_id},
+        content={
+            "codigo": exc.code,
+            "mensaje": exc.message,
+            "correlationId": correlation_id,
+            "detalles": [],
+        },
     )
 

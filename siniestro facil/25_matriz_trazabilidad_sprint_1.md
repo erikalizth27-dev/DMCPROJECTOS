@@ -48,3 +48,12 @@ Los incrementos afectados conservan estas condiciones en su Definition of Ready.
 | **Total** | **18 puntos** | **Sprint 1** |
 
 La trazabilidad funcional está completa. S1-DEC-01 y S1-DEC-02 están aprobadas; S1-BE-01, S1-BE-02 y S1-BE-03 cumplen la Definition of Ready.
+
+## Verificación de cierre
+
+| Incremento | Estado | Evidencia |
+|---|---|---|
+| S1-BE-01 | Completado | `50_evidencia_s1_be_01_cloudshell.md` |
+| S1-BE-02 | Completado | `51_evidencia_s1_be_02_cloudsql.md` |
+| S1-BE-03 | Completado | `52_evidencia_s1_be_03_cloudsql.md` |
+| Sprint 1 | Validado | `53_evidencia_validacion_integral_sprint_1.md` |
