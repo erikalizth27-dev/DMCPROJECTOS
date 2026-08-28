@@ -6,7 +6,9 @@
 - Rama: `agent/sprint-2-backend`
 - Punto de partida: `main` después del cierre de Sprint 1 (`bfc1356`)
 - Duración de referencia: 2 semanas
-- Estado: planificación iniciada; Definition of Ready parcial
+- Estado: línea base validada; Definition of Ready parcial
+- Validación inicial: **90/90 pruebas**, Alembic `20260828_02 (head)`
+- Evidencia: `57_evidencia_linea_base_sprint_2_cloudshell.md`
 
 ## Objetivo
 
@@ -56,7 +58,7 @@ Entregar cobertura, transiciones de estado y gestión de evidencia inmutable, ma
 
 ## Línea base de calidad
 
-La última validación integral de Sprint 1 aprobó **90/90 pruebas**. Sprint 2 debe preservar esas pruebas y añadir pruebas unitarias, API, persistencia e integración para cada incremento.
+La validación inicial del Sprint 2 aprobó **90/90 pruebas** y confirmó Alembic en `20260828_02 (head)`. Sprint 2 debe preservar esas pruebas y añadir pruebas unitarias, API, persistencia e integración para cada incremento.
 
 ## Restricciones
 
