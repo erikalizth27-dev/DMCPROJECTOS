@@ -101,8 +101,11 @@ class ClaimsApiTest(unittest.TestCase):
 
         self.assertEqual(201, first.status_code)
         self.assertEqual(409, response.status_code)
-        self.assertEqual("POSSIBLE-DUPLICATE", response.json()["codigo"])
-        self.assertNotIn(str(first.json()["id"]), response.text)
+        body = response.json()
+        self.assertEqual("POSSIBLE-DUPLICATE", body["codigo"])
+        self.assertEqual([], body["detalles"])
+        self.assertNotIn("id", body)
+        self.assertNotIn("idSiniestro", body)
 
 
 if __name__ == "__main__":
