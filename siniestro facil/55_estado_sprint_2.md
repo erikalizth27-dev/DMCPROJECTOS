@@ -2,7 +2,7 @@
 
 ## Estado general
 
-- Avance: **50% provisional; pendiente de validación en Cloud Shell**
+- Avance: **50% confirmado**
 - Rama: `agent/sprint-2-backend`
 - Punto de partida: `main` después del cierre de Sprint 1 (`bfc1356`)
 - Duración de referencia: 2 semanas
@@ -70,7 +70,8 @@ Entregar cobertura, transiciones de estado y gestión de evidencia inmutable, ma
 - Adaptador simulado reutilizado sin integración externa.
 - Deducible, versión y resultado de validación incluidos.
 - Cobertura no activa deriva a revisión humana, nunca a rechazo automático.
-- Seis pruebas unitarias añadidas; pendiente ejecutar 104 pruebas.
+- Seis pruebas unitarias añadidas; **104/104 pruebas aprobadas**.
+- Evidencia: `61_evidencia_primera_entrega_s2_be_01.md`.
 - Persistencia PostgreSQL, auditoría y endpoint quedan en la siguiente entrega.
 
 ## Decisiones pendientes para Definition of Ready
