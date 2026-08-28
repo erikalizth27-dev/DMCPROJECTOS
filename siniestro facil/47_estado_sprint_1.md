@@ -2,7 +2,7 @@
 
 ## Avance general
 
-**85% completado**.
+**100% completado**.
 
 El Sprint 1 tiene una duración planificada de dos semanas y un compromiso aprobado de 18 puntos.
 
@@ -13,8 +13,8 @@ El Sprint 1 tiene una duración planificada de dos semanas y un compromiso aprob
 | S1-BE-01 — Registrar siniestro | 30% | Completado; persistencia y auditoría atómicas validadas | 45% |
 | S1-BE-02 — Detectar posibles duplicados | 20% | Completado; placa y día validados en Cloud SQL | 65% |
 | S1-BE-03 — Consultar vista inicial | 20% | Completado; alcance y auditoría validados | 85% |
-| Validación integrada con PostgreSQL | 10% | Pendiente | 85% |
-| Evidencias, documentación y cierre | 5% | Pendiente | 85% |
+| Validación integrada con PostgreSQL | 10% | Completada; validación integral OK | 95% |
+| Evidencias, documentación y cierre | 5% | Completado; acta y PR preparados | 100% |
 
 ## Compromiso
 
@@ -88,7 +88,11 @@ S1-BE-02 queda completado y el avance general alcanza 65%.
 
 S1-BE-03 queda completado y el avance general alcanza 85%.
 
-## Próximo incremento
+## Cierre
 
-Ejecutar la validación integral de Sprint 1 contra PostgreSQL, consolidar
-trazabilidad y evidencias, crear el acta de cierre y preparar el Pull Request.
+- Validación integral: 90/90 pruebas aprobadas en 1.12 s.
+- Resultado del script: `SPRINT 1 VALIDACIÓN INTEGRAL: OK`.
+- Migración final: `20260828_02 (head)`.
+- S1-BE-01, S1-BE-02 y S1-BE-03: completados.
+- Evidencia final y acta de cierre registradas.
+- Sprint 1 cerrado al 100% en su rama; fusión a `main` pendiente de autorización.
