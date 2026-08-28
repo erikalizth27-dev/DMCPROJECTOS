@@ -2,11 +2,11 @@
 
 ## Estado general
 
-- Avance: **35% provisional; pendiente de validación en Cloud Shell**
+- Avance: **40% confirmado**
 - Rama: `agent/sprint-2-backend`
 - Punto de partida: `main` después del cierre de Sprint 1 (`bfc1356`)
 - Duración de referencia: 2 semanas
-- Estado: S2-BE-02 implementado; ocho pruebas nuevas pendientes de ejecución en Cloud Shell
+- Estado: S2-BE-02 validado automáticamente; prueba controlada PostgreSQL pendiente
 - Validación inicial: **90/90 pruebas**, Alembic `20260828_02 (head)`
 - Evidencia: `57_evidencia_linea_base_sprint_2_cloudshell.md`
 
@@ -57,7 +57,9 @@ Entregar cobertura, transiciones de estado y gestión de evidencia inmutable, ma
 - Endpoint `POST /api/v1/siniestros/{siniestroId}/estado` implementado.
 - RBAC, alcance privado, versión esperada y auditoría atómica incorporados.
 - Ocho pruebas unitarias y API añadidas.
-- Pendiente: validar 98 pruebas y ejecutar escenario controlado contra PostgreSQL.
+- Validación automática: **98/98 pruebas aprobadas**.
+- Evidencia: `58_evidencia_pruebas_s2_be_02_cloudshell.md`.
+- Pendiente: ejecutar escenario controlado contra PostgreSQL.
 
 ## Decisiones pendientes para Definition of Ready
 
