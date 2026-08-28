@@ -65,7 +65,7 @@ Entregar cobertura, transiciones de estado y gestión de evidencia inmutable, ma
 
 ## Decisiones pendientes para Definition of Ready
 
-- **S2-DEC-01:** confirmar si continúa el adaptador simulado de pólizas durante Sprint 2 o proporcionar la API real.
+- **S2-DEC-01 — APROBADA:** continuar temporalmente con el adaptador simulado de pólizas durante Sprint 2. Evidencia: `60_registro_aprobacion_s2_dec_01.md`.
 - **S2-DEC-02:** aprobar bucket, región y política de retención de Cloud Storage para evidencias.
 
 ## Línea base de calidad
