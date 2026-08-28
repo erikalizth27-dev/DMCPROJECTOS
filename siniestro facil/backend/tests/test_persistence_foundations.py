@@ -20,6 +20,10 @@ class PersistenceModelsTest(unittest.TestCase):
             "siniestro",
             "evento_linea_tiempo",
             "solicitud_idempotente",
+            "usuario_interno",
+            "proveedor",
+            "asignacion_siniestro",
+            "identidad_actor",
         }
         mapped = {
             table.name

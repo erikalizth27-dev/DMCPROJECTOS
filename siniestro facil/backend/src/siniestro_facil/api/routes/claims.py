@@ -8,6 +8,10 @@ from fastapi import APIRouter, Depends, Header, status
 
 from siniestro_facil.api.errors import BusinessError
 from siniestro_facil.api.schemas import CrearSiniestroRequest, SiniestroResponse
+from siniestro_facil.application.get_claim_view import (
+    ClaimNotVisible,
+    GetClaimViewService,
+)
 from siniestro_facil.application.register_claim import (
     ClaimRegistrationError,
     InMemoryClaimRepository,
@@ -16,15 +20,29 @@ from siniestro_facil.application.register_claim import (
 )
 from siniestro_facil.config import Settings
 from siniestro_facil.db import create_database_engine
+from siniestro_facil.domain.identity import AuthenticatedPrincipal
 from siniestro_facil.infrastructure.policy_adapter import (
     InMemoryPolicyAdapter,
     PolicySnapshot,
 )
 from siniestro_facil.persistence.claim_repository import PostgreSQLClaimRepository
+from siniestro_facil.persistence.claim_view_repository import (
+    PostgreSQLClaimViewRepository,
+)
 from siniestro_facil.persistence.session import create_session_factory
 
 
 router = APIRouter(prefix="/api/v1/siniestros", tags=["Siniestros"])
+
+
+def get_authenticated_principal() -> AuthenticatedPrincipal:
+    # Denegación por defecto hasta que el adaptador criptográfico entregue
+    # claims ya verificados. Las pruebas sustituyen esta dependencia.
+    raise BusinessError(
+        "AUTHENTICATION-REQUIRED",
+        "Autenticación requerida",
+        401,
+    )
 
 
 @lru_cache(maxsize=1)
@@ -58,6 +76,20 @@ def get_register_claim_service() -> RegisterClaimService:
     return RegisterClaimService(policies, repository)
 
 
+@lru_cache(maxsize=1)
+def get_claim_view_service() -> GetClaimViewService:
+    settings = Settings.from_environment()
+    if not settings.database_url:
+        raise BusinessError(
+            "SERVICE-NOT-READY",
+            "Servicio de consulta no disponible",
+            503,
+        )
+    engine = create_database_engine(settings)
+    repository = PostgreSQLClaimViewRepository(create_session_factory(engine))
+    return GetClaimViewService(repository)
+
+
 @router.post("", response_model=SiniestroResponse, status_code=status.HTTP_201_CREATED)
 def create_claim(
     request: CrearSiniestroRequest,
@@ -81,6 +113,30 @@ def create_claim(
         )
     except ClaimRegistrationError as exc:
         raise BusinessError(exc.code, exc.message, exc.status_code) from exc
+
+    return SiniestroResponse(
+        id=result.id,
+        estadoActual=result.estado_actual,
+        fechaEvento=result.fecha_evento,
+        tipoEvento=result.tipo_evento,
+        siguientePaso=result.siguiente_paso,
+    )
+
+
+@router.get("/{siniestro_id}", response_model=SiniestroResponse)
+def get_claim(
+    siniestro_id: int,
+    principal: AuthenticatedPrincipal = Depends(get_authenticated_principal),
+    service: GetClaimViewService = Depends(get_claim_view_service),
+) -> SiniestroResponse:
+    try:
+        result = service.execute(siniestro_id, principal)
+    except ClaimNotVisible as exc:
+        raise BusinessError(
+            "CLAIM-NOT-FOUND",
+            "Siniestro no encontrado",
+            404,
+        ) from exc
 
     return SiniestroResponse(
         id=result.id,

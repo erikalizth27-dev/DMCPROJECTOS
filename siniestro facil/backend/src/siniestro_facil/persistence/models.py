@@ -3,7 +3,7 @@ from __future__ import annotations
 from datetime import date, datetime
 from decimal import Decimal
 
-from sqlalchemy import BigInteger, Boolean, Date, DateTime, ForeignKey, JSON, Numeric, String, Text
+from sqlalchemy import BigInteger, Boolean, CheckConstraint, Date, DateTime, ForeignKey, JSON, Numeric, String, Text
 from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column
 
 
@@ -127,3 +127,60 @@ class SolicitudIdempotente(Base):
     )
     respuesta: Mapped[dict[str, object]] = mapped_column(JSON, nullable=False)
     creado_en: Mapped[datetime] = mapped_column(DateTime(timezone=True), nullable=False)
+
+
+class UsuarioInterno(Base):
+    __tablename__ = "usuario_interno"
+    __table_args__ = {"schema": SCHEMA}
+
+    id_usuario: Mapped[int] = mapped_column(BigInteger, primary_key=True)
+    rol: Mapped[str] = mapped_column(String(30), nullable=False)
+
+
+class Proveedor(Base):
+    __tablename__ = "proveedor"
+    __table_args__ = {"schema": SCHEMA}
+
+    id_proveedor: Mapped[int] = mapped_column(BigInteger, primary_key=True)
+    tipo_proveedor: Mapped[str] = mapped_column(String(30), nullable=False)
+    nombre: Mapped[str] = mapped_column(String(200), nullable=False)
+
+
+class AsignacionSiniestro(Base):
+    __tablename__ = "asignacion_siniestro"
+    __table_args__ = {"schema": SCHEMA}
+
+    id_asignacion: Mapped[int] = mapped_column(BigInteger, primary_key=True)
+    id_siniestro: Mapped[int] = mapped_column(
+        ForeignKey(f"{SCHEMA}.siniestro.id_siniestro"), nullable=False
+    )
+    id_usuario: Mapped[int] = mapped_column(
+        ForeignKey(f"{SCHEMA}.usuario_interno.id_usuario"), nullable=False
+    )
+    motivo: Mapped[str] = mapped_column(Text, nullable=False)
+    asignado_en: Mapped[datetime] = mapped_column(DateTime(timezone=True), nullable=False)
+    finalizado_en: Mapped[datetime | None] = mapped_column(DateTime(timezone=True))
+
+
+class IdentidadActor(Base):
+    __tablename__ = "identidad_actor"
+    __table_args__ = (
+        CheckConstraint(
+            "num_nonnulls(id_asegurado, id_usuario, id_proveedor) = 1",
+            name="chk_identidad_actor_un_destino",
+        ),
+        {"schema": SCHEMA},
+    )
+
+    subject: Mapped[str] = mapped_column(String(255), primary_key=True)
+    tenant_id: Mapped[str] = mapped_column(String(120), primary_key=True)
+    actor_type: Mapped[str] = mapped_column(String(20), nullable=False)
+    id_asegurado: Mapped[int | None] = mapped_column(
+        ForeignKey(f"{SCHEMA}.asegurado.id_asegurado")
+    )
+    id_usuario: Mapped[int | None] = mapped_column(
+        ForeignKey(f"{SCHEMA}.usuario_interno.id_usuario")
+    )
+    id_proveedor: Mapped[int | None] = mapped_column(
+        ForeignKey(f"{SCHEMA}.proveedor.id_proveedor")
+    )
