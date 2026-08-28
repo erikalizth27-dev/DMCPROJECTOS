@@ -12,6 +12,8 @@ from siniestro_facil.api.schemas import (
     CambiarEstadoResponse,
     CrearSiniestroRequest,
     SiniestroResponse,
+    VerificarCoberturaRequest,
+    VerificarCoberturaResponse,
 )
 from siniestro_facil.application.change_claim_state import (
     ChangeClaimStateCommand,
@@ -21,6 +23,11 @@ from siniestro_facil.application.change_claim_state import (
 from siniestro_facil.application.get_claim_view import (
     ClaimNotVisible,
     GetClaimViewService,
+)
+from siniestro_facil.application.verify_coverage import (
+    CoverageVerificationError,
+    VerifyCoverageCommand,
+    VerifyCoverageService,
 )
 from siniestro_facil.application.register_claim import (
     ClaimRegistrationError,
@@ -39,6 +46,9 @@ from siniestro_facil.infrastructure.policy_adapter import (
 from siniestro_facil.persistence.claim_repository import PostgreSQLClaimRepository
 from siniestro_facil.persistence.claim_state_repository import (
     PostgreSQLClaimStateRepository,
+)
+from siniestro_facil.persistence.coverage_repository import (
+    PostgreSQLCoverageRepository,
 )
 from siniestro_facil.persistence.claim_view_repository import (
     PostgreSQLClaimViewRepository,
@@ -118,6 +128,40 @@ def get_change_claim_state_service() -> ChangeClaimStateService:
     return ChangeClaimStateService(repository)
 
 
+@lru_cache(maxsize=1)
+def get_verify_coverage_service() -> VerifyCoverageService:
+    settings = Settings.from_environment()
+    if not settings.database_url:
+        raise BusinessError(
+            "SERVICE-NOT-READY",
+            "Servicio de cobertura no disponible",
+            503,
+        )
+    policies = InMemoryPolicyAdapter(
+        [
+            PolicySnapshot(
+                numero_poliza="POL-SYN-001",
+                numero_documento="DOC-SYN-001",
+                placa="SYN0001",
+                vigente_desde=date(2026, 1, 1),
+                vigente_hasta=date(2026, 12, 31),
+                deducible=Decimal("500.00"),
+            ),
+            PolicySnapshot(
+                numero_poliza="SYN-20260820-POL-0001",
+                numero_documento="SYN-20260820-0001",
+                placa="SYN0001",
+                vigente_desde=date(2026, 1, 1),
+                vigente_hasta=date(2026, 12, 31),
+                deducible=Decimal("525.00"),
+            ),
+        ]
+    )
+    engine = create_database_engine(settings)
+    repository = PostgreSQLCoverageRepository(create_session_factory(engine))
+    return VerifyCoverageService(policies, repository)
+
+
 @router.post("", response_model=SiniestroResponse, status_code=status.HTTP_201_CREATED)
 def create_claim(
     request: CrearSiniestroRequest,
@@ -148,6 +192,38 @@ def create_claim(
         fechaEvento=result.fecha_evento,
         tipoEvento=result.tipo_evento,
         siguientePaso=result.siguiente_paso,
+    )
+
+
+@router.post(
+    "/{siniestro_id}/cobertura/verificacion",
+    response_model=VerificarCoberturaResponse,
+)
+def verify_claim_coverage(
+    siniestro_id: int,
+    request: VerificarCoberturaRequest,
+    principal: AuthenticatedPrincipal = Depends(get_authenticated_principal),
+    service: VerifyCoverageService = Depends(get_verify_coverage_service),
+) -> VerificarCoberturaResponse:
+    try:
+        result = service.execute(
+            VerifyCoverageCommand(
+                claim_id=siniestro_id,
+                expected_version=request.version,
+            ),
+            principal,
+        )
+    except CoverageVerificationError as exc:
+        raise BusinessError(exc.code, exc.message, exc.status_code) from exc
+
+    return VerificarCoberturaResponse(
+        siniestroId=result.claim_id,
+        coberturaActiva=result.active,
+        deducible=result.deductible,
+        estadoValidacion=result.validation_status,
+        estadoActual=result.current_state,
+        version=result.version,
+        requiereRevisionHumana=result.human_review_required,
     )
 
 
