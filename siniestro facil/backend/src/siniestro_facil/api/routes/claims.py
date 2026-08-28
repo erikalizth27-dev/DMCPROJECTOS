@@ -14,10 +14,14 @@ from siniestro_facil.application.register_claim import (
     RegisterClaimCommand,
     RegisterClaimService,
 )
+from siniestro_facil.config import Settings
+from siniestro_facil.db import create_database_engine
 from siniestro_facil.infrastructure.policy_adapter import (
     InMemoryPolicyAdapter,
     PolicySnapshot,
 )
+from siniestro_facil.persistence.claim_repository import PostgreSQLClaimRepository
+from siniestro_facil.persistence.session import create_session_factory
 
 
 router = APIRouter(prefix="/api/v1/siniestros", tags=["Siniestros"])
@@ -34,10 +38,24 @@ def get_register_claim_service() -> RegisterClaimService:
                 vigente_desde=date(2026, 1, 1),
                 vigente_hasta=date(2026, 12, 31),
                 deducible=Decimal("500.00"),
-            )
+            ),
+            PolicySnapshot(
+                numero_poliza="SYN-20260820-POL-0001",
+                numero_documento="SYN-20260820-0001",
+                placa="SYN0001",
+                vigente_desde=date(2026, 1, 1),
+                vigente_hasta=date(2026, 12, 31),
+                deducible=Decimal("525.00"),
+            ),
         ]
     )
-    return RegisterClaimService(policies, InMemoryClaimRepository())
+    settings = Settings.from_environment()
+    if settings.database_url:
+        engine = create_database_engine(settings)
+        repository = PostgreSQLClaimRepository(create_session_factory(engine))
+    else:
+        repository = InMemoryClaimRepository()
+    return RegisterClaimService(policies, repository)
 
 
 @router.post("", response_model=SiniestroResponse, status_code=status.HTTP_201_CREATED)

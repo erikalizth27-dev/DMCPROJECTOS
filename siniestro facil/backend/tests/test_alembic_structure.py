@@ -29,3 +29,18 @@ def test_initial_revision_is_idempotent_and_reversible() -> None:
     assert "CREATE TABLE IF NOT EXISTS siniestro_facil.asignacion_siniestro" in migration
     assert "CREATE UNIQUE INDEX IF NOT EXISTS uq_asignacion_siniestro_activa" in migration
     assert "def downgrade()" in migration
+
+
+def test_sprint1_revision_persists_idempotency_atomically() -> None:
+    revision = (
+        BACKEND_ROOT
+        / "alembic"
+        / "versions"
+        / "20260828_01_s1_claim_idempotency.py"
+    ).read_text(encoding="utf-8")
+
+    assert 'revision = "20260828_01"' in revision
+    assert 'down_revision = "20260825_01"' in revision
+    assert "CREATE TABLE IF NOT EXISTS siniestro_facil.solicitud_idempotente" in revision
+    assert "id_siniestro bigint NOT NULL UNIQUE" in revision
+    assert "DROP TABLE IF EXISTS siniestro_facil.solicitud_idempotente" in revision

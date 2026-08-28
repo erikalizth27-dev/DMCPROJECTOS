@@ -112,3 +112,18 @@ class EventoLineaTiempo(Base):
     tipo_evento: Mapped[str] = mapped_column(String(50), nullable=False)
     fecha: Mapped[datetime] = mapped_column(DateTime(timezone=True), nullable=False)
     detalle: Mapped[dict[str, object] | None] = mapped_column(JSON)
+
+
+class SolicitudIdempotente(Base):
+    __tablename__ = "solicitud_idempotente"
+    __table_args__ = {"schema": SCHEMA}
+
+    clave: Mapped[str] = mapped_column(String(128), primary_key=True)
+    huella: Mapped[str] = mapped_column(String(64), nullable=False)
+    id_siniestro: Mapped[int] = mapped_column(
+        ForeignKey(f"{SCHEMA}.siniestro.id_siniestro", ondelete="CASCADE"),
+        nullable=False,
+        unique=True,
+    )
+    respuesta: Mapped[dict[str, object]] = mapped_column(JSON, nullable=False)
+    creado_en: Mapped[datetime] = mapped_column(DateTime(timezone=True), nullable=False)
