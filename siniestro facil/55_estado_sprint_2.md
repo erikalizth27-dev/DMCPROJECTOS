@@ -2,7 +2,7 @@
 
 ## Estado general
 
-- Avance: **58% provisional; pendiente de validación final de S2-BE-01**
+- Avance: **58% confirmado; validación PostgreSQL final pendiente**
 - Rama: `agent/sprint-2-backend`
 - Punto de partida: `main` después del cierre de Sprint 1 (`bfc1356`)
 - Duración de referencia: 2 semanas
@@ -73,7 +73,8 @@ Entregar cobertura, transiciones de estado y gestión de evidencia inmutable, ma
 - Seis pruebas unitarias añadidas; **104/104 pruebas aprobadas**.
 - Evidencia: `61_evidencia_primera_entrega_s2_be_01.md`.
 - Repositorio PostgreSQL, persistencia, auditoría atómica y endpoint implementados.
-- Seis pruebas API/repositorio adicionales; pendiente ejecutar **110 pruebas**.
+- Seis pruebas API/repositorio adicionales; **110/110 pruebas aprobadas**.
+- Evidencia: `62_evidencia_segunda_entrega_s2_be_01.md`.
 - Pendiente escenario PostgreSQL controlado con rollback para completar S2-BE-01.
 
 ## Decisiones pendientes para Definition of Ready
