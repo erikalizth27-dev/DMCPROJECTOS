@@ -7,7 +7,17 @@ from functools import lru_cache
 from fastapi import APIRouter, Depends, Header, status
 
 from siniestro_facil.api.errors import BusinessError
-from siniestro_facil.api.schemas import CrearSiniestroRequest, SiniestroResponse
+from siniestro_facil.api.schemas import (
+    CambiarEstadoRequest,
+    CambiarEstadoResponse,
+    CrearSiniestroRequest,
+    SiniestroResponse,
+)
+from siniestro_facil.application.change_claim_state import (
+    ChangeClaimStateCommand,
+    ChangeClaimStateService,
+    ClaimStateChangeError,
+)
 from siniestro_facil.application.get_claim_view import (
     ClaimNotVisible,
     GetClaimViewService,
@@ -20,12 +30,16 @@ from siniestro_facil.application.register_claim import (
 )
 from siniestro_facil.config import Settings
 from siniestro_facil.db import create_database_engine
+from siniestro_facil.domain.enums import EstadoSiniestro
 from siniestro_facil.domain.identity import AuthenticatedPrincipal
 from siniestro_facil.infrastructure.policy_adapter import (
     InMemoryPolicyAdapter,
     PolicySnapshot,
 )
 from siniestro_facil.persistence.claim_repository import PostgreSQLClaimRepository
+from siniestro_facil.persistence.claim_state_repository import (
+    PostgreSQLClaimStateRepository,
+)
 from siniestro_facil.persistence.claim_view_repository import (
     PostgreSQLClaimViewRepository,
 )
@@ -90,6 +104,20 @@ def get_claim_view_service() -> GetClaimViewService:
     return GetClaimViewService(repository)
 
 
+@lru_cache(maxsize=1)
+def get_change_claim_state_service() -> ChangeClaimStateService:
+    settings = Settings.from_environment()
+    if not settings.database_url:
+        raise BusinessError(
+            "SERVICE-NOT-READY",
+            "Servicio de transición no disponible",
+            503,
+        )
+    engine = create_database_engine(settings)
+    repository = PostgreSQLClaimStateRepository(create_session_factory(engine))
+    return ChangeClaimStateService(repository)
+
+
 @router.post("", response_model=SiniestroResponse, status_code=status.HTTP_201_CREATED)
 def create_claim(
     request: CrearSiniestroRequest,
@@ -120,6 +148,35 @@ def create_claim(
         fechaEvento=result.fecha_evento,
         tipoEvento=result.tipo_evento,
         siguientePaso=result.siguiente_paso,
+    )
+
+
+@router.post(
+    "/{siniestro_id}/estado",
+    response_model=CambiarEstadoResponse,
+)
+def change_claim_state(
+    siniestro_id: int,
+    request: CambiarEstadoRequest,
+    principal: AuthenticatedPrincipal = Depends(get_authenticated_principal),
+    service: ChangeClaimStateService = Depends(get_change_claim_state_service),
+) -> CambiarEstadoResponse:
+    command = ChangeClaimStateCommand(
+        claim_id=siniestro_id,
+        target_state=request.estado_destino,
+        reason=request.motivo,
+        expected_version=request.version,
+        human_confirmation=request.estado_destino is EstadoSiniestro.RECHAZADO,
+    )
+    try:
+        result = service.execute(command, principal)
+    except ClaimStateChangeError as exc:
+        raise BusinessError(exc.code, exc.message, exc.status_code) from exc
+
+    return CambiarEstadoResponse(
+        id=result.id,
+        estadoActual=result.current_state,
+        version=result.version,
     )
 
 
