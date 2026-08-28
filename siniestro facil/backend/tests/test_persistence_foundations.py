@@ -19,6 +19,7 @@ class PersistenceModelsTest(unittest.TestCase):
             "cobertura",
             "siniestro",
             "evento_linea_tiempo",
+            "solicitud_idempotente",
         }
         mapped = {
             table.name
