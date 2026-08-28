@@ -2,7 +2,7 @@
 
 ## Avance general
 
-**65% completado**.
+**85% completado**.
 
 El Sprint 1 tiene una duración planificada de dos semanas y un compromiso aprobado de 18 puntos.
 
@@ -12,9 +12,9 @@ El Sprint 1 tiene una duración planificada de dos semanas y un compromiso aprob
 | Fundaciones de persistencia y pruebas | 10% | Completadas; 63/63 pruebas aprobadas | 15% |
 | S1-BE-01 — Registrar siniestro | 30% | Completado; persistencia y auditoría atómicas validadas | 45% |
 | S1-BE-02 — Detectar posibles duplicados | 20% | Completado; placa y día validados en Cloud SQL | 65% |
-| S1-BE-03 — Consultar vista inicial | 20% | Pendiente | 65% |
-| Validación integrada con PostgreSQL | 10% | Pendiente | 65% |
-| Evidencias, documentación y cierre | 5% | Pendiente | 65% |
+| S1-BE-03 — Consultar vista inicial | 20% | Completado; alcance y auditoría validados | 85% |
+| Validación integrada con PostgreSQL | 10% | Pendiente | 85% |
+| Evidencias, documentación y cierre | 5% | Pendiente | 85% |
 
 ## Compromiso
 
@@ -73,7 +73,22 @@ S1-BE-01 queda completado y el avance general alcanza 45%.
 
 S1-BE-02 queda completado y el avance general alcanza 65%.
 
+## Avance S1-BE-03
+
+- Endpoint `GET /api/v1/siniestros/{siniestroId}` implementado.
+- Migración Alembic `20260828_02` aplicada en Cloud SQL.
+- Identidad `sub` + `tenant_id` vinculada al actor sin almacenar tokens.
+- Asegurado limitado a casos propios.
+- Operador/ajustador limitado a asignaciones activas.
+- Taller sin orden válida denegado por defecto.
+- Supervisor con acceso transversal y auditoría sensible persistida.
+- Recurso inexistente y fuera de alcance producen la misma respuesta 404.
+- Suite completa: 90/90 pruebas aprobadas en 1.20 s.
+- Prueba integrada completada y limpieza sin residuos confirmada.
+
+S1-BE-03 queda completado y el avance general alcanza 85%.
+
 ## Próximo incremento
 
-Implementar S1-BE-03: consultar la vista inicial del siniestro con RBAC,
-privacidad por alcance, siguiente paso y auditoría de acceso sensible.
+Ejecutar la validación integral de Sprint 1 contra PostgreSQL, consolidar
+trazabilidad y evidencias, crear el acta de cierre y preparar el Pull Request.
