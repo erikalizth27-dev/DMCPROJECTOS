@@ -44,6 +44,12 @@ class CambiarEstadoRequest(ApiModel):
     version: int = Field(ge=0)
 
 
+class CambiarEstadoResponse(ApiModel):
+    id: int
+    estado_actual: EstadoSiniestro = Field(alias="estadoActual")
+    version: int = Field(ge=1)
+
+
 class RegistrarEvidenciaRequest(ApiModel):
     tipo_evidencia: str = Field(alias="tipoEvidencia", min_length=1, max_length=50)
     contenido_original_uri: HttpUrl = Field(alias="contenidoOriginalUri")
