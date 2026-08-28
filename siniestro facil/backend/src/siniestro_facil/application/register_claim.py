@@ -119,6 +119,7 @@ class InMemoryClaimRepository:
 
     def __init__(self) -> None:
         self._requests: dict[str, StoredRequest] = {}
+        self._claims: list[tuple[RegisterClaimCommand, RegisteredClaim]] = []
         self._next_id = 1
 
     def find_request(self, idempotency_key: str) -> StoredRequest | None:
@@ -133,6 +134,21 @@ class InMemoryClaimRepository:
         fingerprint: str,
     ) -> RegisteredClaim:
         del policy
+        duplicate = next(
+            (
+                stored
+                for previous, stored in self._claims
+                if previous.placa.strip().upper() == command.placa.strip().upper()
+                and previous.fecha_evento.date() == command.fecha_evento.date()
+            ),
+            None,
+        )
+        if duplicate is not None:
+            raise ClaimRegistrationError(
+                "POSSIBLE-DUPLICATE",
+                "Existe una coincidencia que requiere revisión humana",
+                409,
+            )
         result = RegisteredClaim(
             id=self._next_id,
             estado_actual="reportado",
@@ -142,4 +158,5 @@ class InMemoryClaimRepository:
         )
         self._next_id += 1
         self._requests[idempotency_key] = StoredRequest(fingerprint, result)
+        self._claims.append((command, result))
         return result

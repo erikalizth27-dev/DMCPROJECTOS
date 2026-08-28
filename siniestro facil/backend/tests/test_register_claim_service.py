@@ -121,6 +121,30 @@ class RegisterClaimServiceTest(unittest.TestCase):
                 request_payload=self.payload,
             )
 
+    def test_flags_same_plate_and_event_day_for_human_review(self) -> None:
+        self.execute()
+        with self.assertRaisesRegex(ClaimRegistrationError, "revisión humana") as caught:
+            self.service.execute(
+                replace(self.command, ubicacion_evento="Otra ubicación"),
+                idempotency_key="idem-synthetic-duplicate-0002",
+                request_payload={**self.payload, "ubicacionEvento": "Otra ubicación"},
+            )
+        self.assertEqual("POSSIBLE-DUPLICATE", caught.exception.code)
+        self.assertEqual(409, caught.exception.status_code)
+
+    def test_allows_same_plate_on_a_different_day(self) -> None:
+        first = self.execute()
+        command = replace(
+            self.command,
+            fecha_evento=datetime(2026, 8, 26, 14, 30, tzinfo=timezone.utc),
+        )
+        second = self.service.execute(
+            command,
+            idempotency_key="idem-synthetic-next-day-0002",
+            request_payload={**self.payload, "fechaEvento": "2026-08-26T14:30:00Z"},
+        )
+        self.assertNotEqual(first.id, second.id)
+
 
 if __name__ == "__main__":
     unittest.main()

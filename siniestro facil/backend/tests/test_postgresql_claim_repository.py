@@ -25,3 +25,14 @@ def test_rebuilds_registered_claim_from_persisted_response() -> None:
     assert result.estado_actual == "reportado"
     assert result.fecha_evento == datetime(2026, 8, 25, 14, 30, tzinfo=timezone.utc)
     assert result.siguiente_paso == "validar_cobertura"
+
+
+def test_repository_serializes_duplicate_check_before_insert() -> None:
+    source = __import__(
+        "inspect"
+    ).getsource(PostgreSQLClaimRepository.create)
+
+    assert "pg_advisory_xact_lock" in source
+    assert "func.date(Siniestro.fecha_evento)" in source
+    assert '"POSSIBLE-DUPLICATE"' in source
+    assert "revisión humana" in source

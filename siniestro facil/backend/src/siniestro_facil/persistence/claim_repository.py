@@ -2,7 +2,7 @@ from __future__ import annotations
 
 from datetime import datetime, timezone
 
-from sqlalchemy import select
+from sqlalchemy import func, select, text
 from sqlalchemy.exc import IntegrityError
 from sqlalchemy.orm import Session, sessionmaker
 
@@ -78,6 +78,45 @@ class PostgreSQLClaimRepository:
                         "VEHICLE-NOT-PERSISTED",
                         "El vehículo validado no existe en la base de datos local",
                         422,
+                    )
+
+                # Serializa las altas para la misma placa y día. Así dos
+                # solicitudes concurrentes no pueden crear expedientes paralelos.
+                session.execute(
+                    text("SELECT pg_advisory_xact_lock(hashtext(:key))"),
+                    {
+                        "key": (
+                            f"{command.placa.strip().upper()}|"
+                            f"{command.fecha_evento.date().isoformat()}"
+                        )
+                    },
+                )
+                concurrent_request = session.get(
+                    SolicitudIdempotente, idempotency_key
+                )
+                if concurrent_request is not None:
+                    if concurrent_request.huella == fingerprint:
+                        return self._result_from_row(concurrent_request)
+                    raise ClaimRegistrationError(
+                        "IDEMPOTENCY-CONFLICT",
+                        "Idempotency-Key ya fue utilizada con otro contenido",
+                        409,
+                    )
+                duplicate_id = session.execute(
+                    select(Siniestro.id_siniestro)
+                    .join(Vehiculo, Vehiculo.id_vehiculo == Siniestro.id_vehiculo)
+                    .where(
+                        func.upper(Vehiculo.placa) == command.placa.strip().upper(),
+                        func.date(Siniestro.fecha_evento)
+                        == command.fecha_evento.date(),
+                    )
+                    .limit(1)
+                ).scalar_one_or_none()
+                if duplicate_id is not None:
+                    raise ClaimRegistrationError(
+                        "POSSIBLE-DUPLICATE",
+                        "Existe una coincidencia que requiere revisión humana",
+                        409,
                     )
 
                 reporter = session.execute(

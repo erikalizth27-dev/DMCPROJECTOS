@@ -89,6 +89,21 @@ class ClaimsApiTest(unittest.TestCase):
         self.assertEqual(422, response.status_code)
         self.assertEqual("VEHICLE-NOT-COVERED", response.json()["codigo"])
 
+    def test_returns_private_conflict_for_possible_duplicate(self) -> None:
+        first = self.client.post(
+            "/api/v1/siniestros", json=self.payload, headers=self.headers
+        )
+        response = self.client.post(
+            "/api/v1/siniestros",
+            json={**self.payload, "ubicacionEvento": "Otra ubicación"},
+            headers={**self.headers, "Idempotency-Key": "idem-duplicate-0002"},
+        )
+
+        self.assertEqual(201, first.status_code)
+        self.assertEqual(409, response.status_code)
+        self.assertEqual("POSSIBLE-DUPLICATE", response.json()["codigo"])
+        self.assertNotIn(str(first.json()["id"]), response.text)
+
 
 if __name__ == "__main__":
     unittest.main()
