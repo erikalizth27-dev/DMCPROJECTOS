@@ -6,7 +6,7 @@
 - Rama: `agent/sprint-2-backend`
 - Punto de partida: `main` después del cierre de Sprint 1 (`bfc1356`)
 - Duración de referencia: 2 semanas
-- Estado: S2-BE-02 validado automáticamente; prueba controlada PostgreSQL pendiente
+- Estado: S2-BE-02 completado y validado contra PostgreSQL
 - Validación inicial: **90/90 pruebas**, Alembic `20260828_02 (head)`
 - Evidencia: `57_evidencia_linea_base_sprint_2_cloudshell.md`
 
@@ -59,7 +59,9 @@ Entregar cobertura, transiciones de estado y gestión de evidencia inmutable, ma
 - Ocho pruebas unitarias y API añadidas.
 - Validación automática: **98/98 pruebas aprobadas**.
 - Evidencia: `58_evidencia_pruebas_s2_be_02_cloudshell.md`.
-- Pendiente: ejecutar escenario controlado contra PostgreSQL.
+- Validación PostgreSQL: transición, versión, auditoría, conflicto 409 y rollback aprobados.
+- Evidencia: `59_evidencia_s2_be_02_postgresql.md`.
+- Estado del incremento: **completado**.
 
 ## Decisiones pendientes para Definition of Ready
 
