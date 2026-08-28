@@ -2,11 +2,11 @@
 
 ## Estado general
 
-- Avance: **60% confirmado**
+- Avance: **70% provisional; pendiente de validación en Cloud Shell**
 - Rama: `agent/sprint-2-backend`
 - Punto de partida: `main` después del cierre de Sprint 1 (`bfc1356`)
 - Duración de referencia: 2 semanas
-- Estado: S2-BE-01 y S2-BE-02 completados; S2-BE-03 bloqueado por S2-DEC-02
+- Estado: S2-BE-01 y S2-BE-02 completados; primera entrega de S2-BE-03 publicada
 - Validación inicial: **90/90 pruebas**, Alembic `20260828_02 (head)`
 - Evidencia: `57_evidencia_linea_base_sprint_2_cloudshell.md`
 
@@ -79,10 +79,20 @@ Entregar cobertura, transiciones de estado y gestión de evidencia inmutable, ma
 - Evidencia: `63_evidencia_s2_be_01_postgresql.md`.
 - Estado del incremento: **completado**.
 
+## Avance de S2-BE-03
+
+- Configuración de almacenamiento aprobada y codificada.
+- SHA-256 de contenido original implementado.
+- Claves únicas bajo `siniestros/{id}/originales/`.
+- URI `gs://` y generación registradas.
+- Sobrescritura de originales prohibida.
+- Siete pruebas nuevas; pendiente ejecutar **117 pruebas**.
+- Persistencia PostgreSQL, API y adaptador real de Cloud Storage quedan pendientes.
+
 ## Decisiones pendientes para Definition of Ready
 
 - **S2-DEC-01 — APROBADA:** continuar temporalmente con el adaptador simulado de pólizas durante Sprint 2. Evidencia: `60_registro_aprobacion_s2_dec_01.md`.
-- **S2-DEC-02:** aprobar bucket, región y política de retención de Cloud Storage para evidencias.
+- **S2-DEC-02 — APROBADA:** bucket `project-77c17016-86bc-4fc4-a97-siniestro-evidencias` en `us-central1`, acceso uniforme, versionado, sin acceso público y sin retention lock. Evidencia: `64_registro_aprobacion_s2_dec_02.md`.
 
 ## Línea base de calidad
 
