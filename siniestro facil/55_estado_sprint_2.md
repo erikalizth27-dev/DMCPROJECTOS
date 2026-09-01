@@ -2,7 +2,7 @@
 
 ## Estado general
 
-- Avance: **75% confirmado**
+- Avance: **80% confirmado**
 - Rama: `agent/sprint-2-backend`
 - Punto de partida: `main` después del cierre de Sprint 1 (`bfc1356`)
 - Duración de referencia: 2 semanas
@@ -90,7 +90,9 @@ Entregar cobertura, transiciones de estado y gestión de evidencia inmutable, ma
 - Evidencia: `65_evidencia_primera_entrega_s2_be_03.md`.
 - Bucket real creado y validado con acceso uniforme, prevención pública y versionado.
 - Evidencia: `66_evidencia_bucket_s2_be_03.md`.
-- Persistencia PostgreSQL, API, carga sintética y adaptador real quedan pendientes.
+- Cloud Storage validado con dos generaciones, SHA-256 y limpieza total.
+- Evidencia: `67_evidencia_cloud_storage_s2_be_03.md`.
+- Persistencia PostgreSQL, API y adaptador de aplicación quedan pendientes.
 
 ## Decisiones pendientes para Definition of Ready
 
