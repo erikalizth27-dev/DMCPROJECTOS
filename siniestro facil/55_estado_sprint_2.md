@@ -2,7 +2,7 @@
 
 ## Estado general
 
-- Avance: **84% confirmado; migración y prueba PostgreSQL pendientes**
+- Avance: **84% confirmado; prueba PostgreSQL final pendiente**
 - Rama: `agent/sprint-2-backend`
 - Punto de partida: `main` después del cierre de Sprint 1 (`bfc1356`)
 - Duración de referencia: 2 semanas
@@ -98,7 +98,10 @@ Entregar cobertura, transiciones de estado y gestión de evidencia inmutable, ma
 - Endpoint `POST /api/v1/siniestros/{id}/evidencias` implementado.
 - Trece pruebas nuevas; **130/130 pruebas aprobadas**.
 - Evidencia: `68_evidencia_130_pruebas_s2_be_03.md`.
-- Pendiente aplicar migración y validar PostgreSQL con rollback.
+- Migración `20260901_01` aplicada; permisos temporales revocados.
+- Regresión posterior: **130/130 pruebas aprobadas**.
+- Evidencia: `69_evidencia_migracion_regresion_s2_be_03.md`.
+- Pendiente validar PostgreSQL con rollback.
 
 ## Decisiones pendientes para Definition of Ready
 
