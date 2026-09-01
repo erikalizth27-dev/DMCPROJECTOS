@@ -2,7 +2,7 @@
 
 ## Estado general
 
-- Avance: **80% confirmado**
+- Avance: **84% provisional; entrega final S2-BE-03 pendiente de validación**
 - Rama: `agent/sprint-2-backend`
 - Punto de partida: `main` después del cierre de Sprint 1 (`bfc1356`)
 - Duración de referencia: 2 semanas
@@ -92,7 +92,12 @@ Entregar cobertura, transiciones de estado y gestión de evidencia inmutable, ma
 - Evidencia: `66_evidencia_bucket_s2_be_03.md`.
 - Cloud Storage validado con dos generaciones, SHA-256 y limpieza total.
 - Evidencia: `67_evidencia_cloud_storage_s2_be_03.md`.
-- Persistencia PostgreSQL, API y adaptador de aplicación quedan pendientes.
+- Modelo y repositorio PostgreSQL implementados.
+- Idempotencia persistente y migración `20260901_01` añadidas.
+- RBAC, privacidad, evidencia derivada y auditoría atómica implementados.
+- Endpoint `POST /api/v1/siniestros/{id}/evidencias` implementado.
+- Trece pruebas nuevas; pendiente ejecutar **130 pruebas**.
+- Pendiente aplicar migración y validar PostgreSQL con rollback.
 
 ## Decisiones pendientes para Definition of Ready
 
