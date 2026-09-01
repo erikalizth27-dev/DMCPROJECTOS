@@ -66,11 +66,15 @@ class VerificarCoberturaResponse(ApiModel):
 
 class RegistrarEvidenciaRequest(ApiModel):
     tipo_evidencia: str = Field(alias="tipoEvidencia", min_length=1, max_length=50)
-    contenido_original_uri: str = Field(\n        alias="contenidoOriginalUri",\n        pattern=r"^gs://project-77c17016-86bc-4fc4-a97-siniestro-evidencias/",\n    )
+    contenido_original_uri: str = Field(
+        alias="contenidoOriginalUri",
+        pattern=r"^gs://project-77c17016-86bc-4fc4-a97-siniestro-evidencias/",
+    )
     hash: str = Field(min_length=1, max_length=128)
     fecha_captura: datetime | None = Field(default=None, alias="fechaCaptura")
     fuente: str | None = Field(default=None, max_length=50)
-    version_derivada_de: int | None = Field(default=None, alias="versionDerivadaDe", gt=0)\n    metadatos: dict[str, object] = Field(default_factory=dict)
+    version_derivada_de: int | None = Field(default=None, alias="versionDerivadaDe", gt=0)
+    metadatos: dict[str, object] = Field(default_factory=dict)
 
 
 class EvidenciaResponse(ApiModel):
