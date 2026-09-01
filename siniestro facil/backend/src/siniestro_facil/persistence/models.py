@@ -184,3 +184,53 @@ class IdentidadActor(Base):
     id_proveedor: Mapped[int | None] = mapped_column(
         ForeignKey(f"{SCHEMA}.proveedor.id_proveedor")
     )
+
+
+class Evidencia(Base):
+    __tablename__ = "evidencia"
+    __table_args__ = {"schema": SCHEMA}
+
+    id_evidencia: Mapped[int] = mapped_column(BigInteger, primary_key=True)
+    id_siniestro: Mapped[int] = mapped_column(
+        ForeignKey(f"{SCHEMA}.siniestro.id_siniestro", ondelete="CASCADE"),
+        nullable=False,
+    )
+    tipo_evidencia: Mapped[str] = mapped_column(String(50), nullable=False)
+    contenido_original_uri: Mapped[str] = mapped_column(Text, nullable=False)
+    hash: Mapped[str] = mapped_column(String(128), nullable=False)
+    metadatos: Mapped[dict[str, object] | None] = mapped_column(JSON)
+    fecha_captura: Mapped[datetime | None] = mapped_column(DateTime(timezone=True))
+    fecha_recepcion: Mapped[datetime] = mapped_column(
+        DateTime(timezone=True),
+        nullable=False,
+    )
+    fuente: Mapped[str | None] = mapped_column(String(50))
+    ubicacion_captura: Mapped[str | None] = mapped_column(String(255))
+    dispositivo_captura: Mapped[str | None] = mapped_column(String(120))
+    version_derivada_de: Mapped[int | None] = mapped_column(
+        ForeignKey(
+            f"{SCHEMA}.evidencia.id_evidencia",
+            ondelete="RESTRICT",
+        )
+    )
+
+
+class SolicitudEvidenciaIdempotente(Base):
+    __tablename__ = "solicitud_evidencia_idempotente"
+    __table_args__ = {"schema": SCHEMA}
+
+    clave: Mapped[str] = mapped_column(String(128), primary_key=True)
+    huella: Mapped[str] = mapped_column(String(64), nullable=False)
+    id_evidencia: Mapped[int] = mapped_column(
+        ForeignKey(
+            f"{SCHEMA}.evidencia.id_evidencia",
+            ondelete="CASCADE",
+        ),
+        nullable=False,
+        unique=True,
+    )
+    respuesta: Mapped[dict[str, object]] = mapped_column(JSON, nullable=False)
+    creado_en: Mapped[datetime] = mapped_column(
+        DateTime(timezone=True),
+        nullable=False,
+    )
