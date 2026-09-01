@@ -24,6 +24,8 @@ class PersistenceModelsTest(unittest.TestCase):
             "proveedor",
             "asignacion_siniestro",
             "identidad_actor",
+            "evidencia",
+            "solicitud_evidencia_idempotente",
         }
         mapped = {
             table.name
