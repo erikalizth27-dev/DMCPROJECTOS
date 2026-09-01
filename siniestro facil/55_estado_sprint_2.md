@@ -2,7 +2,7 @@
 
 ## Estado general
 
-- Avance: **70% provisional; pendiente de validación en Cloud Shell**
+- Avance: **70% confirmado**
 - Rama: `agent/sprint-2-backend`
 - Punto de partida: `main` después del cierre de Sprint 1 (`bfc1356`)
 - Duración de referencia: 2 semanas
@@ -86,7 +86,8 @@ Entregar cobertura, transiciones de estado y gestión de evidencia inmutable, ma
 - Claves únicas bajo `siniestros/{id}/originales/`.
 - URI `gs://` y generación registradas.
 - Sobrescritura de originales prohibida.
-- Siete pruebas nuevas; pendiente ejecutar **117 pruebas**.
+- Siete pruebas nuevas; **117/117 pruebas aprobadas**.
+- Evidencia: `65_evidencia_primera_entrega_s2_be_03.md`.
 - Persistencia PostgreSQL, API y adaptador real de Cloud Storage quedan pendientes.
 
 ## Decisiones pendientes para Definition of Ready
