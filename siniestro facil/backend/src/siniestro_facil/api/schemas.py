@@ -5,7 +5,7 @@ from decimal import Decimal
 from enum import StrEnum
 from typing import Literal
 
-from pydantic import BaseModel, ConfigDict, Field, HttpUrl, model_validator
+from pydantic import BaseModel, ConfigDict, Field, model_validator
 
 from siniestro_facil.domain.enums import EstadoSiniestro
 
@@ -44,13 +44,50 @@ class CambiarEstadoRequest(ApiModel):
     version: int = Field(ge=0)
 
 
+class CambiarEstadoResponse(ApiModel):
+    id: int
+    estado_actual: EstadoSiniestro = Field(alias="estadoActual")
+    version: int = Field(ge=1)
+
+
+class VerificarCoberturaRequest(ApiModel):
+    version: int = Field(ge=0)
+
+
+class VerificarCoberturaResponse(ApiModel):
+    siniestro_id: int = Field(alias="siniestroId")
+    cobertura_activa: bool = Field(alias="coberturaActiva")
+    deducible: Decimal
+    estado_validacion: str = Field(alias="estadoValidacion")
+    estado_actual: EstadoSiniestro = Field(alias="estadoActual")
+    version: int = Field(ge=1)
+    requiere_revision_humana: bool = Field(alias="requiereRevisionHumana")
+
+
 class RegistrarEvidenciaRequest(ApiModel):
     tipo_evidencia: str = Field(alias="tipoEvidencia", min_length=1, max_length=50)
-    contenido_original_uri: HttpUrl = Field(alias="contenidoOriginalUri")
+    contenido_original_uri: str = Field(
+        alias="contenidoOriginalUri",
+        pattern=r"^gs://project-77c17016-86bc-4fc4-a97-siniestro-evidencias/",
+    )
     hash: str = Field(min_length=1, max_length=128)
     fecha_captura: datetime | None = Field(default=None, alias="fechaCaptura")
     fuente: str | None = Field(default=None, max_length=50)
     version_derivada_de: int | None = Field(default=None, alias="versionDerivadaDe", gt=0)
+    metadatos: dict[str, object] = Field(default_factory=dict)
+
+
+class EvidenciaResponse(ApiModel):
+    id: int
+    siniestro_id: int = Field(alias="siniestroId")
+    tipo_evidencia: str = Field(alias="tipoEvidencia")
+    contenido_original_uri: str = Field(alias="contenidoOriginalUri")
+    hash: str
+    fecha_recepcion: datetime = Field(alias="fechaRecepcion")
+    version_derivada_de: int | None = Field(
+        default=None,
+        alias="versionDerivadaDe",
+    )
 
 
 class SolicitarAsistenciaRequest(ApiModel):

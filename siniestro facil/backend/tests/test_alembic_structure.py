@@ -59,3 +59,18 @@ def test_sprint1_identity_scope_revision_is_reversible() -> None:
     assert "CREATE TABLE IF NOT EXISTS siniestro_facil.identidad_actor" in revision
     assert "num_nonnulls(id_asegurado, id_usuario, id_proveedor) = 1" in revision
     assert "DROP TABLE IF EXISTS siniestro_facil.identidad_actor" in revision
+
+
+def test_sprint2_evidence_idempotency_revision_is_reversible() -> None:
+    revision = (
+        BACKEND_ROOT
+        / "alembic"
+        / "versions"
+        / "20260901_01_s2_evidence_idempotency.py"
+    ).read_text(encoding="utf-8")
+
+    assert 'revision = "20260901_01"' in revision
+    assert 'down_revision = "20260828_02"' in revision
+    assert "solicitud_evidencia_idempotente" in revision
+    assert "id_evidencia bigint NOT NULL UNIQUE" in revision
+    assert "DROP TABLE IF EXISTS" in revision
