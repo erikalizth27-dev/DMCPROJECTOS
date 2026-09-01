@@ -10,7 +10,9 @@ from siniestro_facil.api.errors import BusinessError
 from siniestro_facil.api.schemas import (
     CambiarEstadoRequest,
     CambiarEstadoResponse,
+    EvidenciaResponse,
     CrearSiniestroRequest,
+    RegistrarEvidenciaRequest,
     SiniestroResponse,
     VerificarCoberturaRequest,
     VerificarCoberturaResponse,
@@ -29,6 +31,11 @@ from siniestro_facil.application.verify_coverage import (
     VerifyCoverageCommand,
     VerifyCoverageService,
 )
+from siniestro_facil.application.register_evidence import (
+    EvidenceRegistrationError,
+    RegisterEvidenceCommand,
+    RegisterEvidenceService,
+)
 from siniestro_facil.application.register_claim import (
     ClaimRegistrationError,
     InMemoryClaimRepository,
@@ -46,6 +53,9 @@ from siniestro_facil.infrastructure.policy_adapter import (
 from siniestro_facil.persistence.claim_repository import PostgreSQLClaimRepository
 from siniestro_facil.persistence.claim_state_repository import (
     PostgreSQLClaimStateRepository,
+)
+from siniestro_facil.persistence.evidence_repository import (
+    PostgreSQLEvidenceRepository,
 )
 from siniestro_facil.persistence.coverage_repository import (
     PostgreSQLCoverageRepository,
@@ -162,6 +172,22 @@ def get_verify_coverage_service() -> VerifyCoverageService:
     return VerifyCoverageService(policies, repository)
 
 
+@lru_cache(maxsize=1)
+def get_register_evidence_service() -> RegisterEvidenceService:
+    settings = Settings.from_environment()
+    if not settings.database_url:
+        raise BusinessError(
+            "SERVICE-NOT-READY",
+            "Servicio de evidencia no disponible",
+            503,
+        )
+    engine = create_database_engine(settings)
+    repository = PostgreSQLEvidenceRepository(
+        create_session_factory(engine)
+    )
+    return RegisterEvidenceService(repository)
+
+
 @router.post("", response_model=SiniestroResponse, status_code=status.HTTP_201_CREATED)
 def create_claim(
     request: CrearSiniestroRequest,
@@ -192,6 +218,58 @@ def create_claim(
         fechaEvento=result.fecha_evento,
         tipoEvento=result.tipo_evento,
         siguientePaso=result.siguiente_paso,
+    )
+
+
+@router.post(
+    "/{siniestro_id}/evidencias",
+    response_model=EvidenciaResponse,
+    status_code=status.HTTP_201_CREATED,
+)
+def register_claim_evidence(
+    siniestro_id: int,
+    request: RegistrarEvidenciaRequest,
+    idempotency_key: str = Header(alias="Idempotency-Key"),
+    principal: AuthenticatedPrincipal = Depends(get_authenticated_principal),
+    service: RegisterEvidenceService = Depends(
+        get_register_evidence_service
+    ),
+) -> EvidenciaResponse:
+    command = RegisterEvidenceCommand(
+        claim_id=siniestro_id,
+        evidence_type=request.tipo_evidencia,
+        original_uri=request.contenido_original_uri,
+        sha256_hex=request.hash,
+        captured_at=request.fecha_captura,
+        source=request.fuente,
+        derived_from_id=request.version_derivada_de,
+        metadata=request.metadatos,
+    )
+    try:
+        result = service.execute(
+            command,
+            principal,
+            idempotency_key=idempotency_key,
+            request_payload=request.model_dump(
+                mode="json",
+                by_alias=True,
+            ),
+        )
+    except EvidenceRegistrationError as exc:
+        raise BusinessError(
+            exc.code,
+            exc.message,
+            exc.status_code,
+        ) from exc
+
+    return EvidenciaResponse(
+        id=result.id,
+        siniestroId=result.claim_id,
+        tipoEvidencia=result.evidence_type,
+        contenidoOriginalUri=result.original_uri,
+        hash=result.sha256_hex,
+        fechaRecepcion=result.received_at,
+        versionDerivadaDe=result.derived_from_id,
     )
 
 
