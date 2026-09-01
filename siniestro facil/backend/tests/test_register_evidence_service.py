@@ -172,13 +172,13 @@ def test_rejects_non_sha256_hash() -> None:
     assert error.value.code == "EVIDENCE-HASH-INVALID"
 
 
-def test_denies_role_without_evidence_permission() -> None:
+def test_rejects_short_idempotency_key() -> None:
     with pytest.raises(EvidenceRegistrationError) as error:
         RegisterEvidenceService(EvidenceRepository()).execute(
             command(),
-            principal(PrincipalRole.INVESTIGADOR_FRAUDE),
-            idempotency_key="evidence-idem-0001",
+            principal(),
+            idempotency_key="short",
             request_payload=payload(),
         )
-    assert error.value.code == "ACTION-NOT-ALLOWED"
-    assert error.value.status_code == 403
+    assert error.value.code == "IDEMPOTENCY-INVALID"
+    assert error.value.status_code == 422
