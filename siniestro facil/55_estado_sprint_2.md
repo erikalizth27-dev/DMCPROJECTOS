@@ -2,11 +2,11 @@
 
 ## Estado general
 
-- Avance: **85% confirmado; S2-BE-03 completado**
+- Avance: **100% — Sprint 2 cerrado**
 - Rama: `agent/sprint-2-backend`
 - Punto de partida: `main` después del cierre de Sprint 1 (`bfc1356`)
 - Duración de referencia: 2 semanas
-- Estado: S2-BE-01, S2-BE-02 y S2-BE-03 completados; integración final pendiente
+- Estado: S2-BE-01, S2-BE-02 y S2-BE-03 completados; integración y cierre aprobados
 - Validación inicial: **90/90 pruebas**, Alembic `20260828_02 (head)`
 - Evidencia: `57_evidencia_linea_base_sprint_2_cloudshell.md`
 
@@ -114,6 +114,16 @@ Entregar cobertura, transiciones de estado y gestión de evidencia inmutable, ma
 ## Línea base de calidad
 
 La validación inicial del Sprint 2 aprobó **90/90 pruebas** y confirmó Alembic en `20260828_02 (head)`. Sprint 2 debe preservar esas pruebas y añadir pruebas unitarias, API, persistencia e integración para cada incremento.
+
+## Cierre integral
+
+- Suite integral: **130/130 pruebas aprobadas**.
+- Alembic: `20260901_01 (head)`.
+- Bucket: región, acceso uniforme, prevención pública y versionado validados.
+- Evidencia integral: `71_evidencia_validacion_integral_sprint_2.md`.
+- Matriz de cierre: `72_matriz_cierre_trazabilidad_sprint_2.md`.
+- Acta: `73_acta_cierre_sprint_2.md`.
+- Estado final: **100%**.
 
 ## Restricciones
 
