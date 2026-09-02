@@ -13,11 +13,18 @@ from siniestro_facil.application.schedule_inspection import (
     GetInspectionService,
     InMemoryInspectionSchedulingRepository,
     InspectionSchedulingError,
+    InspectionSchedulingRepository,
     ScheduleInspectionCommand,
     ScheduleInspectionService,
     ScheduledInspection,
 )
+from siniestro_facil.config import Settings
+from siniestro_facil.db import create_database_engine
 from siniestro_facil.domain.identity import AuthenticatedPrincipal
+from siniestro_facil.persistence.inspection_budget_repository import (
+    PostgreSQLInspectionSchedulingRepository,
+)
+from siniestro_facil.persistence.session import create_session_factory
 
 
 router = APIRouter(prefix="/api/v1/siniestros", tags=["Inspecciones"])
@@ -38,9 +45,14 @@ class InspeccionResponse(ApiModel):
 
 
 @lru_cache(maxsize=1)
-def get_inspection_repository() -> InMemoryInspectionSchedulingRepository:
-    # Primera entrega: se sustituirá por PostgreSQL antes de cerrar S4-BE-01.
-    return InMemoryInspectionSchedulingRepository()
+def get_inspection_repository() -> InspectionSchedulingRepository:
+    settings = Settings.from_environment()
+    if not settings.database_url:
+        return InMemoryInspectionSchedulingRepository()
+    engine = create_database_engine(settings)
+    return PostgreSQLInspectionSchedulingRepository(
+        create_session_factory(engine)
+    )
 
 
 def get_schedule_inspection_service() -> ScheduleInspectionService:
