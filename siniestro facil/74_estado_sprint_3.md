@@ -2,7 +2,7 @@
 
 ## Estado general
 
-- Avance: **15% — fundaciones validadas**.
+- Avance: **27% — primera entrega S3-BE-01 pendiente de validación**.
 - Rama: `agent/sprint-3-backend`.
 - Punto de partida: `main` en `d2b4b9f06dd9738ba47e8744d32f2277e2b3bbd1`.
 - Duración de referencia: 2 semanas.
@@ -57,3 +57,16 @@
 - S3-DEC-01 y S3-DEC-02 aprobadas el 2 de septiembre de 2026.
 - Evidencia: `78_registro_aprobacion_s3_decisiones.md`.
 - S3-BE-01, S3-BE-02 y S3-BE-03 quedan habilitados para desarrollo.
+
+## Avance de S3-BE-01
+
+- S3-DEC-01 y S3-DEC-02 aplicadas.
+- Adaptador simulado determinista habilitado.
+- Servicio de solicitud de asistencia implementado.
+- Consulta de asistencia con ocultamiento de recursos fuera de alcance.
+- RBAC e idempotencia incorporados.
+- Repetición idéntica evita un segundo despacho.
+- Conflicto de clave con contenido diferente devuelve HTTP 409 en el contrato de aplicación.
+- Diez pruebas nuevas publicadas.
+- Validación esperada: **150/150 pruebas**.
+- Pendiente: endpoint API, persistencia PostgreSQL, auditoría atómica y validación con rollback.
