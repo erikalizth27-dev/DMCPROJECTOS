@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 import os
-from datetime import date, datetime, timezone
+from datetime import date, datetime, timedelta, timezone
 from uuid import uuid4
 
 from sqlalchemy import create_engine, insert, select, update
@@ -105,9 +105,9 @@ with engine.connect() as connection:
             tenant_id="tenant-s4-validation",
             actor_type=ActorType.PROVEEDOR,
             role=PrincipalRole.TALLER,
-            issued_at=now,
-            expires_at=now,
-            authenticated_at=now,
+            issued_at=now - timedelta(minutes=1),
+            expires_at=now + timedelta(hours=1),
+            authenticated_at=now - timedelta(minutes=1),
         )
         factory = sessionmaker(
             bind=connection,
