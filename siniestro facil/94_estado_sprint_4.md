@@ -2,7 +2,7 @@
 
 ## Estado general
 
-- Avance: **5% — rama, alcance y trazabilidad inicial preparados**.
+- Avance: **10% — primera entrega de fundaciones publicada, pendiente de validación**.
 - Rama: `agent/sprint-4-backend`.
 - Punto de partida: `main` en `2d4cc89b498d9ba11fa41f4926fc7110f5b0a6e8`.
 - Duración de referencia: 2 semanas.
@@ -46,3 +46,17 @@
 - S4-DEC-01, S4-DEC-02 y S4-DEC-03 aprobadas el 2 de septiembre de 2026.
 - Evidencia: `97_registro_aprobacion_s4_decisiones.md`.
 - S4-BE-01, S4-BE-02 y S4-BE-03 quedan habilitados para desarrollo.
+
+
+## Primera entrega de fundaciones
+
+- Modelos SQLAlchemy de inspección, presupuesto, autorización y cambio de presupuesto.
+- Mapeo limitado a las columnas existentes en el modelo físico.
+- Vigencia de 15 días calendario codificada.
+- Presupuesto válido durante su fecha final y vencido al día siguiente.
+- Operador o ajustador asignado puede observar.
+- Solo supervisor puede aprobar o rechazar.
+- Ausencia de umbrales monetarios preservada.
+- Doce pruebas nuevas publicadas.
+- Resultado esperado: **213/213 pruebas aprobadas**.
+- Pendiente: validación Cloud Shell, contratos y repositorios.
