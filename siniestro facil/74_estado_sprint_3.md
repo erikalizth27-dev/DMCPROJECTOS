@@ -2,7 +2,7 @@
 
 ## Estado general
 
-- Avance: **95% — validación integral de Sprint 3 completada**.
+- Avance: **100% — Sprint 3 cerrado y listo para revisión**.
 - Rama: `agent/sprint-3-backend`.
 - Punto de partida: `main` en `d2b4b9f06dd9738ba47e8744d32f2277e2b3bbd1`.
 - Duración de referencia: 2 semanas.
@@ -192,7 +192,7 @@
 - Timeout de publicación de 10 segundos aplicado.
 - Programador real de Cloud Tasks implementado.
 - Esperas permitidas limitadas a 30, 120 y 300 segundos.
-- Dispatch deadline de 10 segundos aplicado.
+- Dispatch deadline técnico de 15 segundos aplicado; timeout funcional de 10 segundos preservado.
 - Publicador del outbox marca éxito o fallo.
 - Clientes inyectables para pruebas sin credenciales.
 - Dependencias GCP declaradas como extra opcional.
@@ -226,3 +226,14 @@
 - Limpieza sin datos, mensajes ni recursos temporales residuales.
 - Evidencia: `92_evidencia_validacion_integral_sprint_3.md`.
 - Próximo paso: trazabilidad final, acta de cierre y PR hasta 100%.
+
+
+## Cierre formal
+
+- Matriz de trazabilidad cerrada.
+- Criterios de aceptación comprobados.
+- S3-BE-01, S3-BE-02 y S3-BE-03 completados.
+- Acta: `93_acta_cierre_sprint_3.md`.
+- Sprint 3: **100%**.
+- Rama lista para Pull Request contra `main`.
+- Fusión pendiente de autorización explícita del Product Owner.
