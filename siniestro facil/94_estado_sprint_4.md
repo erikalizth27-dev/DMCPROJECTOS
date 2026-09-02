@@ -2,7 +2,7 @@
 
 ## Estado general
 
-- Avance: **15% — fundaciones de Sprint 4 completadas**.
+- Avance: **28% — primera entrega S4-BE-01 publicada, pendiente de validación**.
 - Rama: `agent/sprint-4-backend`.
 - Punto de partida: `main` en `2d4cc89b498d9ba11fa41f4926fc7110f5b0a6e8`.
 - Duración de referencia: 2 semanas.
@@ -78,3 +78,20 @@
 - Evidencia: `99_evidencia_fundaciones_sprint_4.md`.
 - Estado de fundaciones: **completado**.
 - No requiere migración adicional.
+
+
+## Primera entrega de S4-BE-01
+
+- Caso de uso para programar inspección implementado.
+- Consulta de inspección implementada.
+- Operador y ajustador habilitados.
+- Roles no autorizados rechazados.
+- Motivo y fecha con zona horaria obligatorios.
+- Versión incrementada en el contrato.
+- Endpoint POST de programación.
+- Endpoint GET de consulta.
+- Recurso inexistente o ajeno ocultado con HTTP 404.
+- Repositorio temporal en memoria; todavía no es persistencia final.
+- Diez pruebas nuevas publicadas.
+- Resultado esperado: **228/228 pruebas aprobadas**.
+- Pendiente: PostgreSQL, asignación real, bloqueo, auditoría y rollback.
