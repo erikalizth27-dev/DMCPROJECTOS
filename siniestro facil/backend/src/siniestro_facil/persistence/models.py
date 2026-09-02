@@ -286,3 +286,69 @@ class SolicitudAsistenciaIdempotente(Base):
         DateTime(timezone=True),
         nullable=False,
     )
+
+
+class EventoOutbox(Base):
+    __tablename__ = "evento_outbox"
+    __table_args__ = (
+        CheckConstraint(
+            "estado IN ('pendiente', 'publicando', 'publicado', 'fallido')",
+            name="chk_evento_outbox_estado",
+        ),
+        CheckConstraint(
+            "intentos >= 0",
+            name="chk_evento_outbox_intentos",
+        ),
+        {"schema": SCHEMA},
+    )
+
+    id_evento_outbox: Mapped[int] = mapped_column(
+        BigInteger,
+        primary_key=True,
+    )
+    event_id: Mapped[str] = mapped_column(
+        String(36),
+        nullable=False,
+        unique=True,
+    )
+    aggregate_type: Mapped[str] = mapped_column(
+        String(50),
+        nullable=False,
+    )
+    aggregate_id: Mapped[int] = mapped_column(
+        BigInteger,
+        nullable=False,
+    )
+    event_type: Mapped[str] = mapped_column(
+        String(80),
+        nullable=False,
+    )
+    payload: Mapped[dict[str, object]] = mapped_column(
+        JSON,
+        nullable=False,
+    )
+    estado: Mapped[str] = mapped_column(
+        String(20),
+        nullable=False,
+        default="pendiente",
+    )
+    intentos: Mapped[int] = mapped_column(
+        BigInteger,
+        nullable=False,
+        default=0,
+    )
+    ocurrido_en: Mapped[datetime] = mapped_column(
+        DateTime(timezone=True),
+        nullable=False,
+    )
+    disponible_en: Mapped[datetime] = mapped_column(
+        DateTime(timezone=True),
+        nullable=False,
+    )
+    publicado_en: Mapped[datetime | None] = mapped_column(
+        DateTime(timezone=True),
+    )
+    pubsub_message_id: Mapped[str | None] = mapped_column(
+        String(255),
+    )
+    ultimo_error: Mapped[str | None] = mapped_column(Text)
