@@ -2,7 +2,7 @@
 
 ## Estado general
 
-- Avance: **38% — segunda entrega S3-BE-01 validada; migración pendiente**.
+- Avance: **40% — S3-BE-01 completado**.
 - Rama: `agent/sprint-3-backend`.
 - Punto de partida: `main` en `d2b4b9f06dd9738ba47e8744d32f2277e2b3bbd1`.
 - Duración de referencia: 2 semanas.
@@ -85,3 +85,15 @@
 - Alembic heads: `20260902_01 (head)`.
 - Evidencia: `80_evidencia_segunda_entrega_s3_be_01.md`.
 - Próximo paso: aplicar la migración con identidad administrativa y validar rollback.
+
+## Cierre de S3-BE-01
+
+- Migración `20260902_01` aplicada.
+- Runtime con privilegios mínimos.
+- Validación PostgreSQL y rollback aprobados.
+- Persistencia, referencia externa y dos eventos de auditoría comprobados.
+- Repetición idempotente sin segundo despacho.
+- Conflicto de contenido HTTP 409 comprobado.
+- Limpieza sin registros residuales.
+- Evidencia: `81_evidencia_final_s3_be_01_postgresql.md`.
+- Estado del incremento: **completado**.
