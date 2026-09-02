@@ -2,7 +2,7 @@
 
 ## Estado general
 
-- Avance: **12% — fundaciones publicadas; validación Cloud Shell pendiente**.
+- Avance: **15% — fundaciones validadas**.
 - Rama: `agent/sprint-3-backend`.
 - Punto de partida: `main` en `d2b4b9f06dd9738ba47e8744d32f2277e2b3bbd1`.
 - Duración de referencia: 2 semanas.
@@ -47,5 +47,7 @@
 - Adaptador externo deshabilitado hasta aprobar S3-DEC-01.
 - Transporte idempotente en memoria para pruebas; no es Pub/Sub real.
 - Diez pruebas nuevas publicadas.
-- Validación esperada: **140/140 pruebas**.
-- Al aprobar la suite, el avance alcanzará **15%**.
+- Validación Cloud Shell: **140/140 pruebas aprobadas**.
+- Alembic: `20260901_01 (head)`.
+- Evidencia: `77_evidencia_fundaciones_sprint_3_cloudshell.md`.
+- Estado de fundaciones: **completado**.
