@@ -2,7 +2,7 @@
 
 ## Estado general
 
-- Avance: **30% — primera entrega S4-BE-01 validada**.
+- Avance: **38% — persistencia PostgreSQL de S4-BE-01 publicada, pendiente de validación**.
 - Rama: `agent/sprint-4-backend`.
 - Punto de partida: `main` en `2d4cc89b498d9ba11fa41f4926fc7110f5b0a6e8`.
 - Duración de referencia: 2 semanas.
@@ -96,3 +96,18 @@
 - Validación Cloud Shell: **228/228 pruebas aprobadas en 2.21 segundos**.
 - Evidencia: `100_evidencia_primera_entrega_s4_be_01.md`.
 - Pendiente: PostgreSQL, asignación real, bloqueo, auditoría y rollback.
+
+
+## Segunda entrega de S4-BE-01
+
+- Repositorio PostgreSQL de programación y consulta incorporado.
+- Identidad interna y asignación activa verificadas antes de escribir.
+- Siniestro bloqueado mediante `SELECT ... FOR UPDATE`.
+- Versión esperada comprobada; conflicto responde HTTP 409.
+- Transición a `inspeccion_programada` validada por la máquina de estados.
+- Inspección, cambio de estado, incremento de versión y auditoría comparten una transacción.
+- Consultas fuera de alcance o con relación incorrecta permanecen ocultas.
+- Dependencia API conectada automáticamente a PostgreSQL cuando existe `DATABASE_URL`.
+- Cinco pruebas nuevas publicadas.
+- Resultado esperado: **233/233 pruebas aprobadas**.
+- Pendiente: validación Cloud Shell y prueba transaccional con rollback en Cloud SQL.
