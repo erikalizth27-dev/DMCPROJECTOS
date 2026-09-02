@@ -7,12 +7,23 @@ from sqlalchemy.exc import IntegrityError
 from sqlalchemy.orm import Session, sessionmaker
 
 from siniestro_facil.application.assistance_contracts import AssistanceRecord
+from siniestro_facil.application.manage_assistance import (
+    MAX_PILOT_ATTEMPTS,
+    AssistanceManagementError,
+    ReassignAssistanceCommand,
+    RegisterProviderReplyCommand,
+)
 from siniestro_facil.application.request_assistance import (
     AssistanceRequestError,
     RequestAssistanceCommand,
     StoredAssistanceRequest,
 )
-from siniestro_facil.domain.assistance import AssistanceStatus
+from siniestro_facil.domain.assistance import (
+    AssistanceStatus,
+    InvalidAssistanceTransition,
+    ProviderResult,
+    validate_assistance_transition,
+)
 from siniestro_facil.domain.authorization import PrincipalRole
 from siniestro_facil.domain.identity import AuthenticatedPrincipal
 from siniestro_facil.persistence.models import (
@@ -325,3 +336,227 @@ class PostgreSQLAssistanceRepository:
             ):
                 return None
             return self._record(assistance)
+
+
+    @staticmethod
+    def _check_expected_attempt(
+        assistance: Asistencia,
+        expected_attempt: int,
+    ) -> None:
+        if assistance.numero_intento != expected_attempt:
+            raise AssistanceManagementError(
+                "ASSISTANCE-VERSION-CONFLICT",
+                "La asistencia fue modificada por otra operación",
+                409,
+            )
+
+    def register_reply(
+        self,
+        command: RegisterProviderReplyCommand,
+        principal: AuthenticatedPrincipal,
+    ) -> AssistanceRecord:
+        with self._factory() as session, session.begin():
+            assistance = session.get(
+                Asistencia,
+                command.assistance_id,
+                with_for_update=True,
+            )
+            identity = (
+                self._identity_in_scope(
+                    session,
+                    command.claim_id,
+                    principal,
+                )
+                if assistance is not None
+                else None
+            )
+            if (
+                assistance is None
+                or assistance.id_siniestro != command.claim_id
+                or identity is None
+            ):
+                raise AssistanceManagementError(
+                    "ASSISTANCE-NOT-FOUND",
+                    "Asistencia no encontrada",
+                    404,
+                )
+            self._check_expected_attempt(
+                assistance,
+                command.expected_attempt,
+            )
+            target = {
+                ProviderResult.ACCEPTED: AssistanceStatus.ACCEPTED,
+                ProviderResult.REJECTED: AssistanceStatus.REJECTED,
+                ProviderResult.NO_RESPONSE: AssistanceStatus.NO_RESPONSE,
+            }[command.result]
+            try:
+                validate_assistance_transition(
+                    AssistanceStatus(assistance.estado_solicitud),
+                    target,
+                )
+            except InvalidAssistanceTransition as exc:
+                raise AssistanceManagementError(
+                    "ASSISTANCE-TRANSITION-INVALID",
+                    str(exc),
+                    409,
+                ) from exc
+
+            now = datetime.now(timezone.utc)
+            assistance.estado_solicitud = target.value
+            assistance.actualizado_en = now
+            if command.external_reference:
+                assistance.referencia_externa = (
+                    command.external_reference.strip()
+                )
+            session.add(
+                EventoLineaTiempo(
+                    id_siniestro=assistance.id_siniestro,
+                    id_usuario=identity.id_usuario,
+                    tipo_evento="respuesta_proveedor_registrada",
+                    fecha=now,
+                    detalle={
+                        "id_asistencia": assistance.id_asistencia,
+                        "id_proveedor": assistance.id_proveedor,
+                        "resultado": target.value,
+                        "numero_intento": assistance.numero_intento,
+                        "referencia_externa": (
+                            assistance.referencia_externa
+                        ),
+                        "actor_subject": principal.subject,
+                    },
+                )
+            )
+            result = self._record(assistance)
+        return result
+
+    def reassign(
+        self,
+        command: ReassignAssistanceCommand,
+        principal: AuthenticatedPrincipal,
+    ) -> AssistanceRecord:
+        try:
+            with self._factory() as session, session.begin():
+                current = session.get(
+                    Asistencia,
+                    command.assistance_id,
+                    with_for_update=True,
+                )
+                identity = (
+                    self._identity_in_scope(
+                        session,
+                        command.claim_id,
+                        principal,
+                    )
+                    if current is not None
+                    else None
+                )
+                if (
+                    current is None
+                    or current.id_siniestro != command.claim_id
+                    or identity is None
+                ):
+                    raise AssistanceManagementError(
+                        "ASSISTANCE-NOT-FOUND",
+                        "Asistencia no encontrada",
+                        404,
+                    )
+                self._check_expected_attempt(
+                    current,
+                    command.expected_attempt,
+                )
+                if current.estado_solicitud not in {
+                    AssistanceStatus.REJECTED.value,
+                    AssistanceStatus.NO_RESPONSE.value,
+                }:
+                    raise AssistanceManagementError(
+                        "ASSISTANCE-REASSIGNMENT-INVALID",
+                        (
+                            "Solo se reasigna una solicitud rechazada "
+                            "o sin respuesta"
+                        ),
+                        409,
+                    )
+                if current.numero_intento >= MAX_PILOT_ATTEMPTS:
+                    raise AssistanceManagementError(
+                        "RETRY-LIMIT-REACHED",
+                        "Se alcanzó el máximo de intentos del piloto",
+                        409,
+                    )
+                if (
+                    command.new_provider_id <= 0
+                    or command.new_provider_id == current.id_proveedor
+                ):
+                    raise AssistanceManagementError(
+                        "PROVIDER-INVALID",
+                        (
+                            "El nuevo proveedor debe ser válido "
+                            "y diferente"
+                        ),
+                        422,
+                    )
+                reason = command.reason.strip()
+                if not reason:
+                    raise AssistanceManagementError(
+                        "REASSIGNMENT-REASON-REQUIRED",
+                        "El motivo de reasignación es obligatorio",
+                        422,
+                    )
+                provider = session.get(
+                    Proveedor,
+                    command.new_provider_id,
+                )
+                if provider is None:
+                    raise AssistanceManagementError(
+                        "PROVIDER-NOT-FOUND",
+                        "Proveedor no encontrado",
+                        404,
+                    )
+
+                now = datetime.now(timezone.utc)
+                replacement = Asistencia(
+                    id_siniestro=current.id_siniestro,
+                    id_proveedor=command.new_provider_id,
+                    estado_solicitud=AssistanceStatus.PENDING.value,
+                    numero_intento=current.numero_intento + 1,
+                    tipo_asistencia=current.tipo_asistencia,
+                    motivo=reason,
+                    creado_en=now,
+                    actualizado_en=now,
+                )
+                session.add(replacement)
+                session.flush()
+                session.add(
+                    EventoLineaTiempo(
+                        id_siniestro=current.id_siniestro,
+                        id_usuario=identity.id_usuario,
+                        tipo_evento="asistencia_reasignada",
+                        fecha=now,
+                        detalle={
+                            "id_asistencia_anterior": (
+                                current.id_asistencia
+                            ),
+                            "id_proveedor_anterior": (
+                                current.id_proveedor
+                            ),
+                            "id_asistencia_nueva": (
+                                replacement.id_asistencia
+                            ),
+                            "id_proveedor_nuevo": (
+                                replacement.id_proveedor
+                            ),
+                            "numero_intento": (
+                                replacement.numero_intento
+                            ),
+                            "motivo": reason,
+                            "actor_subject": principal.subject,
+                        },
+                    )
+                )
+                result = self._record(replacement)
+            return result
+        except IntegrityError as exc:
+            raise AssistanceManagementError(
+                "ASSISTANCE-REASSIGNMENT-CONFLICT",
+                "La reasignación ya fue registrada",
+                409,
+            ) from exc
