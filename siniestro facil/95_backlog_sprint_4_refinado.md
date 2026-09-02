@@ -23,7 +23,7 @@ Criterios:
 
 Evidencia de cierre: `102_evidencia_final_s4_be_01_postgresql.md`.
 
-## S4-BE-02 — Registrar orden, diagnóstico y presupuesto
+## S4-BE-02 — Registrar orden, diagnóstico y presupuesto — COMPLETADO
 
 | Campo | Definición |
 |---|---|
@@ -40,6 +40,8 @@ Criterios:
 - Registrar la vigencia conforme a S4-DEC-01.
 - Pasar el caso a `presupuesto_recibido`.
 - Aplicar idempotencia, RBAC, versión y auditoría atómica.
+
+Evidencia de cierre: `106_evidencia_final_s4_be_02_postgresql.md`.
 
 ## S4-BE-03 — Decidir presupuesto y registrar cambios
 
