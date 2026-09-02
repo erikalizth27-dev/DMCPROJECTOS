@@ -17,6 +17,9 @@ from siniestro_facil.domain.identity import ActorType, AuthenticatedPrincipal
 from siniestro_facil.main import create_app
 
 
+HEADERS = {"Idempotency-Key": "budget-api-synthetic-0001"}
+
+
 def taller_principal() -> AuthenticatedPrincipal:
     now = datetime.now(timezone.utc)
     return AuthenticatedPrincipal(
@@ -56,6 +59,7 @@ def test_submits_and_gets_budget() -> None:
     created = client.post(
         "/api/v1/siniestros/42/inspecciones/7/presupuestos",
         json=payload(),
+        headers=HEADERS,
     )
 
     assert created.status_code == 201
@@ -76,10 +80,29 @@ def test_submits_and_gets_budget() -> None:
     assert found.json() == body
 
 
+def test_repeats_same_request_idempotently() -> None:
+    client = configured_client()
+    first = client.post(
+        "/api/v1/siniestros/42/inspecciones/7/presupuestos",
+        json=payload(),
+        headers=HEADERS,
+    )
+    repeated = client.post(
+        "/api/v1/siniestros/42/inspecciones/7/presupuestos",
+        json=payload(),
+        headers=HEADERS,
+    )
+
+    assert first.status_code == 201
+    assert repeated.status_code == 201
+    assert repeated.json() == first.json()
+
+
 def test_requires_diagnosis() -> None:
     response = configured_client().post(
         "/api/v1/siniestros/42/inspecciones/7/presupuestos",
         json={**payload(), "diagnostico": ""},
+        headers=HEADERS,
     )
 
     assert response.status_code == 422
@@ -90,6 +113,7 @@ def test_hides_budget_from_unrelated_claim() -> None:
     created = client.post(
         "/api/v1/siniestros/42/inspecciones/7/presupuestos",
         json=payload(),
+        headers=HEADERS,
     )
     response = client.get(
         f"/api/v1/siniestros/99/presupuestos/{created.json()['id']}"
@@ -103,6 +127,7 @@ def test_requires_authentication_by_default() -> None:
     response = TestClient(create_app()).post(
         "/api/v1/siniestros/42/inspecciones/7/presupuestos",
         json=payload(),
+        headers=HEADERS,
     )
 
     assert response.status_code == 401
