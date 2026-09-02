@@ -29,13 +29,20 @@
 
 ## Decisiones pendientes
 
-- **S4-DEC-01:** definir la vigencia de un presupuesto; las entrevistas exigen registrarla pero no indican duración.
-- **S4-DEC-02:** definir qué roles pueden aprobar, observar o rechazar un presupuesto durante el piloto.
-- **S4-DEC-03:** definir si los montos requieren niveles o umbrales de autorización; no existe información suficiente para inventarlos.
+- **S4-DEC-01 — APROBADA:** vigencia de 15 días calendario; al vencer se presenta una nueva versión.
+- **S4-DEC-02 — APROBADA:** operador o ajustador asignado observa; supervisor aprueba o rechaza.
+- **S4-DEC-03 — APROBADA:** sin umbrales monetarios diferenciados durante el piloto; toda decisión queda registrada y auditada.
 
 ## Restricciones
 
-- No se inventan días de vigencia, montos, monedas ni umbrales.
+- Se aplica la vigencia aprobada de 15 días; no se inventan monedas ni umbrales.
 - No se habilita reparación, pago o cierre del siniestro dentro de Sprint 4.
 - No se integra un taller externo real sin autorización posterior.
 - No se fusiona el PR sin autorización explícita del Product Owner.
+
+
+## Registro de aprobación
+
+- S4-DEC-01, S4-DEC-02 y S4-DEC-03 aprobadas el 2 de septiembre de 2026.
+- Evidencia: `97_registro_aprobacion_s4_decisiones.md`.
+- S4-BE-01, S4-BE-02 y S4-BE-03 quedan habilitados para desarrollo.
