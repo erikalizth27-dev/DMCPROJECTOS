@@ -2,7 +2,7 @@
 
 ## Estado general
 
-- Avance: **68% — primera entrega S3-BE-03 pendiente de validación**.
+- Avance: **70% — primera entrega S3-BE-03 validada**.
 - Rama: `agent/sprint-3-backend`.
 - Punto de partida: `main` en `d2b4b9f06dd9738ba47e8744d32f2277e2b3bbd1`.
 - Duración de referencia: 2 semanas.
@@ -154,5 +154,7 @@
 - Ruta dead letter idempotente implementada.
 - Dobles en memoria; todavía no se crean recursos GCP.
 - Catorce pruebas nuevas publicadas.
-- Validación esperada: **189/189 pruebas**.
+- Validación Cloud Shell: **189/189 pruebas aprobadas**.
+- Alembic: `20260902_01 (head)`.
+- Evidencia: `85_evidencia_primera_entrega_s3_be_03.md`.
 - Pendiente: outbox PostgreSQL, adaptador GCP y validación real de Pub/Sub.
