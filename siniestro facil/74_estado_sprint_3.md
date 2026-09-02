@@ -2,7 +2,7 @@
 
 ## Estado general
 
-- Avance: **58% — segunda entrega S3-BE-02 validada; rollback pendiente**.
+- Avance: **60% — S3-BE-02 completado**.
 - Rama: `agent/sprint-3-backend`.
 - Punto de partida: `main` en `d2b4b9f06dd9738ba47e8744d32f2277e2b3bbd1`.
 - Duración de referencia: 2 semanas.
@@ -130,3 +130,14 @@
 - Evidencia: `83_evidencia_segunda_entrega_s3_be_02.md`.
 - No requiere una migración adicional.
 - Pendiente: validación PostgreSQL mediante rollback.
+
+## Cierre de S3-BE-02
+
+- Respuesta aceptada, rechazada y sin respuesta implementadas.
+- Conflicto de intento HTTP 409 validado.
+- Reasignación conserva el intento anterior y crea uno nuevo.
+- Proveedor anterior/nuevo y motivo auditados.
+- Validación PostgreSQL con rollback aprobada.
+- Limpieza sin registros residuales.
+- Evidencia: `84_evidencia_final_s3_be_02_postgresql.md`.
+- Estado del incremento: **completado**.
