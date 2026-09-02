@@ -32,8 +32,6 @@ def upgrade() -> None:
 def downgrade() -> None:
     op.execute(
         """
-        DELETE FROM siniestro_facil.cambio_presupuesto
-        WHERE tipo_cambio IN ('aprobacion', 'rechazo');
         ALTER TABLE siniestro_facil.cambio_presupuesto
             DROP CONSTRAINT IF EXISTS chk_cambio_tipo;
         ALTER TABLE siniestro_facil.cambio_presupuesto
