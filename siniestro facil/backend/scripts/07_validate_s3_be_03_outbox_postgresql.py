@@ -31,6 +31,7 @@ factory = sessionmaker(
     bind=connection,
     class_=Session,
     expire_on_commit=False,
+    join_transaction_mode="create_savepoint",
 )
 repository = PostgreSQLOutboxRepository(factory)
 
