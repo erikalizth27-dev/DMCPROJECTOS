@@ -2,7 +2,7 @@
 
 ## Estado general
 
-- Avance: **50% — primera entrega S3-BE-02 validada**.
+- Avance: **57% — segunda entrega S3-BE-02 pendiente de validación**.
 - Rama: `agent/sprint-3-backend`.
 - Punto de partida: `main` en `d2b4b9f06dd9738ba47e8744d32f2277e2b3bbd1`.
 - Duración de referencia: 2 semanas.
@@ -113,3 +113,18 @@
 - Alembic: `20260902_01 (head)`.
 - Evidencia: `82_evidencia_primera_entrega_s3_be_02.md`.
 - Pendiente: API, repositorio PostgreSQL, auditoría y rollback.
+
+## Segunda entrega de S3-BE-02
+
+- Endpoint de respuesta del proveedor implementado.
+- Endpoint de reasignación implementado.
+- Bloqueo de fila `FOR UPDATE` aplicado.
+- Intento esperado validado dentro de la transacción.
+- Respuesta y auditoría persistidas atómicamente.
+- Reasignación crea una solicitud nueva y conserva la anterior.
+- Proveedor nuevo validado contra PostgreSQL.
+- Auditoría conserva proveedores anterior/nuevo, intento y motivo.
+- Siete pruebas API/repositorio nuevas publicadas.
+- Validación esperada: **175/175 pruebas**.
+- No requiere una migración adicional.
+- Pendiente: validación PostgreSQL mediante rollback.
