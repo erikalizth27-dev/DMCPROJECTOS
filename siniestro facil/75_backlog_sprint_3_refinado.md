@@ -73,6 +73,6 @@ Criterios:
 
 | Incremento | Estado | Condición pendiente |
 |---|---|---|
-| S3-BE-01 | Condicionado | Aprobar S3-DEC-01 |
-| S3-BE-02 | Listo para diseño | Reutiliza reglas ya materializadas de asignación e historial |
-| S3-BE-03 | Condicionado | Aprobar S3-DEC-01 y S3-DEC-02 |
+| S3-BE-01 | Listo | S3-DEC-01 aprobada |
+| S3-BE-02 | Listo | Reutiliza reglas ya materializadas de asignación e historial |
+| S3-BE-03 | Listo | S3-DEC-01 y S3-DEC-02 aprobadas |
