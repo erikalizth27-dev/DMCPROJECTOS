@@ -2,7 +2,7 @@
 
 ## Estado general
 
-- Avance: **28% — primera entrega S4-BE-01 publicada, pendiente de validación**.
+- Avance: **30% — primera entrega S4-BE-01 validada**.
 - Rama: `agent/sprint-4-backend`.
 - Punto de partida: `main` en `2d4cc89b498d9ba11fa41f4926fc7110f5b0a6e8`.
 - Duración de referencia: 2 semanas.
@@ -93,5 +93,6 @@
 - Recurso inexistente o ajeno ocultado con HTTP 404.
 - Repositorio temporal en memoria; todavía no es persistencia final.
 - Diez pruebas nuevas publicadas.
-- Resultado esperado: **228/228 pruebas aprobadas**.
+- Validación Cloud Shell: **228/228 pruebas aprobadas en 2.21 segundos**.
+- Evidencia: `100_evidencia_primera_entrega_s4_be_01.md`.
 - Pendiente: PostgreSQL, asignación real, bloqueo, auditoría y rollback.
