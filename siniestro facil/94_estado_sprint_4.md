@@ -2,7 +2,7 @@
 
 ## Estado general
 
-- Avance: **40% — S4-BE-01 completado**.
+- Avance: **52% — primera entrega S4-BE-02 publicada, pendiente de validación**.
 - Rama: `agent/sprint-4-backend`.
 - Punto de partida: `main` en `2d4cc89b498d9ba11fa41f4926fc7110f5b0a6e8`.
 - Duración de referencia: 2 semanas.
@@ -115,3 +115,20 @@
 - Validación PostgreSQL: **completada**, con rollback y cero registros residuales.
 - Evidencia final: `102_evidencia_final_s4_be_01_postgresql.md`.
 - Estado de S4-BE-01: **completado**.
+
+
+## Primera entrega de S4-BE-02
+
+- Caso de uso para presentar presupuesto y diagnóstico implementado.
+- Acceso de escritura limitado al rol taller.
+- Siniestro, inspección y versión validados en el contrato.
+- Vigencia calculada con la regla aprobada de 15 días calendario.
+- Estado inicial del presupuesto: `recibido`.
+- Estado resultante del siniestro: `presupuesto_recibido`.
+- Consulta del presupuesto sin revelar relaciones ajenas.
+- Endpoints POST de presentación y GET de consulta.
+- No se agregaron monto, moneda ni umbrales inexistentes en las especificaciones.
+- Repositorio temporal en memoria; PostgreSQL e idempotencia quedan para la segunda entrega.
+- Diez pruebas nuevas publicadas.
+- Resultado esperado: **243/243 pruebas aprobadas**.
+- Pendiente: validación Cloud Shell, persistencia PostgreSQL, identidad de proveedor, bloqueo, idempotencia, auditoría y rollback.
