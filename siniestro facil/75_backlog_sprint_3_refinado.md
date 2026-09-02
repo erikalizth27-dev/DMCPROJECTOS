@@ -75,4 +75,4 @@ Criterios:
 |---|---|---|
 | S3-BE-01 | Completado | API, PostgreSQL, auditoría e idempotencia validados |
 | S3-BE-02 | Completado | Respuesta, reasignación, historial y auditoría validados |
-| S3-BE-03 | Listo | S3-DEC-01 y S3-DEC-02 aprobadas |
+| S3-BE-03 | Completado | Outbox, Pub/Sub, Cloud Tasks y dead letter validados |
