@@ -168,7 +168,7 @@
 - Estados contractuales: `observado`, `autorizado` y `rechazado`.
 - Incremento de versión representado en el resultado.
 - Endpoint POST de decisión formal.
-- Respuesta incluye actor lógico, decisión, justificación, fecha, estado y versión.
+- Respuesta incluye decisión, justificación, fecha, estado y versión.
 - Repositorio temporal en memoria; alcance real y persistencia quedan para la segunda entrega.
 - Doce pruebas nuevas publicadas.
 - Resultado esperado: **262/262 pruebas aprobadas**.
