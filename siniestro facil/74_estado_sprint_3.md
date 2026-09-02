@@ -31,11 +31,12 @@
 
 - **S3-DEC-01 — APROBADA:** usar temporalmente un adaptador simulado de proveedor.
 - **S3-DEC-02 — APROBADA:** 3 intentos; esperas de 30 s, 2 min y 5 min; timeout de 10 s; escalamiento tras el tercer fallo.
+- **S3-DEC-03 — APROBADA:** Pub/Sub para transporte, Cloud Tasks para programación diferida y recursos nominales en `project-77c17016-86bc-4fc4-a97`.
 
 ## Restricciones
 
 - El adaptador simulado aprobado no sustituye la selección futura de un proveedor real.
-- No se crean tópicos, suscripciones ni recursos GCP sin pasos explícitos y validación previa.
+- Los recursos GCP aprobados se crean únicamente mediante comandos explícitos, privilegios mínimos y validación posterior.
 - No se inventan SLA, timeouts ni cantidades de reintentos.
 - No se fusiona el PR de Sprint 3 sin autorización explícita del Product Owner.
 
@@ -54,8 +55,8 @@
 
 ## Registro de aprobación
 
-- S3-DEC-01 y S3-DEC-02 aprobadas el 2 de septiembre de 2026.
-- Evidencia: `78_registro_aprobacion_s3_decisiones.md`.
+- S3-DEC-01, S3-DEC-02 y S3-DEC-03 aprobadas el 2 de septiembre de 2026.
+- Evidencias: `78_registro_aprobacion_s3_decisiones.md` y `86_registro_aprobacion_s3_dec_03.md`.
 - S3-BE-01, S3-BE-02 y S3-BE-03 quedan habilitados para desarrollo.
 
 ## Avance de S3-BE-01
