@@ -2,7 +2,7 @@
 
 ## Estado general
 
-- Avance: **62% — persistencia S4-BE-02 publicada, pendiente de validación**.
+- Avance: **63% — regresión S4-BE-02 aprobada; pendiente migración Cloud SQL**.
 - Rama: `agent/sprint-4-backend`.
 - Punto de partida: `main` en `2d4cc89b498d9ba11fa41f4926fc7110f5b0a6e8`.
 - Duración de referencia: 2 semanas.
@@ -148,5 +148,6 @@
 - Repetición idempotente devuelve el resultado previo; contenido diferente produce HTTP 409.
 - API conectada automáticamente a PostgreSQL cuando existe `DATABASE_URL`.
 - Siete pruebas nuevas publicadas.
-- Resultado esperado: **250/250 pruebas aprobadas**.
-- Pendiente: aplicar migración, validar regresión y ejecutar prueba PostgreSQL con rollback.
+- Validación Cloud Shell: **250/250 pruebas aprobadas en 2.31 segundos**.
+- Evidencia: `104_evidencia_regresion_s4_be_02.md`.
+- Pendiente: aplicar migración y ejecutar prueba PostgreSQL con rollback.
