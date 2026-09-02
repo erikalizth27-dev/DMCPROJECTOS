@@ -2,7 +2,7 @@
 
 ## Estado general
 
-- Avance: **75% — primera entrega S4-BE-03 publicada, pendiente de validación**.
+- Avance: **82% — persistencia S4-BE-03 publicada, pendiente de validación**.
 - Rama: `agent/sprint-4-backend`.
 - Punto de partida: `main` en `2d4cc89b498d9ba11fa41f4926fc7110f5b0a6e8`.
 - Duración de referencia: 2 semanas.
@@ -171,5 +171,23 @@
 - Respuesta incluye decisión, justificación, fecha, estado y versión.
 - Repositorio temporal en memoria; alcance real y persistencia quedan para la segunda entrega.
 - Doce pruebas nuevas publicadas.
-- Resultado esperado: **262/262 pruebas aprobadas**.
-- Pendiente: validación Cloud Shell, PostgreSQL, asignación real, autorización, historial de cambios, concurrencia, auditoría y rollback.
+- Validación Cloud Shell: **262/262 pruebas aprobadas en 2.46 segundos**.
+- Evidencia: `107_evidencia_primera_entrega_s4_be_03.md`.
+- Estado de primera entrega: **validado**.
+
+
+## Segunda entrega de S4-BE-03
+
+- Migración `20260902_04` creada para idempotencia de decisiones.
+- Alcance real por identidad, rol y asignación activa.
+- Presupuesto y siniestro bloqueados antes de modificar.
+- Versión del siniestro comprobada.
+- Presupuestos vencidos no pueden aprobarse.
+- Autorización y cambio de presupuesto conservan el original y el historial.
+- Estado del presupuesto y del siniestro actualizados atómicamente.
+- Auditoría incluye decisión, justificación, actor, estados y versiones.
+- Idempotencia persistente y conflicto por contenido diferente.
+- API conectada a PostgreSQL cuando existe `DATABASE_URL`.
+- Siete pruebas nuevas publicadas.
+- Resultado esperado: **269/269 pruebas aprobadas**.
+- Pendiente: regresión, aplicación de migración y validación PostgreSQL con rollback.
