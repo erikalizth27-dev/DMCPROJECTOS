@@ -2,7 +2,7 @@
 
 ## Estado general
 
-- Avance: **65% — S4-BE-02 completado**.
+- Avance: **75% — primera entrega S4-BE-03 publicada, pendiente de validación**.
 - Rama: `agent/sprint-4-backend`.
 - Punto de partida: `main` en `2d4cc89b498d9ba11fa41f4926fc7110f5b0a6e8`.
 - Duración de referencia: 2 semanas.
@@ -156,3 +156,20 @@
 - Validación PostgreSQL: **completada**, con rollback y cero registros residuales.
 - Evidencia final: `106_evidencia_final_s4_be_02_postgresql.md`.
 - Estado de S4-BE-02: **completado**.
+
+
+## Primera entrega de S4-BE-03
+
+- Caso de uso de decisión formal implementado.
+- Operador o ajustador habilitado únicamente para observar.
+- Supervisor habilitado únicamente para aprobar o rechazar.
+- Justificación obligatoria para toda decisión.
+- Objetivo `recibido` rechazado por no constituir una decisión.
+- Estados contractuales: `observado`, `autorizado` y `rechazado`.
+- Incremento de versión representado en el resultado.
+- Endpoint POST de decisión formal.
+- Respuesta incluye actor lógico, decisión, justificación, fecha, estado y versión.
+- Repositorio temporal en memoria; alcance real y persistencia quedan para la segunda entrega.
+- Doce pruebas nuevas publicadas.
+- Resultado esperado: **262/262 pruebas aprobadas**.
+- Pendiente: validación Cloud Shell, PostgreSQL, asignación real, autorización, historial de cambios, concurrencia, auditoría y rollback.
