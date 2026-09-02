@@ -143,9 +143,54 @@ finally:
             print("Suscripción temporal eliminada: OK")
         except NotFound:
             pass
+    worker_subscription = subscriber.subscription_path(
+        PROJECT_ID,
+        "siniestro-asistencia-worker",
+    )
+    try:
+        response = subscriber.pull(
+            request={
+                "subscription": worker_subscription,
+                "max_messages": 100,
+            },
+            timeout=10,
+        )
+        synthetic_ack_ids: list[str] = []
+        other_ack_ids: list[str] = []
+        for item in response.received_messages:
+            if (
+                item.message.attributes.get("event_type")
+                == "asistencia.validacion_sintetica"
+            ):
+                synthetic_ack_ids.append(item.ack_id)
+            else:
+                other_ack_ids.append(item.ack_id)
+        if synthetic_ack_ids:
+            subscriber.acknowledge(
+                request={
+                    "subscription": worker_subscription,
+                    "ack_ids": synthetic_ack_ids,
+                }
+            )
+        if other_ack_ids:
+            subscriber.modify_ack_deadline(
+                request={
+                    "subscription": worker_subscription,
+                    "ack_ids": other_ack_ids,
+                    "ack_deadline_seconds": 0,
+                }
+            )
+        print(
+            "Mensajes sintéticos retirados del worker: "
+            f"{len(synthetic_ack_ids)}"
+        )
+    except Exception as cleanup_error:
+        print(f"AVISO limpieza worker: {cleanup_error}")
     publisher.stop()
     subscriber.close()
-    tasks.close()
+    close_tasks = getattr(tasks, "close", None)
+    if close_tasks is not None:
+        close_tasks()
 
 print("LIMPIEZA GCP: OK")
 print("VALIDACIÓN REAL S3-BE-03 COMPLETADA")
