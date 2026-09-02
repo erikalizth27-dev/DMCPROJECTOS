@@ -30,6 +30,8 @@ class DecideBudgetCommand:
     target: BudgetStatus
     reason: str
     expected_version: int
+    idempotency_key: str = "budget-decision-synthetic-0001"
+    fingerprint: str = "0" * 64
 
 
 @dataclass(frozen=True, slots=True)
@@ -56,12 +58,23 @@ class InMemoryBudgetDecisionRepository:
     def __init__(self) -> None:
         self._next_id = 1
         self._results: dict[int, DecidedBudget] = {}
+        self._requests: dict[str, tuple[str, DecidedBudget]] = {}
 
     def decide(
         self,
         command: DecideBudgetCommand,
         principal: AuthenticatedPrincipal,
     ) -> DecidedBudget:
+        existing = self._requests.get(command.idempotency_key)
+        if existing is not None:
+            fingerprint, result = existing
+            if fingerprint == command.fingerprint:
+                return result
+            raise BudgetDecisionError(
+                "IDEMPOTENCY-CONFLICT",
+                "Idempotency-Key ya fue utilizada con otro contenido",
+                409,
+            )
         state = {
             BudgetStatus.OBSERVED: EstadoSiniestro.OBSERVADO,
             BudgetStatus.AUTHORIZED: EstadoSiniestro.AUTORIZADO,
@@ -78,6 +91,10 @@ class InMemoryBudgetDecisionRepository:
             version=command.expected_version + 1,
         )
         self._results[result.decision_id] = result
+        self._requests[command.idempotency_key] = (
+            command.fingerprint,
+            result,
+        )
         self._next_id += 1
         return result
 
@@ -99,6 +116,18 @@ class DecideBudgetService:
             raise BudgetDecisionError(
                 "BUDGET-DECISION-INVALID",
                 "Siniestro, presupuesto o versión inválidos",
+                422,
+            )
+        if not (16 <= len(command.idempotency_key) <= 128):
+            raise BudgetDecisionError(
+                "IDEMPOTENCY-KEY-INVALID",
+                "Idempotency-Key debe tener entre 16 y 128 caracteres",
+                422,
+            )
+        if len(command.fingerprint) != 64:
+            raise BudgetDecisionError(
+                "BUDGET-DECISION-FINGERPRINT-INVALID",
+                "La huella de la solicitud es inválida",
                 422,
             )
         if not command.reason.strip():
