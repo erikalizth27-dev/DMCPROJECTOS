@@ -2,7 +2,7 @@
 
 ## Estado general
 
-- Avance: **14% — contratos y repositorio base publicados, pendientes de validación**.
+- Avance: **15% — fundaciones de Sprint 4 completadas**.
 - Rama: `agent/sprint-4-backend`.
 - Punto de partida: `main` en `2d4cc89b498d9ba11fa41f4926fc7110f5b0a6e8`.
 - Duración de referencia: 2 semanas.
@@ -73,5 +73,8 @@
 - Taller limitado a presupuestos asociados con su proveedor.
 - Consultas ocultan recursos inexistentes o fuera de alcance.
 - Cinco pruebas nuevas publicadas.
-- Resultado esperado: **218/218 pruebas aprobadas**.
+- Validación Cloud Shell: **218/218 pruebas aprobadas**.
+- Alembic: `20260902_02 (head)`.
+- Evidencia: `99_evidencia_fundaciones_sprint_4.md`.
+- Estado de fundaciones: **completado**.
 - No requiere migración adicional.
