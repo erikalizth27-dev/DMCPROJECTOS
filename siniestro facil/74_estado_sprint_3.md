@@ -2,7 +2,7 @@
 
 ## Estado general
 
-- Avance: **82% — outbox PostgreSQL migrado y validado**.
+- Avance: **84% — adaptadores GCP publicados, pendientes de validación**.
 - Rama: `agent/sprint-3-backend`.
 - Punto de partida: `main` en `d2b4b9f06dd9738ba47e8744d32f2277e2b3bbd1`.
 - Duración de referencia: 2 semanas.
@@ -182,3 +182,20 @@
 - Ciclo del outbox y rollback aprobados sin registros residuales.
 - Evidencia: `89_evidencia_outbox_postgresql_s3_be_03.md`.
 - Pendiente: integrar Pub/Sub y Cloud Tasks para completar S3-BE-03.
+
+
+## Tercera entrega de S3-BE-03 — adaptadores GCP
+
+- Transporte real de Google Pub/Sub implementado.
+- Topic principal y dead letter soportados.
+- Ordering key, event ID y event type enviados como atributos.
+- Timeout de publicación de 10 segundos aplicado.
+- Programador real de Cloud Tasks implementado.
+- Esperas permitidas limitadas a 30, 120 y 300 segundos.
+- Dispatch deadline de 10 segundos aplicado.
+- Publicador del outbox marca éxito o fallo.
+- Clientes inyectables para pruebas sin credenciales.
+- Dependencias GCP declaradas como extra opcional.
+- Siete pruebas nuevas publicadas.
+- Resultado esperado: **201/201 pruebas aprobadas**.
+- Pendiente: validación Cloud Shell y prueba sintética real.
