@@ -2,7 +2,7 @@
 
 ## Estado general
 
-- Avance: **75% — recursos GCP de S3-BE-03 creados y verificados**.
+- Avance: **78% — fundación del outbox publicada, pendiente de validación**.
 - Rama: `agent/sprint-3-backend`.
 - Punto de partida: `main` en `d2b4b9f06dd9738ba47e8744d32f2277e2b3bbd1`.
 - Duración de referencia: 2 semanas.
@@ -163,3 +163,16 @@
 - Cola `siniestro-asistencia-reintentos` en estado `RUNNING` y `maxAttempts: 1`.
 - Evidencia: `87_evidencia_recursos_gcp_s3_be_03.md`.
 - Pendiente: outbox PostgreSQL, adaptadores reales de Pub/Sub/Cloud Tasks y validación extremo a extremo.
+
+
+## Segunda entrega de S3-BE-03 — fundación outbox
+
+- Modelo `EventoOutbox` incorporado.
+- Migración Alembic `20260902_02` publicada y todavía no aplicada.
+- Repositorio PostgreSQL con reclamación `FOR UPDATE SKIP LOCKED`.
+- Estados pendiente, publicando, publicado y fallido definidos.
+- Confirmación idempotente de `pubsub_message_id`.
+- Registro controlado de fallos y límite de lote.
+- Cinco pruebas nuevas publicadas.
+- Resultado esperado: **194/194 pruebas aprobadas**.
+- Pendiente: validación Cloud Shell antes de aplicar la migración.
