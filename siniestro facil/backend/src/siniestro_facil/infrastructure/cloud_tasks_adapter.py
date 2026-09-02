@@ -93,7 +93,7 @@ class CloudTasksRetryScheduler:
             "name": task_name,
             "http_request": request,
             "schedule_time": scheduled_at,
-            "dispatch_deadline": {"seconds": 10},
+            "dispatch_deadline": {"seconds": 15},
         }
         response = self._client.create_task(
             request={"parent": parent, "task": task}
