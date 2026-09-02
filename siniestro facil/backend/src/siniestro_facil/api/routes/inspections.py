@@ -11,6 +11,13 @@ from pydantic import Field
 from siniestro_facil.api.errors import BusinessError
 from siniestro_facil.api.routes.claims import get_authenticated_principal
 from siniestro_facil.api.schemas import ApiModel
+from siniestro_facil.application.decide_budget import (
+    BudgetDecisionError,
+    DecideBudgetCommand,
+    DecideBudgetService,
+    DecidedBudget,
+    InMemoryBudgetDecisionRepository,
+)
 from siniestro_facil.application.submit_budget import (
     BudgetSubmissionError,
     BudgetSubmissionRepository,
@@ -32,6 +39,7 @@ from siniestro_facil.application.schedule_inspection import (
 from siniestro_facil.config import Settings
 from siniestro_facil.db import create_database_engine
 from siniestro_facil.domain.identity import AuthenticatedPrincipal
+from siniestro_facil.domain.inspection_budget import BudgetStatus
 from siniestro_facil.persistence.inspection_budget_repository import (
     PostgreSQLBudgetSubmissionRepository,
     PostgreSQLInspectionSchedulingRepository,
@@ -74,6 +82,22 @@ class PresupuestoResponse(ApiModel):
     version: int
 
 
+class DecidirPresupuestoRequest(ApiModel):
+    decision: BudgetStatus
+    justificacion: str = Field(min_length=1, max_length=2000)
+    version: int = Field(ge=0)
+
+
+class DecisionPresupuestoResponse(ApiModel):
+    id: int
+    presupuesto_id: int = Field(alias="presupuestoId")
+    siniestro_id: int = Field(alias="siniestroId")
+    decision: str
+    justificacion: str
+    fecha: datetime
+    estado_actual: str = Field(alias="estadoActual")
+    version: int
+
 @lru_cache(maxsize=1)
 def get_inspection_repository() -> InspectionSchedulingRepository:
     settings = Settings.from_environment()
@@ -112,6 +136,16 @@ def get_get_budget_service() -> GetBudgetService:
     return GetBudgetService(get_budget_repository())
 
 
+@lru_cache(maxsize=1)
+def get_budget_decision_repository() -> InMemoryBudgetDecisionRepository:
+    # Primera entrega; PostgreSQL se incorpora antes de cerrar S4-BE-03.
+    return InMemoryBudgetDecisionRepository()
+
+
+def get_decide_budget_service() -> DecideBudgetService:
+    return DecideBudgetService(get_budget_decision_repository())
+
+
 def _response(result: ScheduledInspection) -> InspeccionResponse:
     return InspeccionResponse(
         id=result.id,
@@ -136,6 +170,21 @@ def _budget_response(result: SubmittedBudget) -> PresupuestoResponse:
         version=result.version,
     )
 
+
+
+def _decision_response(
+    result: DecidedBudget,
+) -> DecisionPresupuestoResponse:
+    return DecisionPresupuestoResponse(
+        id=result.decision_id,
+        presupuestoId=result.budget_id,
+        siniestroId=result.claim_id,
+        decision=result.target.value,
+        justificacion=result.reason,
+        fecha=result.decided_at,
+        estadoActual=result.current_state.value,
+        version=result.version,
+    )
 
 @router.post(
     "/{siniestro_id}/inspecciones",
@@ -246,3 +295,30 @@ def get_budget(
     except BudgetSubmissionError as exc:
         raise BusinessError(exc.code, exc.message, exc.status_code) from exc
     return _budget_response(result)
+
+
+@router.post(
+    "/{siniestro_id}/presupuestos/{presupuesto_id}/decision",
+    response_model=DecisionPresupuestoResponse,
+)
+def decide_budget(
+    siniestro_id: int,
+    presupuesto_id: int,
+    request: DecidirPresupuestoRequest,
+    principal: AuthenticatedPrincipal = Depends(get_authenticated_principal),
+    service: DecideBudgetService = Depends(get_decide_budget_service),
+) -> DecisionPresupuestoResponse:
+    try:
+        result = service.execute(
+            DecideBudgetCommand(
+                claim_id=siniestro_id,
+                budget_id=presupuesto_id,
+                target=request.decision,
+                reason=request.justificacion,
+                expected_version=request.version,
+            ),
+            principal,
+        )
+    except BudgetDecisionError as exc:
+        raise BusinessError(exc.code, exc.message, exc.status_code) from exc
+    return _decision_response(result)
