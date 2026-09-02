@@ -384,6 +384,9 @@ class Presupuesto(Base):
         ForeignKey(f"{SCHEMA}.siniestro.id_siniestro", ondelete="CASCADE"),
         nullable=False,
     )
+    id_inspeccion: Mapped[int | None] = mapped_column(
+        ForeignKey(f"{SCHEMA}.inspeccion.id_inspeccion", ondelete="RESTRICT")
+    )
     id_proveedor: Mapped[int] = mapped_column(
         ForeignKey(f"{SCHEMA}.proveedor.id_proveedor", ondelete="RESTRICT"),
         nullable=False,
@@ -447,5 +450,26 @@ class CambioPresupuesto(Base):
             f"{SCHEMA}.autorizacion.id_autorizacion",
             ondelete="RESTRICT",
         ),
+        nullable=False,
+    )
+
+
+class SolicitudPresupuestoIdempotente(Base):
+    __tablename__ = "solicitud_presupuesto_idempotente"
+    __table_args__ = {"schema": SCHEMA}
+
+    clave: Mapped[str] = mapped_column(String(128), primary_key=True)
+    huella: Mapped[str] = mapped_column(String(64), nullable=False)
+    id_presupuesto: Mapped[int] = mapped_column(
+        ForeignKey(
+            f"{SCHEMA}.presupuesto.id_presupuesto",
+            ondelete="CASCADE",
+        ),
+        nullable=False,
+        unique=True,
+    )
+    respuesta: Mapped[dict[str, object]] = mapped_column(JSON, nullable=False)
+    creado_en: Mapped[datetime] = mapped_column(
+        DateTime(timezone=True),
         nullable=False,
     )
