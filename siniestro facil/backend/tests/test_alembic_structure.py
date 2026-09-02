@@ -74,3 +74,33 @@ def test_sprint2_evidence_idempotency_revision_is_reversible() -> None:
     assert "solicitud_evidencia_idempotente" in revision
     assert "id_evidencia bigint NOT NULL UNIQUE" in revision
     assert "DROP TABLE IF EXISTS" in revision
+
+
+def test_sprint3_assistance_revision_is_reversible() -> None:
+    revision = (
+        BACKEND_ROOT
+        / "alembic"
+        / "versions"
+        / "20260902_01_s3_assistance.py"
+    ).read_text(encoding="utf-8")
+
+    assert 'revision = "20260902_01"' in revision
+    assert 'down_revision = "20260901_01"' in revision
+    assert "solicitud_asistencia_idempotente" in revision
+    assert "idx_asistencia_siniestro_estado" in revision
+    assert "DROP TABLE IF EXISTS" in revision
+
+
+def test_sprint3_outbox_revision_is_reversible() -> None:
+    revision = (
+        BACKEND_ROOT
+        / "alembic"
+        / "versions"
+        / "20260902_02_s3_assistance_outbox.py"
+    ).read_text(encoding="utf-8")
+
+    assert 'revision = "20260902_02"' in revision
+    assert 'down_revision = "20260902_01"' in revision
+    assert "CREATE TABLE IF NOT EXISTS siniestro_facil.evento_outbox" in revision
+    assert "idx_evento_outbox_pendiente" in revision
+    assert "DROP TABLE IF EXISTS siniestro_facil.evento_outbox" in revision

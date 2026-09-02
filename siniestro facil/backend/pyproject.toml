@@ -18,6 +18,10 @@ dependencies = [
 ]
 
 [project.optional-dependencies]
+gcp = [
+  "google-cloud-pubsub>=2.27,<3",
+  "google-cloud-tasks>=2.18,<3",
+]
 test = [
   "httpx>=0.28,<1",
   "pytest>=8,<9",
