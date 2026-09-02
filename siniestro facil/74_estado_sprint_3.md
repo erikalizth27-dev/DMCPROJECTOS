@@ -2,7 +2,7 @@
 
 ## Estado general
 
-- Avance: **78% — fundación del outbox publicada, pendiente de validación**.
+- Avance: **80% — fundación del outbox validada, pendiente de migración Cloud SQL**.
 - Rama: `agent/sprint-3-backend`.
 - Punto de partida: `main` en `d2b4b9f06dd9738ba47e8744d32f2277e2b3bbd1`.
 - Duración de referencia: 2 semanas.
@@ -174,5 +174,7 @@
 - Confirmación idempotente de `pubsub_message_id`.
 - Registro controlado de fallos y límite de lote.
 - Cinco pruebas nuevas publicadas.
-- Resultado esperado: **194/194 pruebas aprobadas**.
-- Pendiente: validación Cloud Shell antes de aplicar la migración.
+- Validación Cloud Shell: **194/194 pruebas aprobadas**.
+- Alembic: `20260902_02 (head)`.
+- Evidencia: `88_evidencia_fundacion_outbox_s3_be_03.md`.
+- Pendiente: aplicar y validar la migración en Cloud SQL.
