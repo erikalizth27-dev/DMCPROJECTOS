@@ -6,6 +6,11 @@ from sqlalchemy import exists, select
 from sqlalchemy.exc import IntegrityError
 from sqlalchemy.orm import Session, sessionmaker
 
+from siniestro_facil.application.decide_budget import (
+    BudgetDecisionError,
+    DecideBudgetCommand,
+    DecidedBudget,
+)
 from siniestro_facil.application.submit_budget import (
     BudgetSubmissionError,
     SubmitBudgetCommand,
@@ -25,8 +30,12 @@ from siniestro_facil.domain.authorization import PrincipalRole
 from siniestro_facil.domain.enums import EstadoSiniestro, RolUsuario
 from siniestro_facil.domain.identity import AuthenticatedPrincipal
 from siniestro_facil.domain.inspection_budget import (
+    BudgetDecision,
+    BudgetDecisionDenied,
     BudgetStatus,
+    budget_is_expired,
     budget_valid_until,
+    validate_budget_decision,
 )
 from siniestro_facil.domain.state_machine import (
     SolicitudTransicion,
@@ -35,11 +44,14 @@ from siniestro_facil.domain.state_machine import (
 )
 from siniestro_facil.persistence.models import (
     AsignacionSiniestro,
+    Autorizacion,
+    CambioPresupuesto,
     EventoLineaTiempo,
     IdentidadActor,
     Inspeccion,
     Presupuesto,
     Siniestro,
+    SolicitudDecisionPresupuestoIdempotente,
     SolicitudPresupuestoIdempotente,
     UsuarioInterno,
 )
@@ -562,3 +574,210 @@ class PostgreSQLBudgetSubmissionRepository:
                 current_state=EstadoSiniestro(claim.estado_actual),
                 version=claim.version,
             )
+
+
+class PostgreSQLBudgetDecisionRepository:
+    """Registra decisiones, cambios, auditoría e idempotencia atómicamente."""
+
+    def __init__(self, factory: sessionmaker[Session]) -> None:
+        self._factory = factory
+
+    @staticmethod
+    def _result_from_request(
+        request: SolicitudDecisionPresupuestoIdempotente,
+    ) -> DecidedBudget:
+        payload = request.respuesta
+        return DecidedBudget(
+            decision_id=int(payload["decision_id"]),
+            budget_id=int(payload["budget_id"]),
+            claim_id=int(payload["claim_id"]),
+            target=BudgetStatus(str(payload["target"])),
+            reason=str(payload["reason"]),
+            decided_at=datetime.fromisoformat(str(payload["decided_at"])),
+            current_state=EstadoSiniestro(str(payload["current_state"])),
+            version=int(payload["version"]),
+        )
+
+    def decide(
+        self,
+        command: DecideBudgetCommand,
+        principal: AuthenticatedPrincipal,
+    ) -> DecidedBudget:
+        try:
+            with self._factory() as session, session.begin():
+                identity = PostgreSQLInspectionBudgetRepository._internal_identity_in_scope(
+                    session,
+                    command.claim_id,
+                    principal,
+                )
+                if identity is None or identity.id_usuario is None:
+                    raise BudgetDecisionError(
+                        "BUDGET-NOT-FOUND",
+                        "Presupuesto no encontrado",
+                        404,
+                    )
+                existing = session.get(
+                    SolicitudDecisionPresupuestoIdempotente,
+                    command.idempotency_key,
+                )
+                if existing is not None:
+                    if existing.huella == command.fingerprint:
+                        return self._result_from_request(existing)
+                    raise BudgetDecisionError(
+                        "IDEMPOTENCY-CONFLICT",
+                        "Idempotency-Key ya fue utilizada con otro contenido",
+                        409,
+                    )
+                budget = session.get(
+                    Presupuesto,
+                    command.budget_id,
+                    with_for_update=True,
+                )
+                if budget is None or budget.id_siniestro != command.claim_id:
+                    raise BudgetDecisionError(
+                        "BUDGET-NOT-FOUND",
+                        "Presupuesto no encontrado",
+                        404,
+                    )
+                claim = session.execute(
+                    select(Siniestro)
+                    .where(Siniestro.id_siniestro == command.claim_id)
+                    .with_for_update()
+                ).scalar_one_or_none()
+                if claim is None:
+                    raise BudgetDecisionError(
+                        "BUDGET-NOT-FOUND",
+                        "Presupuesto no encontrado",
+                        404,
+                    )
+                if claim.version != command.expected_version:
+                    raise BudgetDecisionError(
+                        "STATE-VERSION-CONFLICT",
+                        "La versión del siniestro está desactualizada",
+                        409,
+                    )
+                if (
+                    command.target is BudgetStatus.AUTHORIZED
+                    and budget_is_expired(
+                        valid_until=budget.vigencia_hasta,
+                        evaluated_on=datetime.now(timezone.utc).date(),
+                    )
+                ):
+                    raise BudgetDecisionError(
+                        "BUDGET-EXPIRED",
+                        "El presupuesto venció y requiere una nueva versión",
+                        409,
+                    )
+                try:
+                    validate_budget_decision(
+                        BudgetDecision(
+                            role=principal.role,
+                            target=command.target,
+                            actor_assigned=True,
+                        )
+                    )
+                except BudgetDecisionDenied as exc:
+                    raise BudgetDecisionError(
+                        "BUDGET-DECISION-FORBIDDEN",
+                        str(exc),
+                        403,
+                    ) from exc
+
+                target_state = {
+                    BudgetStatus.OBSERVED: EstadoSiniestro.OBSERVADO,
+                    BudgetStatus.AUTHORIZED: EstadoSiniestro.AUTORIZADO,
+                    BudgetStatus.REJECTED: EstadoSiniestro.RECHAZADO,
+                }[command.target]
+                now = datetime.now(timezone.utc)
+                authorization = Autorizacion(
+                    id_usuario_autoriza=identity.id_usuario,
+                    fecha=now,
+                    objeto_autorizado=(
+                        f"presupuesto:{budget.id_presupuesto}:"
+                        f"{command.target.value}"
+                    ),
+                )
+                session.add(authorization)
+                session.flush()
+                change = CambioPresupuesto(
+                    id_presupuesto=budget.id_presupuesto,
+                    tipo_cambio=command.target.value,
+                    id_autorizacion=authorization.id_autorizacion,
+                )
+                session.add(change)
+                previous_state = claim.estado_actual
+                previous_budget_status = budget.estado
+                budget.estado = command.target.value
+                claim.estado_actual = target_state.value
+                claim.version += 1
+                session.flush()
+                result = DecidedBudget(
+                    decision_id=change.id_cambio,
+                    budget_id=budget.id_presupuesto,
+                    claim_id=claim.id_siniestro,
+                    target=command.target,
+                    reason=command.reason.strip(),
+                    decided_at=now,
+                    current_state=target_state,
+                    version=claim.version,
+                )
+                session.add(
+                    EventoLineaTiempo(
+                        id_siniestro=claim.id_siniestro,
+                        id_usuario=identity.id_usuario,
+                        tipo_evento="decision_presupuesto_registrada",
+                        fecha=now,
+                        detalle={
+                            "id_presupuesto": budget.id_presupuesto,
+                            "id_autorizacion": authorization.id_autorizacion,
+                            "id_cambio": change.id_cambio,
+                            "decision": command.target.value,
+                            "justificacion": command.reason.strip(),
+                            "estado_presupuesto_anterior": previous_budget_status,
+                            "estado_siniestro_anterior": previous_state,
+                            "estado_siniestro_nuevo": target_state.value,
+                            "version_anterior": command.expected_version,
+                            "version_nueva": claim.version,
+                            "actor_subject": principal.subject,
+                        },
+                    )
+                )
+                session.add(
+                    SolicitudDecisionPresupuestoIdempotente(
+                        clave=command.idempotency_key,
+                        huella=command.fingerprint,
+                        id_cambio=change.id_cambio,
+                        respuesta={
+                            "decision_id": result.decision_id,
+                            "budget_id": result.budget_id,
+                            "claim_id": result.claim_id,
+                            "target": result.target.value,
+                            "reason": result.reason,
+                            "decided_at": result.decided_at.isoformat(),
+                            "current_state": result.current_state.value,
+                            "version": result.version,
+                        },
+                        creado_en=now,
+                    )
+                )
+                session.flush()
+                return result
+        except IntegrityError as exc:
+            with self._factory() as session:
+                existing = session.get(
+                    SolicitudDecisionPresupuestoIdempotente,
+                    command.idempotency_key,
+                )
+                if existing is not None:
+                    if existing.huella == command.fingerprint:
+                        return self._result_from_request(existing)
+                    raise BudgetDecisionError(
+                        "IDEMPOTENCY-CONFLICT",
+                        "Idempotency-Key ya fue utilizada con otro contenido",
+                        409,
+                    ) from exc
+            raise BudgetDecisionError(
+                "BUDGET-DECISION-CONFLICT",
+                "La decisión no pudo registrarse",
+                409,
+            ) from exc
