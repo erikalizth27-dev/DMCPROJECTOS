@@ -13,6 +13,9 @@ from siniestro_facil.domain.identity import ActorType, AuthenticatedPrincipal
 from siniestro_facil.main import create_app
 
 
+HEADERS = {"Idempotency-Key": "budget-decision-api-0001"}
+
+
 def principal(role: PrincipalRole) -> AuthenticatedPrincipal:
     now = datetime.now(timezone.utc)
     return AuthenticatedPrincipal(
@@ -50,6 +53,7 @@ def test_supervisor_authorizes_budget() -> None:
     response = configured_client(PrincipalRole.SUPERVISOR).post(
         "/api/v1/siniestros/42/presupuestos/7/decision",
         json=payload(),
+        headers=HEADERS,
     )
 
     assert response.status_code == 200
@@ -65,6 +69,7 @@ def test_assigned_operator_observes_budget() -> None:
     response = configured_client(PrincipalRole.OPERADOR).post(
         "/api/v1/siniestros/42/presupuestos/7/decision",
         json=payload("observado"),
+        headers=HEADERS,
     )
 
     assert response.status_code == 200
@@ -72,10 +77,29 @@ def test_assigned_operator_observes_budget() -> None:
     assert response.json()["estadoActual"] == "observado"
 
 
+def test_repeats_decision_idempotently() -> None:
+    client = configured_client(PrincipalRole.SUPERVISOR)
+    first = client.post(
+        "/api/v1/siniestros/42/presupuestos/7/decision",
+        json=payload(),
+        headers=HEADERS,
+    )
+    repeated = client.post(
+        "/api/v1/siniestros/42/presupuestos/7/decision",
+        json=payload(),
+        headers=HEADERS,
+    )
+
+    assert first.status_code == 200
+    assert repeated.status_code == 200
+    assert repeated.json() == first.json()
+
+
 def test_operator_cannot_authorize_budget() -> None:
     response = configured_client(PrincipalRole.OPERADOR).post(
         "/api/v1/siniestros/42/presupuestos/7/decision",
         json=payload(),
+        headers=HEADERS,
     )
 
     assert response.status_code == 403
@@ -86,6 +110,7 @@ def test_requires_authentication_by_default() -> None:
     response = TestClient(create_app()).post(
         "/api/v1/siniestros/42/presupuestos/7/decision",
         json=payload(),
+        headers=HEADERS,
     )
 
     assert response.status_code == 401
