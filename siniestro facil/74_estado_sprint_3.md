@@ -2,7 +2,7 @@
 
 ## Estado general
 
-- Avance: **80% — fundación del outbox validada, pendiente de migración Cloud SQL**.
+- Avance: **82% — outbox PostgreSQL migrado y validado**.
 - Rama: `agent/sprint-3-backend`.
 - Punto de partida: `main` en `d2b4b9f06dd9738ba47e8744d32f2277e2b3bbd1`.
 - Duración de referencia: 2 semanas.
@@ -177,4 +177,8 @@
 - Validación Cloud Shell: **194/194 pruebas aprobadas**.
 - Alembic: `20260902_02 (head)`.
 - Evidencia: `88_evidencia_fundacion_outbox_s3_be_03.md`.
-- Pendiente: aplicar y validar la migración en Cloud SQL.
+- Migración `20260902_02` aplicada en Cloud SQL.
+- Mínimo privilegio validado con propietario `siniestro_migrator`.
+- Ciclo del outbox y rollback aprobados sin registros residuales.
+- Evidencia: `89_evidencia_outbox_postgresql_s3_be_03.md`.
+- Pendiente: integrar Pub/Sub y Cloud Tasks para completar S3-BE-03.
