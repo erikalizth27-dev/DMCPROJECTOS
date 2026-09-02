@@ -2,7 +2,7 @@
 
 ## Estado general
 
-- Avance: **37% — segunda entrega S3-BE-01 pendiente de validación**.
+- Avance: **38% — segunda entrega S3-BE-01 validada; migración pendiente**.
 - Rama: `agent/sprint-3-backend`.
 - Punto de partida: `main` en `d2b4b9f06dd9738ba47e8744d32f2277e2b3bbd1`.
 - Duración de referencia: 2 semanas.
@@ -81,5 +81,7 @@
 - Modelos Asistencia y SolicitudAsistenciaIdempotente añadidos.
 - Migración Alembic `20260902_01` añadida y todavía no aplicada.
 - Ocho pruebas nuevas publicadas.
-- Validación esperada: **158/158 pruebas**.
-- Próximo paso tras suite verde: revisar y aplicar migración con privilegios temporales.
+- Validación Cloud Shell: **158/158 pruebas aprobadas**.
+- Alembic heads: `20260902_01 (head)`.
+- Evidencia: `80_evidencia_segunda_entrega_s3_be_01.md`.
+- Próximo paso: aplicar la migración con identidad administrativa y validar rollback.
