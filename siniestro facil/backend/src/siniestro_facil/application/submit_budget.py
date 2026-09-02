@@ -28,6 +28,8 @@ class SubmitBudgetCommand:
     diagnosis: str
     presented_on: date
     expected_version: int
+    idempotency_key: str = "budget-synthetic-0001"
+    fingerprint: str = "0" * 64
 
 
 @dataclass(frozen=True, slots=True)
@@ -63,12 +65,23 @@ class InMemoryBudgetSubmissionRepository:
     def __init__(self) -> None:
         self._rows: dict[int, SubmittedBudget] = {}
         self._next_id = 1
+        self._requests: dict[str, tuple[str, SubmittedBudget]] = {}
 
     def submit(
         self,
         command: SubmitBudgetCommand,
         principal: AuthenticatedPrincipal,
     ) -> SubmittedBudget:
+        existing = self._requests.get(command.idempotency_key)
+        if existing is not None:
+            fingerprint, result = existing
+            if fingerprint == command.fingerprint:
+                return result
+            raise BudgetSubmissionError(
+                "IDEMPOTENCY-CONFLICT",
+                "Idempotency-Key ya fue utilizada con otro contenido",
+                409,
+            )
         row = SubmittedBudget(
             id=self._next_id,
             claim_id=command.claim_id,
@@ -82,6 +95,10 @@ class InMemoryBudgetSubmissionRepository:
             version=command.expected_version + 1,
         )
         self._rows[row.id] = row
+        self._requests[command.idempotency_key] = (
+            command.fingerprint,
+            row,
+        )
         self._next_id += 1
         return row
 
@@ -118,6 +135,18 @@ class SubmitBudgetService:
             raise BudgetSubmissionError(
                 "BUDGET-REQUEST-INVALID",
                 "Siniestro, inspección o versión inválidos",
+                422,
+            )
+        if not (16 <= len(command.idempotency_key) <= 128):
+            raise BudgetSubmissionError(
+                "IDEMPOTENCY-KEY-INVALID",
+                "Idempotency-Key debe tener entre 16 y 128 caracteres",
+                422,
+            )
+        if len(command.fingerprint) != 64:
+            raise BudgetSubmissionError(
+                "BUDGET-FINGERPRINT-INVALID",
+                "La huella de la solicitud es inválida",
                 422,
             )
         if not command.diagnosis.strip():
