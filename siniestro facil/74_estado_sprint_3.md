@@ -2,7 +2,7 @@
 
 ## Estado general
 
-- Avance: **70% — primera entrega S3-BE-03 validada**.
+- Avance: **75% — recursos GCP de S3-BE-03 creados y verificados**.
 - Rama: `agent/sprint-3-backend`.
 - Punto de partida: `main` en `d2b4b9f06dd9738ba47e8744d32f2277e2b3bbd1`.
 - Duración de referencia: 2 semanas.
@@ -158,4 +158,8 @@
 - Validación Cloud Shell: **189/189 pruebas aprobadas**.
 - Alembic: `20260902_01 (head)`.
 - Evidencia: `85_evidencia_primera_entrega_s3_be_03.md`.
-- Pendiente: outbox PostgreSQL, adaptador GCP y validación real de Pub/Sub.
+- Recursos GCP de S3-DEC-03 creados y verificados: dos topics, dos suscripciones y una cola Cloud Tasks.
+- Suscripciones Pub/Sub en estado `ACTIVE`.
+- Cola `siniestro-asistencia-reintentos` en estado `RUNNING` y `maxAttempts: 1`.
+- Evidencia: `87_evidencia_recursos_gcp_s3_be_03.md`.
+- Pendiente: outbox PostgreSQL, adaptadores reales de Pub/Sub/Cloud Tasks y validación extremo a extremo.
