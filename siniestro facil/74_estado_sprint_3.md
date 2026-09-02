@@ -2,7 +2,7 @@
 
 ## Estado general
 
-- Avance: **5% — rama y alcance trazable preparados**.
+- Avance: **12% — fundaciones publicadas; validación Cloud Shell pendiente**.
 - Rama: `agent/sprint-3-backend`.
 - Punto de partida: `main` en `d2b4b9f06dd9738ba47e8744d32f2277e2b3bbd1`.
 - Duración de referencia: 2 semanas.
@@ -38,3 +38,14 @@
 - No se crean tópicos, suscripciones ni recursos GCP sin pasos explícitos y validación previa.
 - No se inventan SLA, timeouts ni cantidades de reintentos.
 - No se fusiona el PR de Sprint 3 sin autorización explícita del Product Owner.
+
+## Avance de fundaciones
+
+- Dominio y transiciones de asistencia definidos.
+- Política de reintentos configurable y sin valores predeterminados.
+- Contratos de aplicación y repositorio definidos.
+- Adaptador externo deshabilitado hasta aprobar S3-DEC-01.
+- Transporte idempotente en memoria para pruebas; no es Pub/Sub real.
+- Diez pruebas nuevas publicadas.
+- Validación esperada: **140/140 pruebas**.
+- Al aprobar la suite, el avance alcanzará **15%**.
