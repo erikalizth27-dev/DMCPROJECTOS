@@ -2,7 +2,7 @@
 
 ## Estado general
 
-- Avance: **27% — primera entrega S3-BE-01 pendiente de validación**.
+- Avance: **30% — primera entrega S3-BE-01 validada**.
 - Rama: `agent/sprint-3-backend`.
 - Punto de partida: `main` en `d2b4b9f06dd9738ba47e8744d32f2277e2b3bbd1`.
 - Duración de referencia: 2 semanas.
@@ -68,5 +68,6 @@
 - Repetición idéntica evita un segundo despacho.
 - Conflicto de clave con contenido diferente devuelve HTTP 409 en el contrato de aplicación.
 - Diez pruebas nuevas publicadas.
-- Validación esperada: **150/150 pruebas**.
+- Validación Cloud Shell: **150/150 pruebas aprobadas**.
+- Evidencia: `79_evidencia_primera_entrega_s3_be_01.md`.
 - Pendiente: endpoint API, persistencia PostgreSQL, auditoría atómica y validación con rollback.
