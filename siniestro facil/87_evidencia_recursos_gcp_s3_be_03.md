@@ -19,6 +19,8 @@ La verificación confirmó las siguientes suscripciones:
 - Estado: `ACTIVE`.
 - Ack deadline: 60 segundos.
 - Retención de mensajes: 604800 segundos (7 días).
+- Dead letter topic: `siniestro-asistencia-dead-letter`.
+- Máximo de entregas antes de dead letter: 5.
 
 ### Monitoreo de mensajes fallidos
 
@@ -45,7 +47,7 @@ El valor `maxAttempts: 1` evita que Cloud Tasks introduzca reintentos adicionale
 ## Resultado
 
 - Transporte principal disponible.
-- Ruta dead letter disponible.
+- Ruta dead letter configurada y verificada mediante `deadLetterPolicy`.
 - Cola de programación diferida disponible.
 - No se registraron errores de permisos en la salida compartida.
 - Recursos alineados con `S3-DEC-03`.
