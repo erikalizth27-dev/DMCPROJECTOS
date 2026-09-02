@@ -23,13 +23,33 @@ class ProviderAdapter(Protocol):
 
 
 class DisabledProviderAdapter:
-    """Impide llamadas externas hasta que S3-DEC-01 sea aprobada."""
+    """Impide llamadas externas cuando el adaptador no está habilitado."""
 
     def dispatch(self, request: ProviderDispatch) -> str:
         del request
         raise ProviderIntegrationDisabled(
             "La integración con proveedores no está habilitada"
         )
+
+
+class SimulatedProviderAdapter:
+    """Adaptador determinista aprobado por S3-DEC-01 para el piloto."""
+
+    def __init__(self) -> None:
+        self._dispatches: dict[str, ProviderDispatch] = {}
+
+    def dispatch(self, request: ProviderDispatch) -> str:
+        previous = self._dispatches.get(request.idempotency_key)
+        if previous is not None and previous != request:
+            raise ValueError(
+                "La clave del proveedor ya fue usada con otro contenido"
+            )
+        self._dispatches[request.idempotency_key] = request
+        return f"SIM-{request.assistance_id:08d}"
+
+    @property
+    def dispatches(self) -> tuple[ProviderDispatch, ...]:
+        return tuple(self._dispatches.values())
 
 
 def dispatch_assistance(
