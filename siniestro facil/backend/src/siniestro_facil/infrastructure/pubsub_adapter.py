@@ -114,3 +114,81 @@ class IdempotentMessageConsumer:
             result,
         )
         return result
+
+
+class GooglePubSubTransport:
+    """Adaptador real con cliente inyectable para pruebas sin credenciales."""
+
+    def __init__(
+        self,
+        *,
+        project_id: str,
+        topic_id: str,
+        dead_letter_topic_id: str,
+        client: object | None = None,
+        publish_timeout_seconds: int = 10,
+    ) -> None:
+        if client is None:
+            from google.cloud import pubsub_v1
+
+            client = pubsub_v1.PublisherClient(
+                publisher_options=pubsub_v1.types.PublisherOptions(
+                    enable_message_ordering=True
+                )
+            )
+        self._client = client
+        self._topic_path = client.topic_path(project_id, topic_id)
+        self._dead_letter_topic_path = client.topic_path(
+            project_id,
+            dead_letter_topic_id,
+        )
+        self._publish_timeout_seconds = publish_timeout_seconds
+
+    @staticmethod
+    def _data(message: PubSubEnvelope) -> bytes:
+        return json.dumps(
+            {
+                "event_id": message.event_id,
+                "event_type": message.event_type,
+                "ordering_key": message.ordering_key,
+                "occurred_at": message.occurred_at.isoformat(),
+                "payload": message.payload,
+            },
+            sort_keys=True,
+            separators=(",", ":"),
+            ensure_ascii=False,
+        ).encode("utf-8")
+
+    def _publish(
+        self,
+        topic_path: str,
+        message: PubSubEnvelope,
+        **extra_attributes: str,
+    ) -> str:
+        future = self._client.publish(
+            topic_path,
+            self._data(message),
+            ordering_key=message.ordering_key,
+            event_id=message.event_id,
+            event_type=message.event_type,
+            **extra_attributes,
+        )
+        return str(future.result(timeout=self._publish_timeout_seconds))
+
+    def publish(self, message: PubSubEnvelope) -> str:
+        return self._publish(self._topic_path, message)
+
+    def dead_letter(
+        self,
+        message: PubSubEnvelope,
+        *,
+        reason: str,
+    ) -> None:
+        normalized = reason.strip()
+        if not normalized:
+            raise ValueError("Dead letter requiere una razón")
+        self._publish(
+            self._dead_letter_topic_path,
+            message,
+            dead_letter_reason=normalized,
+        )
