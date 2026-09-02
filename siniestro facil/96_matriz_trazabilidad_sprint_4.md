@@ -27,4 +27,6 @@
 ## Evidencia
 
 - `97_registro_aprobacion_s4_decisiones.md`.
+- `101_evidencia_regresion_s4_be_01.md`: 233/233 pruebas aprobadas.
+- `102_evidencia_final_s4_be_01_postgresql.md`: persistencia, concurrencia, auditoría y rollback validados.
 
