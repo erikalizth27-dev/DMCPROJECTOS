@@ -699,9 +699,14 @@ class PostgreSQLBudgetDecisionRepository:
                 )
                 session.add(authorization)
                 session.flush()
+                change_type = {
+                    BudgetStatus.OBSERVED: "observacion",
+                    BudgetStatus.AUTHORIZED: "aprobacion",
+                    BudgetStatus.REJECTED: "rechazo",
+                }[command.target]
                 change = CambioPresupuesto(
                     id_presupuesto=budget.id_presupuesto,
-                    tipo_cambio=command.target.value,
+                    tipo_cambio=change_type,
                     id_autorizacion=authorization.id_autorizacion,
                 )
                 session.add(change)
