@@ -51,15 +51,17 @@ subject: str | None = None
 with engine.connect() as connection:
     outer_transaction = connection.begin()
     try:
-        claim = connection.execute(
-            select(Siniestro)
+        claim_row = connection.execute(
+            select(
+                Siniestro.id_siniestro,
+                Siniestro.estado_actual,
+                Siniestro.version,
+            )
             .order_by(Siniestro.id_siniestro)
             .limit(1)
-        ).scalar_one_or_none()
-        require(claim is not None, "No existe un siniestro para validar")
-        claim_id = claim.id_siniestro
-        original_state = claim.estado_actual
-        original_version = claim.version
+        ).one_or_none()
+        require(claim_row is not None, "No existe un siniestro para validar")
+        claim_id, original_state, original_version = claim_row
         now = datetime.now(timezone.utc)
 
         user_id = connection.execute(
@@ -136,20 +138,20 @@ with engine.connect() as connection:
         print(f"Versión: {original_version} -> {result.version}")
 
         inspection = connection.execute(
-            select(Inspeccion).where(
+            select(Inspeccion.id_inspeccion).where(
                 Inspeccion.id_inspeccion == inspection_id
             )
         ).scalar_one_or_none()
         require(inspection is not None, "La inspección no fue persistida")
         audit = connection.execute(
-            select(EventoLineaTiempo).where(
+            select(EventoLineaTiempo.id_evento).where(
                 EventoLineaTiempo.id_siniestro == claim_id,
                 EventoLineaTiempo.tipo_evento == "inspeccion_programada",
                 EventoLineaTiempo.detalle["motivo"].as_string() == MARKER,
             )
         ).scalar_one_or_none()
         require(audit is not None, "La auditoría no fue persistida")
-        audit_id = audit.id_evento
+        audit_id = audit
         print("Persistencia de inspección: OK")
         print("Auditoría atómica: OK")
 
@@ -174,11 +176,13 @@ with engine.connect() as connection:
 
 require(claim_id is not None, "No se seleccionó siniestro")
 with engine.connect() as verification:
-    restored = verification.execute(
-        select(Siniestro).where(Siniestro.id_siniestro == claim_id)
-    ).scalar_one()
-    require(restored.estado_actual == original_state, "Estado residual")
-    require(restored.version == original_version, "Versión residual")
+    restored_state, restored_version = verification.execute(
+        select(Siniestro.estado_actual, Siniestro.version).where(
+            Siniestro.id_siniestro == claim_id
+        )
+    ).one()
+    require(restored_state == original_state, "Estado residual")
+    require(restored_version == original_version, "Versión residual")
     if inspection_id is not None:
         require(
             verification.execute(
@@ -192,7 +196,7 @@ with engine.connect() as verification:
     if audit_id is not None:
         require(
             verification.execute(
-                select(EventoLineaTiempo).where(
+                select(EventoLineaTiempo.id_evento).where(
                     EventoLineaTiempo.id_evento == audit_id
                 )
             ).scalar_one_or_none()
@@ -202,7 +206,7 @@ with engine.connect() as verification:
     if assignment_id is not None:
         require(
             verification.execute(
-                select(AsignacionSiniestro).where(
+                select(AsignacionSiniestro.id_asignacion).where(
                     AsignacionSiniestro.id_asignacion == assignment_id
                 )
             ).scalar_one_or_none()
@@ -212,7 +216,7 @@ with engine.connect() as verification:
     if subject is not None:
         require(
             verification.execute(
-                select(IdentidadActor).where(
+                select(IdentidadActor.subject).where(
                     IdentidadActor.subject == subject
                 )
             ).scalar_one_or_none()
@@ -222,7 +226,7 @@ with engine.connect() as verification:
     if user_id is not None:
         require(
             verification.execute(
-                select(UsuarioInterno).where(
+                select(UsuarioInterno.id_usuario).where(
                     UsuarioInterno.id_usuario == user_id
                 )
             ).scalar_one_or_none()
