@@ -4,7 +4,7 @@
 
 Implementar el tramo verificable desde la programación de inspección hasta la decisión formal sobre el presupuesto, conservando identidad, alcance, versión y auditoría.
 
-## S4-BE-01 — Programar y consultar inspección
+## S4-BE-01 — Programar y consultar inspección — COMPLETADO
 
 | Campo | Definición |
 |---|---|
@@ -20,6 +20,8 @@ Criterios:
 - Pasar el caso a `inspeccion_programada` mediante transición válida.
 - Aplicar versión optimista y auditoría atómica.
 - Consultar la inspección sin revelar casos fuera de alcance.
+
+Evidencia de cierre: `102_evidencia_final_s4_be_01_postgresql.md`.
 
 ## S4-BE-02 — Registrar orden, diagnóstico y presupuesto
 
