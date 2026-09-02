@@ -2,7 +2,7 @@
 
 ## Estado general
 
-- Avance: **84% — adaptadores GCP publicados, pendientes de validación**.
+- Avance: **85% — S3-BE-03 completado y validado en GCP**.
 - Rama: `agent/sprint-3-backend`.
 - Punto de partida: `main` en `d2b4b9f06dd9738ba47e8744d32f2277e2b3bbd1`.
 - Duración de referencia: 2 semanas.
@@ -199,3 +199,17 @@
 - Siete pruebas nuevas publicadas.
 - Resultado esperado: **201/201 pruebas aprobadas**.
 - Pendiente: validación Cloud Shell y prueba sintética real.
+
+
+## Cierre de S3-BE-03
+
+- Regresión final del incremento: **201/201 pruebas aprobadas**.
+- Outbox PostgreSQL migrado y validado.
+- Publicación y consumo reales en Pub/Sub aprobados.
+- Tarea real Cloud Tasks programada, verificada y eliminada.
+- Política dead letter verificada.
+- Dos mensajes sintéticos retirados del worker.
+- Suscripción y tarea temporales eliminadas.
+- Evidencia: `91_evidencia_final_s3_be_03_gcp.md`.
+- Estado del incremento: **completado**.
+- Próximo paso: validación integral de Sprint 3 hasta 95%.
