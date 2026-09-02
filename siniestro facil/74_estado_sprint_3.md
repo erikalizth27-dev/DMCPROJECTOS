@@ -2,7 +2,7 @@
 
 ## Estado general
 
-- Avance: **47% — primera entrega S3-BE-02 pendiente de validación**.
+- Avance: **50% — primera entrega S3-BE-02 validada**.
 - Rama: `agent/sprint-3-backend`.
 - Punto de partida: `main` en `d2b4b9f06dd9738ba47e8744d32f2277e2b3bbd1`.
 - Duración de referencia: 2 semanas.
@@ -109,5 +109,7 @@
 - Número de intento incrementado.
 - Límite de tres intentos aplicado según S3-DEC-02.
 - Diez pruebas nuevas publicadas.
-- Validación esperada: **168/168 pruebas**.
+- Validación Cloud Shell: **168/168 pruebas aprobadas**.
+- Alembic: `20260902_01 (head)`.
+- Evidencia: `82_evidencia_primera_entrega_s3_be_02.md`.
 - Pendiente: API, repositorio PostgreSQL, auditoría y rollback.
