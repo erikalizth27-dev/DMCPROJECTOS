@@ -2,7 +2,7 @@
 
 ## Estado general
 
-- Avance: **57% — segunda entrega S3-BE-02 pendiente de validación**.
+- Avance: **58% — segunda entrega S3-BE-02 validada; rollback pendiente**.
 - Rama: `agent/sprint-3-backend`.
 - Punto de partida: `main` en `d2b4b9f06dd9738ba47e8744d32f2277e2b3bbd1`.
 - Duración de referencia: 2 semanas.
@@ -125,6 +125,8 @@
 - Proveedor nuevo validado contra PostgreSQL.
 - Auditoría conserva proveedores anterior/nuevo, intento y motivo.
 - Siete pruebas API/repositorio nuevas publicadas.
-- Validación esperada: **175/175 pruebas**.
+- Validación Cloud Shell: **175/175 pruebas aprobadas**.
+- Alembic: `20260902_01 (head)`.
+- Evidencia: `83_evidencia_segunda_entrega_s3_be_02.md`.
 - No requiere una migración adicional.
 - Pendiente: validación PostgreSQL mediante rollback.
