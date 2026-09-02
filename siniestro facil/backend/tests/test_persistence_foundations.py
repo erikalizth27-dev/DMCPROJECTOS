@@ -32,6 +32,7 @@ class PersistenceModelsTest(unittest.TestCase):
             "inspeccion",
             "presupuesto",
             "solicitud_presupuesto_idempotente",
+            "solicitud_decision_presupuesto_idempotente",
             "autorizacion",
             "cambio_presupuesto",
         }
