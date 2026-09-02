@@ -104,3 +104,19 @@ def test_sprint3_outbox_revision_is_reversible() -> None:
     assert "CREATE TABLE IF NOT EXISTS siniestro_facil.evento_outbox" in revision
     assert "idx_evento_outbox_pendiente" in revision
     assert "DROP TABLE IF EXISTS siniestro_facil.evento_outbox" in revision
+
+
+def test_sprint4_budget_revision_is_reversible() -> None:
+    revision = (
+        BACKEND_ROOT
+        / "alembic"
+        / "versions"
+        / "20260902_03_s4_budget_idempotency.py"
+    ).read_text(encoding="utf-8")
+
+    assert 'revision = "20260902_03"' in revision
+    assert 'down_revision = "20260902_02"' in revision
+    assert "id_inspeccion bigint REFERENCES" in revision
+    assert "solicitud_presupuesto_idempotente" in revision
+    assert "id_presupuesto bigint NOT NULL UNIQUE" in revision
+    assert "DROP TABLE IF EXISTS" in revision
