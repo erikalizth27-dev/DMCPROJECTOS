@@ -352,3 +352,100 @@ class EventoOutbox(Base):
         String(255),
     )
     ultimo_error: Mapped[str | None] = mapped_column(Text)
+
+
+class Inspeccion(Base):
+    __tablename__ = "inspeccion"
+    __table_args__ = {"schema": SCHEMA}
+
+    id_inspeccion: Mapped[int] = mapped_column(
+        BigInteger,
+        primary_key=True,
+    )
+    id_siniestro: Mapped[int] = mapped_column(
+        ForeignKey(f"{SCHEMA}.siniestro.id_siniestro", ondelete="CASCADE"),
+        nullable=False,
+    )
+    fecha_programada: Mapped[datetime] = mapped_column(
+        DateTime(timezone=True),
+        nullable=False,
+    )
+
+
+class Presupuesto(Base):
+    __tablename__ = "presupuesto"
+    __table_args__ = {"schema": SCHEMA}
+
+    id_presupuesto: Mapped[int] = mapped_column(
+        BigInteger,
+        primary_key=True,
+    )
+    id_siniestro: Mapped[int] = mapped_column(
+        ForeignKey(f"{SCHEMA}.siniestro.id_siniestro", ondelete="CASCADE"),
+        nullable=False,
+    )
+    id_proveedor: Mapped[int] = mapped_column(
+        ForeignKey(f"{SCHEMA}.proveedor.id_proveedor", ondelete="RESTRICT"),
+        nullable=False,
+    )
+    diagnostico: Mapped[str | None] = mapped_column(Text)
+    vigencia_desde: Mapped[date] = mapped_column(Date, nullable=False)
+    vigencia_hasta: Mapped[date] = mapped_column(Date, nullable=False)
+    estado: Mapped[str] = mapped_column(
+        String(20),
+        nullable=False,
+        default="recibido",
+    )
+
+
+class Autorizacion(Base):
+    __tablename__ = "autorizacion"
+    __table_args__ = {"schema": SCHEMA}
+
+    id_autorizacion: Mapped[int] = mapped_column(
+        BigInteger,
+        primary_key=True,
+    )
+    id_usuario_autoriza: Mapped[int] = mapped_column(
+        ForeignKey(
+            f"{SCHEMA}.usuario_interno.id_usuario",
+            ondelete="RESTRICT",
+        ),
+        nullable=False,
+    )
+    fecha: Mapped[datetime] = mapped_column(
+        DateTime(timezone=True),
+        nullable=False,
+    )
+    objeto_autorizado: Mapped[str] = mapped_column(
+        String(50),
+        nullable=False,
+    )
+
+
+class CambioPresupuesto(Base):
+    __tablename__ = "cambio_presupuesto"
+    __table_args__ = {"schema": SCHEMA}
+
+    id_cambio: Mapped[int] = mapped_column(
+        BigInteger,
+        primary_key=True,
+    )
+    id_presupuesto: Mapped[int] = mapped_column(
+        ForeignKey(
+            f"{SCHEMA}.presupuesto.id_presupuesto",
+            ondelete="CASCADE",
+        ),
+        nullable=False,
+    )
+    tipo_cambio: Mapped[str] = mapped_column(
+        String(30),
+        nullable=False,
+    )
+    id_autorizacion: Mapped[int] = mapped_column(
+        ForeignKey(
+            f"{SCHEMA}.autorizacion.id_autorizacion",
+            ondelete="RESTRICT",
+        ),
+        nullable=False,
+    )
