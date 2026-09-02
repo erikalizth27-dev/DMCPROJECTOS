@@ -3,8 +3,14 @@ from __future__ import annotations
 from datetime import datetime, timezone
 
 from sqlalchemy import exists, select
+from sqlalchemy.exc import IntegrityError
 from sqlalchemy.orm import Session, sessionmaker
 
+from siniestro_facil.application.submit_budget import (
+    BudgetSubmissionError,
+    SubmitBudgetCommand,
+    SubmittedBudget,
+)
 from siniestro_facil.application.schedule_inspection import (
     InspectionSchedulingError,
     ScheduleInspectionCommand,
@@ -18,7 +24,10 @@ from siniestro_facil.application.inspection_budget_contracts import (
 from siniestro_facil.domain.authorization import PrincipalRole
 from siniestro_facil.domain.enums import EstadoSiniestro, RolUsuario
 from siniestro_facil.domain.identity import AuthenticatedPrincipal
-from siniestro_facil.domain.inspection_budget import BudgetStatus
+from siniestro_facil.domain.inspection_budget import (
+    BudgetStatus,
+    budget_valid_until,
+)
 from siniestro_facil.domain.state_machine import (
     SolicitudTransicion,
     TransicionNoPermitida,
@@ -31,6 +40,7 @@ from siniestro_facil.persistence.models import (
     Inspeccion,
     Presupuesto,
     Siniestro,
+    SolicitudPresupuestoIdempotente,
     UsuarioInterno,
 )
 
@@ -304,6 +314,251 @@ class PostgreSQLInspectionSchedulingRepository:
                 id=inspection.id_inspeccion,
                 claim_id=claim.id_siniestro,
                 scheduled_at=inspection.fecha_programada,
+                current_state=EstadoSiniestro(claim.estado_actual),
+                version=claim.version,
+            )
+
+
+class PostgreSQLBudgetSubmissionRepository:
+    """Persiste presupuesto, transición, auditoría e idempotencia."""
+
+    def __init__(self, factory: sessionmaker[Session]) -> None:
+        self._factory = factory
+
+    @staticmethod
+    def _result_from_request(
+        request: SolicitudPresupuestoIdempotente,
+    ) -> SubmittedBudget:
+        payload = request.respuesta
+        return SubmittedBudget(
+            id=int(payload["id"]),
+            claim_id=int(payload["claim_id"]),
+            inspection_id=int(payload["inspection_id"]),
+            provider_id=int(payload["provider_id"]),
+            diagnosis=str(payload["diagnosis"]),
+            valid_from=datetime.fromisoformat(
+                str(payload["valid_from"])
+            ).date(),
+            valid_until=datetime.fromisoformat(
+                str(payload["valid_until"])
+            ).date(),
+            status=BudgetStatus(str(payload["status"])),
+            current_state=EstadoSiniestro(str(payload["current_state"])),
+            version=int(payload["version"]),
+        )
+
+    @staticmethod
+    def _provider_identity(
+        session: Session,
+        principal: AuthenticatedPrincipal,
+    ) -> IdentidadActor | None:
+        identity = session.get(
+            IdentidadActor,
+            (principal.subject, principal.tenant_id),
+        )
+        if (
+            identity is None
+            or identity.actor_type != principal.actor_type.value
+            or identity.id_proveedor is None
+            or principal.role is not PrincipalRole.TALLER
+        ):
+            return None
+        return identity
+
+    def submit(
+        self,
+        command: SubmitBudgetCommand,
+        principal: AuthenticatedPrincipal,
+    ) -> SubmittedBudget:
+        try:
+            with self._factory() as session, session.begin():
+                identity = self._provider_identity(session, principal)
+                if identity is None:
+                    raise BudgetSubmissionError(
+                        "BUDGET-NOT-FOUND",
+                        "Presupuesto no encontrado",
+                        404,
+                    )
+                existing = session.get(
+                    SolicitudPresupuestoIdempotente,
+                    command.idempotency_key,
+                )
+                if existing is not None:
+                    if existing.huella == command.fingerprint:
+                        return self._result_from_request(existing)
+                    raise BudgetSubmissionError(
+                        "IDEMPOTENCY-CONFLICT",
+                        "Idempotency-Key ya fue utilizada con otro contenido",
+                        409,
+                    )
+
+                inspection = session.get(
+                    Inspeccion,
+                    command.inspection_id,
+                    with_for_update=True,
+                )
+                if (
+                    inspection is None
+                    or inspection.id_siniestro != command.claim_id
+                ):
+                    raise BudgetSubmissionError(
+                        "INSPECTION-NOT-FOUND",
+                        "Inspección no encontrada",
+                        404,
+                    )
+                claim = session.execute(
+                    select(Siniestro)
+                    .where(Siniestro.id_siniestro == command.claim_id)
+                    .with_for_update()
+                ).scalar_one_or_none()
+                if claim is None:
+                    raise BudgetSubmissionError(
+                        "BUDGET-NOT-FOUND",
+                        "Siniestro no encontrado",
+                        404,
+                    )
+                if claim.version != command.expected_version:
+                    raise BudgetSubmissionError(
+                        "STATE-VERSION-CONFLICT",
+                        "La versión del siniestro está desactualizada",
+                        409,
+                    )
+                try:
+                    validar_transicion(
+                        SolicitudTransicion(
+                            origen=EstadoSiniestro(claim.estado_actual),
+                            destino=EstadoSiniestro.PRESUPUESTO_RECIBIDO,
+                            rol=RolUsuario.OPERADOR,
+                            motivo="Presupuesto presentado por taller",
+                        )
+                    )
+                except (ValueError, TransicionNoPermitida) as exc:
+                    raise BudgetSubmissionError(
+                        "INVALID-TRANSITION",
+                        str(exc),
+                        409,
+                    ) from exc
+
+                now = datetime.now(timezone.utc)
+                budget = Presupuesto(
+                    id_siniestro=claim.id_siniestro,
+                    id_inspeccion=inspection.id_inspeccion,
+                    id_proveedor=identity.id_proveedor,
+                    diagnostico=command.diagnosis.strip(),
+                    vigencia_desde=command.presented_on,
+                    vigencia_hasta=budget_valid_until(
+                        command.presented_on
+                    ),
+                    estado=BudgetStatus.RECEIVED.value,
+                )
+                session.add(budget)
+                previous_state = claim.estado_actual
+                claim.estado_actual = EstadoSiniestro.PRESUPUESTO_RECIBIDO.value
+                claim.version += 1
+                session.flush()
+                result = SubmittedBudget(
+                    id=budget.id_presupuesto,
+                    claim_id=claim.id_siniestro,
+                    inspection_id=inspection.id_inspeccion,
+                    provider_id=identity.id_proveedor,
+                    diagnosis=budget.diagnostico or "",
+                    valid_from=budget.vigencia_desde,
+                    valid_until=budget.vigencia_hasta,
+                    status=BudgetStatus(budget.estado),
+                    current_state=EstadoSiniestro(claim.estado_actual),
+                    version=claim.version,
+                )
+                session.add(
+                    EventoLineaTiempo(
+                        id_siniestro=claim.id_siniestro,
+                        id_usuario=None,
+                        tipo_evento="presupuesto_presentado",
+                        fecha=now,
+                        detalle={
+                            "id_presupuesto": budget.id_presupuesto,
+                            "id_inspeccion": inspection.id_inspeccion,
+                            "id_proveedor": identity.id_proveedor,
+                            "vigencia_desde": budget.vigencia_desde.isoformat(),
+                            "vigencia_hasta": budget.vigencia_hasta.isoformat(),
+                            "estado_anterior": previous_state,
+                            "estado_nuevo": claim.estado_actual,
+                            "version_anterior": command.expected_version,
+                            "version_nueva": claim.version,
+                            "actor_subject": principal.subject,
+                        },
+                    )
+                )
+                session.add(
+                    SolicitudPresupuestoIdempotente(
+                        clave=command.idempotency_key,
+                        huella=command.fingerprint,
+                        id_presupuesto=budget.id_presupuesto,
+                        respuesta={
+                            "id": result.id,
+                            "claim_id": result.claim_id,
+                            "inspection_id": result.inspection_id,
+                            "provider_id": result.provider_id,
+                            "diagnosis": result.diagnosis,
+                            "valid_from": result.valid_from.isoformat(),
+                            "valid_until": result.valid_until.isoformat(),
+                            "status": result.status.value,
+                            "current_state": result.current_state.value,
+                            "version": result.version,
+                        },
+                        creado_en=now,
+                    )
+                )
+                session.flush()
+                return result
+        except IntegrityError as exc:
+            with self._factory() as session:
+                existing = session.get(
+                    SolicitudPresupuestoIdempotente,
+                    command.idempotency_key,
+                )
+                if existing is not None:
+                    if existing.huella == command.fingerprint:
+                        return self._result_from_request(existing)
+                    raise BudgetSubmissionError(
+                        "IDEMPOTENCY-CONFLICT",
+                        "Idempotency-Key ya fue utilizada con otro contenido",
+                        409,
+                    ) from exc
+            raise BudgetSubmissionError(
+                "BUDGET-CONFLICT",
+                "El presupuesto no pudo registrarse",
+                409,
+            ) from exc
+
+    def get(
+        self,
+        claim_id: int,
+        budget_id: int,
+        principal: AuthenticatedPrincipal,
+    ) -> SubmittedBudget | None:
+        with self._factory() as session:
+            identity = self._provider_identity(session, principal)
+            budget = session.get(Presupuesto, budget_id)
+            if (
+                identity is None
+                or budget is None
+                or budget.id_siniestro != claim_id
+                or budget.id_proveedor != identity.id_proveedor
+                or budget.id_inspeccion is None
+            ):
+                return None
+            claim = session.get(Siniestro, claim_id)
+            if claim is None:
+                return None
+            return SubmittedBudget(
+                id=budget.id_presupuesto,
+                claim_id=budget.id_siniestro,
+                inspection_id=budget.id_inspeccion,
+                provider_id=budget.id_proveedor,
+                diagnosis=budget.diagnostico or "",
+                valid_from=budget.vigencia_desde,
+                valid_until=budget.vigencia_hasta,
+                status=BudgetStatus(budget.estado),
                 current_state=EstadoSiniestro(claim.estado_actual),
                 version=claim.version,
             )
