@@ -2,7 +2,7 @@
 
 ## Estado general
 
-- Avance: **52% — primera entrega S4-BE-02 publicada, pendiente de validación**.
+- Avance: **53% — primera entrega S4-BE-02 validada**.
 - Rama: `agent/sprint-4-backend`.
 - Punto de partida: `main` en `2d4cc89b498d9ba11fa41f4926fc7110f5b0a6e8`.
 - Duración de referencia: 2 semanas.
@@ -130,5 +130,6 @@
 - No se agregaron monto, moneda ni umbrales inexistentes en las especificaciones.
 - Repositorio temporal en memoria; PostgreSQL e idempotencia quedan para la segunda entrega.
 - Diez pruebas nuevas publicadas.
-- Resultado esperado: **243/243 pruebas aprobadas**.
-- Pendiente: validación Cloud Shell, persistencia PostgreSQL, identidad de proveedor, bloqueo, idempotencia, auditoría y rollback.
+- Validación Cloud Shell: **243/243 pruebas aprobadas en 2.34 segundos**.
+- Evidencia: `103_evidencia_primera_entrega_s4_be_02.md`.
+- Pendiente: persistencia PostgreSQL, vínculo con inspección, identidad de proveedor, bloqueo, idempotencia, auditoría y rollback.
