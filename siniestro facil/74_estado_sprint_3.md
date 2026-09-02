@@ -2,7 +2,7 @@
 
 ## Estado general
 
-- Avance: **60% — S3-BE-02 completado**.
+- Avance: **68% — primera entrega S3-BE-03 pendiente de validación**.
 - Rama: `agent/sprint-3-backend`.
 - Punto de partida: `main` en `d2b4b9f06dd9738ba47e8744d32f2277e2b3bbd1`.
 - Duración de referencia: 2 semanas.
@@ -141,3 +141,18 @@
 - Limpieza sin registros residuales.
 - Evidencia: `84_evidencia_final_s3_be_02_postgresql.md`.
 - Estado del incremento: **completado**.
+
+## Primera entrega de S3-BE-03
+
+- Política de 3 intentos, esperas 30/120/300 s y timeout 10 s codificada.
+- Reintento del intento 1 al 2 y del 2 al 3 implementado.
+- Escalamiento después del tercer fallo implementado.
+- Contrato de mensaje compatible con Pub/Sub definido.
+- Event ID y ordering key incluidos.
+- Publicación y consumo idempotentes implementados.
+- Reentrega con contenido diferente rechazada.
+- Ruta dead letter idempotente implementada.
+- Dobles en memoria; todavía no se crean recursos GCP.
+- Catorce pruebas nuevas publicadas.
+- Validación esperada: **189/189 pruebas**.
+- Pendiente: outbox PostgreSQL, adaptador GCP y validación real de Pub/Sub.
