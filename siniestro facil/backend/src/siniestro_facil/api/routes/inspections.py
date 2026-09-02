@@ -13,6 +13,7 @@ from siniestro_facil.api.routes.claims import get_authenticated_principal
 from siniestro_facil.api.schemas import ApiModel
 from siniestro_facil.application.decide_budget import (
     BudgetDecisionError,
+    BudgetDecisionRepository,
     DecideBudgetCommand,
     DecideBudgetService,
     DecidedBudget,
@@ -41,6 +42,7 @@ from siniestro_facil.db import create_database_engine
 from siniestro_facil.domain.identity import AuthenticatedPrincipal
 from siniestro_facil.domain.inspection_budget import BudgetStatus
 from siniestro_facil.persistence.inspection_budget_repository import (
+    PostgreSQLBudgetDecisionRepository,
     PostgreSQLBudgetSubmissionRepository,
     PostgreSQLInspectionSchedulingRepository,
 )
@@ -137,9 +139,14 @@ def get_get_budget_service() -> GetBudgetService:
 
 
 @lru_cache(maxsize=1)
-def get_budget_decision_repository() -> InMemoryBudgetDecisionRepository:
-    # Primera entrega; PostgreSQL se incorpora antes de cerrar S4-BE-03.
-    return InMemoryBudgetDecisionRepository()
+def get_budget_decision_repository() -> BudgetDecisionRepository:
+    settings = Settings.from_environment()
+    if not settings.database_url:
+        return InMemoryBudgetDecisionRepository()
+    engine = create_database_engine(settings)
+    return PostgreSQLBudgetDecisionRepository(
+        create_session_factory(engine)
+    )
 
 
 def get_decide_budget_service() -> DecideBudgetService:
@@ -305,6 +312,7 @@ def decide_budget(
     siniestro_id: int,
     presupuesto_id: int,
     request: DecidirPresupuestoRequest,
+    idempotency_key: str = Header(alias="Idempotency-Key"),
     principal: AuthenticatedPrincipal = Depends(get_authenticated_principal),
     service: DecideBudgetService = Depends(get_decide_budget_service),
 ) -> DecisionPresupuestoResponse:
@@ -316,6 +324,14 @@ def decide_budget(
                 target=request.decision,
                 reason=request.justificacion,
                 expected_version=request.version,
+                idempotency_key=idempotency_key,
+                fingerprint=hashlib.sha256(
+                    json.dumps(
+                        request.model_dump(mode="json", by_alias=True),
+                        sort_keys=True,
+                        separators=(",", ":"),
+                    ).encode("utf-8")
+                ).hexdigest(),
             ),
             principal,
         )
