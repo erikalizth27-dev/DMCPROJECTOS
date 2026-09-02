@@ -234,3 +234,55 @@ class SolicitudEvidenciaIdempotente(Base):
         DateTime(timezone=True),
         nullable=False,
     )
+
+
+class Asistencia(Base):
+    __tablename__ = "asistencia"
+    __table_args__ = {"schema": SCHEMA}
+
+    id_asistencia: Mapped[int] = mapped_column(BigInteger, primary_key=True)
+    id_siniestro: Mapped[int] = mapped_column(
+        ForeignKey(f"{SCHEMA}.siniestro.id_siniestro", ondelete="CASCADE"),
+        nullable=False,
+    )
+    id_proveedor: Mapped[int] = mapped_column(
+        ForeignKey(f"{SCHEMA}.proveedor.id_proveedor"),
+        nullable=False,
+    )
+    estado_solicitud: Mapped[str] = mapped_column(
+        String(20),
+        nullable=False,
+    )
+    numero_intento: Mapped[int] = mapped_column(BigInteger, nullable=False)
+    tipo_asistencia: Mapped[str] = mapped_column(String(50), nullable=False)
+    motivo: Mapped[str] = mapped_column(Text, nullable=False)
+    referencia_externa: Mapped[str | None] = mapped_column(String(120))
+    creado_en: Mapped[datetime] = mapped_column(
+        DateTime(timezone=True),
+        nullable=False,
+    )
+    actualizado_en: Mapped[datetime] = mapped_column(
+        DateTime(timezone=True),
+        nullable=False,
+    )
+
+
+class SolicitudAsistenciaIdempotente(Base):
+    __tablename__ = "solicitud_asistencia_idempotente"
+    __table_args__ = {"schema": SCHEMA}
+
+    clave: Mapped[str] = mapped_column(String(128), primary_key=True)
+    huella: Mapped[str] = mapped_column(String(64), nullable=False)
+    id_asistencia: Mapped[int] = mapped_column(
+        ForeignKey(
+            f"{SCHEMA}.asistencia.id_asistencia",
+            ondelete="CASCADE",
+        ),
+        nullable=False,
+        unique=True,
+    )
+    respuesta: Mapped[dict[str, object]] = mapped_column(JSON, nullable=False)
+    creado_en: Mapped[datetime] = mapped_column(
+        DateTime(timezone=True),
+        nullable=False,
+    )
