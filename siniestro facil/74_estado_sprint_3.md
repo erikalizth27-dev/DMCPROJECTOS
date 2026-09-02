@@ -2,7 +2,7 @@
 
 ## Estado general
 
-- Avance: **85% — S3-BE-03 completado y validado en GCP**.
+- Avance: **95% — validación integral de Sprint 3 completada**.
 - Rama: `agent/sprint-3-backend`.
 - Punto de partida: `main` en `d2b4b9f06dd9738ba47e8744d32f2277e2b3bbd1`.
 - Duración de referencia: 2 semanas.
@@ -213,3 +213,16 @@
 - Evidencia: `91_evidencia_final_s3_be_03_gcp.md`.
 - Estado del incremento: **completado**.
 - Próximo paso: validación integral de Sprint 3 hasta 95%.
+
+
+## Validación integral
+
+- Script: `backend/scripts/09_validate_sprint3.sh`.
+- Regresión: **201/201 pruebas aprobadas**.
+- Alembic: `20260902_02 (head)`.
+- S3-BE-01, S3-BE-02 y S3-BE-03 validados integralmente.
+- PostgreSQL, auditoría, idempotencia y rollback aprobados.
+- Pub/Sub, dead letter y Cloud Tasks aprobados.
+- Limpieza sin datos, mensajes ni recursos temporales residuales.
+- Evidencia: `92_evidencia_validacion_integral_sprint_3.md`.
+- Próximo paso: trazabilidad final, acta de cierre y PR hasta 100%.
