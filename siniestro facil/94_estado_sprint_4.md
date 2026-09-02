@@ -2,7 +2,7 @@
 
 ## Estado general
 
-- Avance: **63% — regresión S4-BE-02 aprobada; pendiente migración Cloud SQL**.
+- Avance: **64% — migración S4-BE-02 validada; pendiente prueba funcional PostgreSQL**.
 - Rama: `agent/sprint-4-backend`.
 - Punto de partida: `main` en `2d4cc89b498d9ba11fa41f4926fc7110f5b0a6e8`.
 - Duración de referencia: 2 semanas.
@@ -150,4 +150,7 @@
 - Siete pruebas nuevas publicadas.
 - Validación Cloud Shell: **250/250 pruebas aprobadas en 2.31 segundos**.
 - Evidencia: `104_evidencia_regresion_s4_be_02.md`.
-- Pendiente: aplicar migración y ejecutar prueba PostgreSQL con rollback.
+- Migración Cloud SQL: `20260902_03 (head)`.
+- Evidencia: `105_evidencia_migracion_s4_be_02_cloudsql.md`.
+- Validador final: `backend/scripts/11_validate_s4_be_02_postgresql.py`.
+- Pendiente: ejecutar prueba funcional PostgreSQL con rollback.
