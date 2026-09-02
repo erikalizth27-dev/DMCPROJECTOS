@@ -19,8 +19,25 @@
 - `18_arquitectura_gcp.md`: Pub/Sub, Cloud Tasks y dead-letter topics.
 - `16_backlog_inicial_backend.md`: resultado esperado del Sprint 3.
 
-## Vacíos controlados
+## Estado de cierre
 
-- El proveedor externo no está seleccionado.
-- Los SLA simulados del piloto no están aprobados.
-- El número de reintentos, backoff, timeout y umbral de escalamiento no están definidos.
+| Incremento | Resultado | Evidencia principal |
+|---|---|---|
+| S3-BE-01 | Cumplido | `81_evidencia_final_s3_be_01_postgresql.md` |
+| S3-BE-02 | Cumplido | `84_evidencia_final_s3_be_02_postgresql.md` |
+| S3-BE-03 | Cumplido | `91_evidencia_final_s3_be_03_gcp.md` |
+| Sprint 3 integral | Cumplido | `92_evidencia_validacion_integral_sprint_3.md` |
+
+## Decisiones aplicadas
+
+- S3-DEC-01: adaptador simulado de proveedores durante Sprint 3.
+- S3-DEC-02: tres intentos, esperas 30/120/300 segundos, timeout funcional de 10 segundos y escalamiento tras el tercer fallo.
+- S3-DEC-03: Pub/Sub para transporte y Cloud Tasks para programación diferida.
+- Cloud Tasks usa un dispatch deadline técnico de 15 segundos por restricción de la plataforma; el timeout funcional del proveedor permanece en 10 segundos.
+
+## Vacíos diferidos
+
+- Selección e integración productiva con un proveedor real.
+- Endpoint operativo desplegado para el worker de Cloud Tasks.
+- CI/CD, observabilidad y operación productiva.
+
