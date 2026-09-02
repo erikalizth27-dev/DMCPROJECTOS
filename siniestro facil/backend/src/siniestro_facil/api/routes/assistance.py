@@ -10,6 +10,13 @@ from siniestro_facil.api.errors import BusinessError
 from siniestro_facil.api.routes.claims import get_authenticated_principal
 from siniestro_facil.api.schemas import ApiModel
 from siniestro_facil.application.assistance_contracts import AssistanceRecord
+from siniestro_facil.application.manage_assistance import (
+    AssistanceManagementError,
+    ReassignAssistanceCommand,
+    ReassignAssistanceService,
+    RegisterProviderReplyCommand,
+    RegisterProviderReplyService,
+)
 from siniestro_facil.application.request_assistance import (
     AssistanceRequestError,
     GetAssistanceService,
@@ -18,6 +25,7 @@ from siniestro_facil.application.request_assistance import (
 )
 from siniestro_facil.config import Settings
 from siniestro_facil.db import create_database_engine
+from siniestro_facil.domain.assistance import ProviderResult
 from siniestro_facil.domain.identity import AuthenticatedPrincipal
 from siniestro_facil.infrastructure.provider_adapter import (
     SimulatedProviderAdapter,
@@ -38,6 +46,22 @@ class SolicitarAsistenciaApiRequest(ApiModel):
         min_length=1,
         max_length=50,
     )
+    motivo: str = Field(min_length=1, max_length=500)
+
+
+class RegistrarRespuestaProveedorRequest(ApiModel):
+    resultado: ProviderResult
+    intento_esperado: int = Field(alias="intentoEsperado", gt=0)
+    referencia_externa: str | None = Field(
+        default=None,
+        alias="referenciaExterna",
+        max_length=120,
+    )
+
+
+class ReasignarAsistenciaRequest(ApiModel):
+    nuevo_proveedor_id: int = Field(alias="nuevoProveedorId", gt=0)
+    intento_esperado: int = Field(alias="intentoEsperado", gt=0)
     motivo: str = Field(min_length=1, max_length=500)
 
 
@@ -78,6 +102,16 @@ def get_request_assistance_service() -> RequestAssistanceService:
 @lru_cache(maxsize=1)
 def get_get_assistance_service() -> GetAssistanceService:
     return GetAssistanceService(get_assistance_repository())
+
+
+@lru_cache(maxsize=1)
+def get_register_provider_reply_service() -> RegisterProviderReplyService:
+    return RegisterProviderReplyService(get_assistance_repository())
+
+
+@lru_cache(maxsize=1)
+def get_reassign_assistance_service() -> ReassignAssistanceService:
+    return ReassignAssistanceService(get_assistance_repository())
 
 
 def _response(result: AssistanceRecord) -> AsistenciaResponse:
@@ -145,6 +179,73 @@ def get_assistance(
             principal,
         )
     except AssistanceRequestError as exc:
+        raise BusinessError(
+            exc.code,
+            exc.message,
+            exc.status_code,
+        ) from exc
+    return _response(result)
+
+
+@router.post(
+    "/{siniestro_id}/asistencias/{asistencia_id}/respuesta",
+    response_model=AsistenciaResponse,
+)
+def register_provider_reply(
+    siniestro_id: int,
+    asistencia_id: int,
+    request: RegistrarRespuestaProveedorRequest,
+    principal: AuthenticatedPrincipal = Depends(get_authenticated_principal),
+    service: RegisterProviderReplyService = Depends(
+        get_register_provider_reply_service
+    ),
+) -> AsistenciaResponse:
+    try:
+        result = service.execute(
+            RegisterProviderReplyCommand(
+                claim_id=siniestro_id,
+                assistance_id=asistencia_id,
+                result=request.resultado,
+                expected_attempt=request.intento_esperado,
+                external_reference=request.referencia_externa,
+            ),
+            principal,
+        )
+    except AssistanceManagementError as exc:
+        raise BusinessError(
+            exc.code,
+            exc.message,
+            exc.status_code,
+        ) from exc
+    return _response(result)
+
+
+@router.post(
+    "/{siniestro_id}/asistencias/{asistencia_id}/reasignacion",
+    response_model=AsistenciaResponse,
+    status_code=status.HTTP_201_CREATED,
+)
+def reassign_assistance(
+    siniestro_id: int,
+    asistencia_id: int,
+    request: ReasignarAsistenciaRequest,
+    principal: AuthenticatedPrincipal = Depends(get_authenticated_principal),
+    service: ReassignAssistanceService = Depends(
+        get_reassign_assistance_service
+    ),
+) -> AsistenciaResponse:
+    try:
+        result = service.execute(
+            ReassignAssistanceCommand(
+                claim_id=siniestro_id,
+                assistance_id=asistencia_id,
+                new_provider_id=request.nuevo_proveedor_id,
+                expected_attempt=request.intento_esperado,
+                reason=request.motivo,
+            ),
+            principal,
+        )
+    except AssistanceManagementError as exc:
         raise BusinessError(
             exc.code,
             exc.message,
