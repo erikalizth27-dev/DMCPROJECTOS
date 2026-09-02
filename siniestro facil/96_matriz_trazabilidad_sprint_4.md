@@ -1,0 +1,25 @@
+# Matriz de trazabilidad — Sprint 4 Backend
+
+| Incremento | HU | Criterio verificable | RF | CU | Datos |
+|---|---|---|---|---|---|
+| S4-BE-01 | HU-17 | Derivar y programar revisión especializada | RF-11, RF-18 | CU-05 | inspeccion, asignacion_siniestro |
+| S4-BE-01 | HU-18 | Programar inspección y cambiar estado | RF-11, RF-18 | CU-05 | inspeccion, siniestro, evento_linea_tiempo |
+| S4-BE-02 | HU-14 | Consultar vigencia del presupuesto | RF-15 | CU-05 | presupuesto |
+| S4-BE-02 | HU-19 | Recibir orden, diagnóstico y presupuesto | RF-15, RF-18 | CU-05 | inspeccion, presupuesto, proveedor |
+| S4-BE-03 | HU-13 | Registrar autorización formal | RF-14, RF-18 | CU-06 | autorizacion, evento_linea_tiempo |
+| S4-BE-03 | HU-20 | Registrar observaciones, alternativas y ampliaciones | RF-16, RF-18 | CU-05, CU-06 | cambio_presupuesto, autorizacion |
+
+## Fuentes
+
+- `01_historias_usuario.md`: HU-13, HU-14 y HU-17 a HU-20.
+- `02_criterios_aceptacion.md`: inspección, vigencia, diagnóstico, autorización y cambios.
+- `03_requerimientos_funcionales.md`: RF-11, RF-14, RF-15, RF-16 y RF-18.
+- `05_casos_uso.md`: CU-05 y CU-06.
+- `16_backlog_inicial_backend.md`: resultado esperado de Sprint 4.
+- `93_acta_cierre_sprint_3.md`: elementos expresamente diferidos a Sprint 4.
+
+## Vacíos controlados
+
+- S4-DEC-01: duración de vigencia del presupuesto.
+- S4-DEC-02: roles exactos para cada decisión.
+- S4-DEC-03: existencia o ausencia de umbrales de autorización.
