@@ -1,9 +1,11 @@
 from __future__ import annotations
 
 from datetime import date, datetime
+import hashlib
+import json
 from functools import lru_cache
 
-from fastapi import APIRouter, Depends, status
+from fastapi import APIRouter, Depends, Header, status
 from pydantic import Field
 
 from siniestro_facil.api.errors import BusinessError
@@ -11,6 +13,7 @@ from siniestro_facil.api.routes.claims import get_authenticated_principal
 from siniestro_facil.api.schemas import ApiModel
 from siniestro_facil.application.submit_budget import (
     BudgetSubmissionError,
+    BudgetSubmissionRepository,
     GetBudgetService,
     InMemoryBudgetSubmissionRepository,
     SubmitBudgetCommand,
@@ -30,6 +33,7 @@ from siniestro_facil.config import Settings
 from siniestro_facil.db import create_database_engine
 from siniestro_facil.domain.identity import AuthenticatedPrincipal
 from siniestro_facil.persistence.inspection_budget_repository import (
+    PostgreSQLBudgetSubmissionRepository,
     PostgreSQLInspectionSchedulingRepository,
 )
 from siniestro_facil.persistence.session import create_session_factory
@@ -90,9 +94,14 @@ def get_get_inspection_service() -> GetInspectionService:
 
 
 @lru_cache(maxsize=1)
-def get_budget_repository() -> InMemoryBudgetSubmissionRepository:
-    # Primera entrega; PostgreSQL se incorpora antes de cerrar S4-BE-02.
-    return InMemoryBudgetSubmissionRepository()
+def get_budget_repository() -> BudgetSubmissionRepository:
+    settings = Settings.from_environment()
+    if not settings.database_url:
+        return InMemoryBudgetSubmissionRepository()
+    engine = create_database_engine(settings)
+    return PostgreSQLBudgetSubmissionRepository(
+        create_session_factory(engine)
+    )
 
 
 def get_submit_budget_service() -> SubmitBudgetService:
@@ -194,6 +203,7 @@ def submit_budget(
     siniestro_id: int,
     inspeccion_id: int,
     request: PresentarPresupuestoRequest,
+    idempotency_key: str = Header(alias="Idempotency-Key"),
     principal: AuthenticatedPrincipal = Depends(get_authenticated_principal),
     service: SubmitBudgetService = Depends(get_submit_budget_service),
 ) -> PresupuestoResponse:
@@ -205,6 +215,14 @@ def submit_budget(
                 diagnosis=request.diagnostico,
                 presented_on=request.fecha_presentacion,
                 expected_version=request.version,
+                idempotency_key=idempotency_key,
+                fingerprint=hashlib.sha256(
+                    json.dumps(
+                        request.model_dump(mode="json", by_alias=True),
+                        sort_keys=True,
+                        separators=(",", ":"),
+                    ).encode("utf-8")
+                ).hexdigest(),
             ),
             principal,
         )
