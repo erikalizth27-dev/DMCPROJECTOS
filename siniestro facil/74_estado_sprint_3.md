@@ -2,7 +2,7 @@
 
 ## Estado general
 
-- Avance: **40% — S3-BE-01 completado**.
+- Avance: **47% — primera entrega S3-BE-02 pendiente de validación**.
 - Rama: `agent/sprint-3-backend`.
 - Punto de partida: `main` en `d2b4b9f06dd9738ba47e8744d32f2277e2b3bbd1`.
 - Duración de referencia: 2 semanas.
@@ -97,3 +97,17 @@
 - Limpieza sin registros residuales.
 - Evidencia: `81_evidencia_final_s3_be_01_postgresql.md`.
 - Estado del incremento: **completado**.
+
+## Primera entrega de S3-BE-02
+
+- Respuestas aceptada, rechazada y sin respuesta implementadas.
+- Transiciones terminales protegidas.
+- Conflicto HTTP 409 ante intento esperado desactualizado.
+- Reasignación permitida solamente tras rechazo o falta de respuesta.
+- Proveedor nuevo obligatorio y diferente.
+- Historial preservado mediante una nueva solicitud.
+- Número de intento incrementado.
+- Límite de tres intentos aplicado según S3-DEC-02.
+- Diez pruebas nuevas publicadas.
+- Validación esperada: **168/168 pruebas**.
+- Pendiente: API, repositorio PostgreSQL, auditoría y rollback.
