@@ -2,7 +2,7 @@
 
 ## Estado general
 
-- Avance: **83% — regresión S4-BE-03 aprobada; pendiente migración Cloud SQL**.
+- Avance: **84% — migración S4-BE-03 validada; pendiente prueba funcional PostgreSQL**.
 - Rama: `agent/sprint-4-backend`.
 - Punto de partida: `main` en `2d4cc89b498d9ba11fa41f4926fc7110f5b0a6e8`.
 - Duración de referencia: 2 semanas.
