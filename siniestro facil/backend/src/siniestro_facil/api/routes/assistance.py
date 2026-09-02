@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+from datetime import datetime
 from functools import lru_cache
 
 from fastapi import APIRouter, Depends, Header, status
@@ -47,8 +48,8 @@ class AsistenciaResponse(ApiModel):
     tipo_asistencia: str = Field(alias="tipoAsistencia")
     estado: str
     numero_intento: int = Field(alias="numeroIntento")
-    creado_en: object = Field(alias="creadoEn")
-    actualizado_en: object = Field(alias="actualizadoEn")
+    creado_en: datetime = Field(alias="creadoEn")
+    actualizado_en: datetime = Field(alias="actualizadoEn")
 
 
 @lru_cache(maxsize=1)
