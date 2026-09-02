@@ -18,8 +18,13 @@
 - `16_backlog_inicial_backend.md`: resultado esperado de Sprint 4.
 - `93_acta_cierre_sprint_3.md`: elementos expresamente diferidos a Sprint 4.
 
-## Vacíos controlados
+## Decisiones aprobadas
 
-- S4-DEC-01: duración de vigencia del presupuesto.
-- S4-DEC-02: roles exactos para cada decisión.
-- S4-DEC-03: existencia o ausencia de umbrales de autorización.
+- S4-DEC-01: vigencia de 15 días calendario y nueva versión después del vencimiento.
+- S4-DEC-02: operador o ajustador asignado observa; supervisor aprueba o rechaza.
+- S4-DEC-03: no se aplican umbrales monetarios diferenciados durante el piloto.
+
+## Evidencia
+
+- `97_registro_aprobacion_s4_decisiones.md`.
+
