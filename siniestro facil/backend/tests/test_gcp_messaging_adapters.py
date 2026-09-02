@@ -105,7 +105,7 @@ def test_cloud_tasks_uses_approved_delays(delay: int) -> None:
 
     assert name.endswith(f"/tasks/event-{delay}")
     task = client.request["task"]
-    assert task["dispatch_deadline"] == {"seconds": 10}
+    assert task["dispatch_deadline"] == {"seconds": 15}
 
 
 def test_cloud_tasks_rejects_unapproved_delay() -> None:
