@@ -71,5 +71,5 @@ Criterios:
 | Incremento | Estado | Condición pendiente |
 |---|---|---|
 | S4-BE-01 | Listo | Especificaciones y reglas existentes son suficientes |
-| S4-BE-02 | Condicionado | Resolver S4-DEC-01 |
-| S4-BE-03 | Condicionado | Resolver S4-DEC-02 y S4-DEC-03 |
+| S4-BE-02 | Listo | S4-DEC-01 aprobada |
+| S4-BE-03 | Listo | S4-DEC-02 y S4-DEC-03 aprobadas |
