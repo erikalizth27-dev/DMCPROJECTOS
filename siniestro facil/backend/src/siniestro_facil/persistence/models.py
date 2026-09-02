@@ -473,3 +473,24 @@ class SolicitudPresupuestoIdempotente(Base):
         DateTime(timezone=True),
         nullable=False,
     )
+
+
+class SolicitudDecisionPresupuestoIdempotente(Base):
+    __tablename__ = "solicitud_decision_presupuesto_idempotente"
+    __table_args__ = {"schema": SCHEMA}
+
+    clave: Mapped[str] = mapped_column(String(128), primary_key=True)
+    huella: Mapped[str] = mapped_column(String(64), nullable=False)
+    id_cambio: Mapped[int] = mapped_column(
+        ForeignKey(
+            f"{SCHEMA}.cambio_presupuesto.id_cambio",
+            ondelete="CASCADE",
+        ),
+        nullable=False,
+        unique=True,
+    )
+    respuesta: Mapped[dict[str, object]] = mapped_column(JSON, nullable=False)
+    creado_en: Mapped[datetime] = mapped_column(
+        DateTime(timezone=True),
+        nullable=False,
+    )
