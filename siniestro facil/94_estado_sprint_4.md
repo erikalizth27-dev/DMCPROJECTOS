@@ -2,7 +2,7 @@
 
 ## Estado general
 
-- Avance: **39% — regresión S4-BE-01 aprobada; pendiente validación Cloud SQL**.
+- Avance: **40% — S4-BE-01 completado**.
 - Rama: `agent/sprint-4-backend`.
 - Punto de partida: `main` en `2d4cc89b498d9ba11fa41f4926fc7110f5b0a6e8`.
 - Duración de referencia: 2 semanas.
@@ -112,4 +112,6 @@
 - Validación Cloud Shell: **233/233 pruebas aprobadas en 2.28 segundos**.
 - Evidencia: `101_evidencia_regresion_s4_be_01.md`.
 - Script de validación Cloud SQL: `backend/scripts/09_validate_s4_be_01_postgresql.py`.
-- Pendiente: prueba transaccional con rollback en Cloud SQL.
+- Validación PostgreSQL: **completada**, con rollback y cero registros residuales.
+- Evidencia final: `102_evidencia_final_s4_be_01_postgresql.md`.
+- Estado de S4-BE-01: **completado**.
