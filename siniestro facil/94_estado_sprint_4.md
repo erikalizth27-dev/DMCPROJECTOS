@@ -2,7 +2,7 @@
 
 ## Estado general
 
-- Avance: **12% — primera entrega de fundaciones validada**.
+- Avance: **14% — contratos y repositorio base publicados, pendientes de validación**.
 - Rama: `agent/sprint-4-backend`.
 - Punto de partida: `main` en `2d4cc89b498d9ba11fa41f4926fc7110f5b0a6e8`.
 - Duración de referencia: 2 semanas.
@@ -62,3 +62,16 @@
 - Alembic: `20260902_02 (head)`.
 - Evidencia: `98_evidencia_primera_fundacion_sprint_4.md`.
 - Pendiente: contratos y repositorios.
+
+
+## Segunda entrega de fundaciones
+
+- Contratos de contexto, inspección y presupuesto definidos.
+- Repositorio PostgreSQL base incorporado.
+- Operador o ajustador requiere asignación activa.
+- Supervisor conserva acceso transversal.
+- Taller limitado a presupuestos asociados con su proveedor.
+- Consultas ocultan recursos inexistentes o fuera de alcance.
+- Cinco pruebas nuevas publicadas.
+- Resultado esperado: **218/218 pruebas aprobadas**.
+- No requiere migración adicional.
