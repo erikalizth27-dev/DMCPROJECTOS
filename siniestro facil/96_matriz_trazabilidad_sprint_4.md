@@ -29,4 +29,7 @@
 - `97_registro_aprobacion_s4_decisiones.md`.
 - `101_evidencia_regresion_s4_be_01.md`: 233/233 pruebas aprobadas.
 - `102_evidencia_final_s4_be_01_postgresql.md`: persistencia, concurrencia, auditoría y rollback validados.
+- `104_evidencia_regresion_s4_be_02.md`: 250/250 pruebas aprobadas.
+- `105_evidencia_migracion_s4_be_02_cloudsql.md`: migración `20260902_03` validada.
+- `106_evidencia_final_s4_be_02_postgresql.md`: presupuesto, inspección, idempotencia y auditoría validados.
 
