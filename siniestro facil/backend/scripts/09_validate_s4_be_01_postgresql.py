@@ -1,9 +1,10 @@
 from __future__ import annotations
 
 import os
+from uuid import uuid4
 from datetime import datetime, timedelta, timezone
 
-from sqlalchemy import create_engine, select, update
+from sqlalchemy import create_engine, insert, select, update
 from sqlalchemy.orm import sessionmaker
 
 from siniestro_facil.application.schedule_inspection import (
@@ -43,40 +44,50 @@ audit_id: int | None = None
 claim_id: int | None = None
 original_state: str | None = None
 original_version: int | None = None
+user_id: int | None = None
+assignment_id: int | None = None
+subject: str | None = None
 
 with engine.connect() as connection:
     outer_transaction = connection.begin()
     try:
-        row = connection.execute(
-            select(Siniestro, IdentidadActor, UsuarioInterno)
-            .join(
-                AsignacionSiniestro,
-                AsignacionSiniestro.id_siniestro == Siniestro.id_siniestro,
-            )
-            .join(
-                UsuarioInterno,
-                UsuarioInterno.id_usuario == AsignacionSiniestro.id_usuario,
-            )
-            .join(
-                IdentidadActor,
-                IdentidadActor.id_usuario == UsuarioInterno.id_usuario,
-            )
-            .where(
-                AsignacionSiniestro.finalizado_en.is_(None),
-                UsuarioInterno.rol.in_(("operador", "ajustador")),
-                IdentidadActor.actor_type == ActorType.INTERNO.value,
-            )
+        claim = connection.execute(
+            select(Siniestro)
             .order_by(Siniestro.id_siniestro)
             .limit(1)
-        ).first()
-        require(
-            row is not None,
-            "No existe un siniestro con operador o ajustador asignado",
-        )
-        claim, identity, user = row.t
+        ).scalar_one_or_none()
+        require(claim is not None, "No existe un siniestro para validar")
         claim_id = claim.id_siniestro
         original_state = claim.estado_actual
         original_version = claim.version
+        now = datetime.now(timezone.utc)
+
+        user_id = connection.execute(
+            insert(UsuarioInterno)
+            .values(rol=PrincipalRole.OPERADOR.value)
+            .returning(UsuarioInterno.id_usuario)
+        ).scalar_one()
+        subject = f"s4-be-01-validation-{uuid4().hex}"
+        tenant_id = "tenant-s4-validation"
+        connection.execute(
+            insert(IdentidadActor).values(
+                subject=subject,
+                tenant_id=tenant_id,
+                actor_type=ActorType.INTERNO.value,
+                id_usuario=user_id,
+            )
+        )
+        assignment_id = connection.execute(
+            insert(AsignacionSiniestro)
+            .values(
+                id_siniestro=claim_id,
+                id_usuario=user_id,
+                motivo=MARKER,
+                asignado_en=now,
+                finalizado_en=None,
+            )
+            .returning(AsignacionSiniestro.id_asignacion)
+        ).scalar_one()
 
         connection.execute(
             update(Siniestro)
@@ -84,12 +95,11 @@ with engine.connect() as connection:
             .values(estado_actual=EstadoSiniestro.EN_EVALUACION.value)
         )
 
-        now = datetime.now(timezone.utc)
         principal = AuthenticatedPrincipal(
-            subject=identity.subject,
-            tenant_id=identity.tenant_id,
+            subject=subject,
+            tenant_id=tenant_id,
             actor_type=ActorType.INTERNO,
-            role=PrincipalRole(user.rol),
+            role=PrincipalRole.OPERADOR,
             issued_at=now - timedelta(minutes=1),
             expires_at=now + timedelta(hours=1),
             authenticated_at=now - timedelta(minutes=1),
@@ -189,10 +199,42 @@ with engine.connect() as verification:
             is None,
             "Auditoría residual",
         )
+    if assignment_id is not None:
+        require(
+            verification.execute(
+                select(AsignacionSiniestro).where(
+                    AsignacionSiniestro.id_asignacion == assignment_id
+                )
+            ).scalar_one_or_none()
+            is None,
+            "Asignación residual",
+        )
+    if subject is not None:
+        require(
+            verification.execute(
+                select(IdentidadActor).where(
+                    IdentidadActor.subject == subject
+                )
+            ).scalar_one_or_none()
+            is None,
+            "Identidad residual",
+        )
+    if user_id is not None:
+        require(
+            verification.execute(
+                select(UsuarioInterno).where(
+                    UsuarioInterno.id_usuario == user_id
+                )
+            ).scalar_one_or_none()
+            is None,
+            "Usuario residual",
+        )
 
 print("Estado y versión restaurados: OK")
 print("Inspección sintética eliminada: OK")
 print("Auditoría sintética eliminada: OK")
+print("Asignación sintética eliminada: OK")
+print("Identidad y usuario sintéticos eliminados: OK")
 print("Limpieza validada: sin registros residuales")
 print("VALIDACIÓN FINAL S4-BE-01 COMPLETADA")
 engine.dispose()
