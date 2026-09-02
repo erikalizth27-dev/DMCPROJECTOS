@@ -2,7 +2,7 @@
 
 ## Estado general
 
-- Avance: **10% — primera entrega de fundaciones publicada, pendiente de validación**.
+- Avance: **12% — primera entrega de fundaciones validada**.
 - Rama: `agent/sprint-4-backend`.
 - Punto de partida: `main` en `2d4cc89b498d9ba11fa41f4926fc7110f5b0a6e8`.
 - Duración de referencia: 2 semanas.
@@ -58,5 +58,7 @@
 - Solo supervisor puede aprobar o rechazar.
 - Ausencia de umbrales monetarios preservada.
 - Doce pruebas nuevas publicadas.
-- Resultado esperado: **213/213 pruebas aprobadas**.
-- Pendiente: validación Cloud Shell, contratos y repositorios.
+- Validación Cloud Shell: **213/213 pruebas aprobadas**.
+- Alembic: `20260902_02 (head)`.
+- Evidencia: `98_evidencia_primera_fundacion_sprint_4.md`.
+- Pendiente: contratos y repositorios.
