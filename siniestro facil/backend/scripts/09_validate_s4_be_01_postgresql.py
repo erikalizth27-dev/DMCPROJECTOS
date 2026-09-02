@@ -125,7 +125,7 @@ with engine.connect() as connection:
         )
         print(f"Versión: {original_version} -> {result.version}")
 
-        inspection = connection.get_execution_options() and connection.execute(
+        inspection = connection.execute(
             select(Inspeccion).where(
                 Inspeccion.id_inspeccion == inspection_id
             )
