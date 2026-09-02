@@ -2,7 +2,7 @@
 
 ## Estado general
 
-- Avance: **53% — primera entrega S4-BE-02 validada**.
+- Avance: **62% — persistencia S4-BE-02 publicada, pendiente de validación**.
 - Rama: `agent/sprint-4-backend`.
 - Punto de partida: `main` en `2d4cc89b498d9ba11fa41f4926fc7110f5b0a6e8`.
 - Duración de referencia: 2 semanas.
@@ -133,3 +133,20 @@
 - Validación Cloud Shell: **243/243 pruebas aprobadas en 2.34 segundos**.
 - Evidencia: `103_evidencia_primera_entrega_s4_be_02.md`.
 - Pendiente: persistencia PostgreSQL, vínculo con inspección, identidad de proveedor, bloqueo, idempotencia, auditoría y rollback.
+
+
+## Segunda entrega de S4-BE-02
+
+- Migración `20260902_03` creada.
+- Presupuesto vinculado explícitamente con la inspección.
+- Tabla `solicitud_presupuesto_idempotente` definida.
+- Identidad del taller resuelta al proveedor persistido.
+- Inspección y siniestro bloqueados antes de modificar.
+- Versión del siniestro validada con conflicto HTTP 409.
+- Transición a `presupuesto_recibido` validada.
+- Presupuesto, estado, versión, auditoría e idempotencia comparten una transacción.
+- Repetición idempotente devuelve el resultado previo; contenido diferente produce HTTP 409.
+- API conectada automáticamente a PostgreSQL cuando existe `DATABASE_URL`.
+- Siete pruebas nuevas publicadas.
+- Resultado esperado: **250/250 pruebas aprobadas**.
+- Pendiente: aplicar migración, validar regresión y ejecutar prueba PostgreSQL con rollback.
