@@ -31,6 +31,7 @@ class PersistenceModelsTest(unittest.TestCase):
             "evento_outbox",
             "inspeccion",
             "presupuesto",
+            "solicitud_presupuesto_idempotente",
             "autorizacion",
             "cambio_presupuesto",
         }
