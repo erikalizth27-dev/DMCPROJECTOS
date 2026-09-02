@@ -2,7 +2,7 @@
 
 ## Estado general
 
-- Avance: **30% — primera entrega S3-BE-01 validada**.
+- Avance: **37% — segunda entrega S3-BE-01 pendiente de validación**.
 - Rama: `agent/sprint-3-backend`.
 - Punto de partida: `main` en `d2b4b9f06dd9738ba47e8744d32f2277e2b3bbd1`.
 - Duración de referencia: 2 semanas.
@@ -71,3 +71,15 @@
 - Validación Cloud Shell: **150/150 pruebas aprobadas**.
 - Evidencia: `79_evidencia_primera_entrega_s3_be_01.md`.
 - Pendiente: endpoint API, persistencia PostgreSQL, auditoría atómica y validación con rollback.
+
+## Segunda entrega de S3-BE-01
+
+- Endpoints POST y GET de asistencia implementados.
+- Repositorio PostgreSQL con alcance por identidad.
+- Solicitud, auditoría e idempotencia persistidas en una transacción.
+- Estado de envío, referencia externa y auditoría actualizados atómicamente.
+- Modelos Asistencia y SolicitudAsistenciaIdempotente añadidos.
+- Migración Alembic `20260902_01` añadida y todavía no aplicada.
+- Ocho pruebas nuevas publicadas.
+- Validación esperada: **158/158 pruebas**.
+- Próximo paso tras suite verde: revisar y aplicar migración con privilegios temporales.
