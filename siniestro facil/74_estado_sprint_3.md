@@ -29,12 +29,12 @@
 
 ## Decisiones pendientes
 
-- **S3-DEC-01:** aprobar un adaptador simulado de proveedor mientras no exista proveedor externo seleccionado.
-- **S3-DEC-02:** aprobar SLA y política de reintentos simulados únicamente para el piloto.
+- **S3-DEC-01 — APROBADA:** usar temporalmente un adaptador simulado de proveedor.
+- **S3-DEC-02 — APROBADA:** 3 intentos; esperas de 30 s, 2 min y 5 min; timeout de 10 s; escalamiento tras el tercer fallo.
 
 ## Restricciones
 
-- No se integra un proveedor real sin selección y credenciales autorizadas.
+- El adaptador simulado aprobado no sustituye la selección futura de un proveedor real.
 - No se crean tópicos, suscripciones ni recursos GCP sin pasos explícitos y validación previa.
 - No se inventan SLA, timeouts ni cantidades de reintentos.
 - No se fusiona el PR de Sprint 3 sin autorización explícita del Product Owner.
@@ -51,3 +51,9 @@
 - Alembic: `20260901_01 (head)`.
 - Evidencia: `77_evidencia_fundaciones_sprint_3_cloudshell.md`.
 - Estado de fundaciones: **completado**.
+
+## Registro de aprobación
+
+- S3-DEC-01 y S3-DEC-02 aprobadas el 2 de septiembre de 2026.
+- Evidencia: `78_registro_aprobacion_s3_decisiones.md`.
+- S3-BE-01, S3-BE-02 y S3-BE-03 quedan habilitados para desarrollo.
