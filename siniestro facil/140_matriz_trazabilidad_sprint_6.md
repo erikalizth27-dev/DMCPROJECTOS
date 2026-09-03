@@ -48,6 +48,7 @@ Evidencia de aprobación: `141_registro_aprobacion_s6_decisiones.md`.
 - Validación inicial: `146_evidencia_primera_entrega_s6_be_01_cloudshell.md`.
 - Persistencia PostgreSQL: `147_segunda_entrega_s6_be_01.md`.
 - Migración y regresión Cloud SQL: `148_evidencia_migracion_s6_be_01_cloudsql.md`.
+- Validación final PostgreSQL: `149_evidencia_final_s6_be_01_postgresql.md`.
 
 ## Evidencia de cierre heredada
 
