@@ -11,7 +11,12 @@ from siniestro_facil.application.get_claim_timeline import (
     GetClaimTimelineService,
 )
 from siniestro_facil.config import Settings
+from siniestro_facil.db import create_database_engine
 from siniestro_facil.domain.identity import AuthenticatedPrincipal
+from siniestro_facil.persistence.claim_timeline_repository import (
+    PostgreSQLClaimTimelineRepository,
+)
+from siniestro_facil.persistence.session import create_session_factory
 
 
 router = APIRouter(
@@ -22,18 +27,18 @@ router = APIRouter(
 
 @lru_cache(maxsize=1)
 def get_claim_timeline_service() -> GetClaimTimelineService:
-    # La segunda entrega conectará el repositorio PostgreSQL.
-    if not Settings.from_environment().database_url:
+    settings = Settings.from_environment()
+    if not settings.database_url:
         raise BusinessError(
             "SERVICE-NOT-READY",
             "Servicio de línea de tiempo no disponible",
             503,
         )
-    raise BusinessError(
-        "SERVICE-NOT-READY",
-        "Persistencia de línea de tiempo pendiente",
-        503,
+    engine = create_database_engine(settings)
+    repository = PostgreSQLClaimTimelineRepository(
+        create_session_factory(engine)
     )
+    return GetClaimTimelineService(repository)
 
 
 @router.get(
