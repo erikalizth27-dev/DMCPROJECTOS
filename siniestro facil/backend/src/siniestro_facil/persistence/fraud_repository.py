@@ -10,7 +10,10 @@ from siniestro_facil.application.evaluate_fraud import (
     FraudEvaluationError,
     FraudEvaluationResult,
     GeneratedAlert,
+    ReviewAlertCommand,
+    ReviewedAlert,
     StoredFraudRequest,
+    StoredReviewRequest,
 )
 from siniestro_facil.domain.fraud import (
     AlertReviewStatus,
@@ -27,6 +30,7 @@ from siniestro_facil.persistence.models import (
     SenalRiesgo,
     Siniestro,
     SolicitudEvaluacionFraudeIdempotente,
+    SolicitudRevisionAlertaIdempotente,
 )
 
 
@@ -50,6 +54,7 @@ class PostgreSQLFraudAlertRepository:
                     "policy_version": alert.policy_version,
                     "effect": alert.effect.value,
                     "review_status": alert.review_status.value,
+                    "version": alert.version,
                 }
                 for alert in result.alerts
             ],
@@ -70,6 +75,7 @@ class PostgreSQLFraudAlertRepository:
                 policy_version=str(row["policy_version"]),
                 effect=effect_for_severity(AlertSeverity(str(row["severity"]))),
                 review_status=AlertReviewStatus(str(row["review_status"])),
+                version=int(row.get("version", 0)),
             )
             for row in rows
             if isinstance(row, dict)
@@ -175,6 +181,7 @@ class PostgreSQLFraudAlertRepository:
                         ].id_politica_alerta,
                         estado_revision=AlertReviewStatus.PENDIENTE.value,
                         justificacion_revision=None,
+                        version=0,
                     )
                     session.add(row)
                     session.flush()
@@ -255,4 +262,173 @@ class PostgreSQLFraudAlertRepository:
                 policy_version=policy_version,
                 effect=effect_for_severity(severity),
                 review_status=AlertReviewStatus(alert.estado_revision),
+                version=alert.version,
+            )
+
+
+    @staticmethod
+    def _serialize_review(result: ReviewedAlert) -> dict[str, object]:
+        return {
+            "alert_id": result.alert_id,
+            "claim_id": result.claim_id,
+            "review_status": result.review_status.value,
+            "justification": result.justification,
+            "version": result.version,
+            "reviewer_subject": result.reviewer_subject,
+        }
+
+    @staticmethod
+    def _deserialize_review(payload: dict[str, object]) -> ReviewedAlert:
+        return ReviewedAlert(
+            alert_id=int(payload["alert_id"]),
+            claim_id=int(payload["claim_id"]),
+            review_status=AlertReviewStatus(str(payload["review_status"])),
+            justification=str(payload["justification"]),
+            version=int(payload["version"]),
+            reviewer_subject=str(payload["reviewer_subject"]),
+        )
+
+    def find_review_request(
+        self, idempotency_key: str
+    ) -> StoredReviewRequest | None:
+        with self._factory() as session:
+            row = session.get(
+                SolicitudRevisionAlertaIdempotente,
+                idempotency_key,
+            )
+            if row is None:
+                return None
+            return StoredReviewRequest(
+                row.huella,
+                self._deserialize_review(row.respuesta),
+            )
+
+    def review(
+        self,
+        command: ReviewAlertCommand,
+        principal: AuthenticatedPrincipal,
+        *,
+        idempotency_key: str,
+        fingerprint: str,
+    ) -> ReviewedAlert:
+        try:
+            with self._factory() as session, session.begin():
+                existing = session.get(
+                    SolicitudRevisionAlertaIdempotente,
+                    idempotency_key,
+                    with_for_update=True,
+                )
+                if existing is not None:
+                    if existing.huella == fingerprint:
+                        return self._deserialize_review(existing.respuesta)
+                    raise FraudEvaluationError(
+                        "IDEMPOTENCY-CONFLICT",
+                        "Idempotency-Key ya fue utilizada con otro contenido",
+                        409,
+                    )
+                alert = session.execute(
+                    select(Alerta)
+                    .where(
+                        Alerta.id_alerta == command.alert_id,
+                        Alerta.id_siniestro == command.claim_id,
+                    )
+                    .with_for_update()
+                ).scalar_one_or_none()
+                if alert is None:
+                    raise FraudEvaluationError(
+                        "ALERT-NOT-FOUND", "Alerta no encontrada", 404
+                    )
+                identity = session.get(
+                    IdentidadActor,
+                    (principal.subject, principal.tenant_id),
+                )
+                if identity is None or identity.id_usuario is None:
+                    raise FraudEvaluationError(
+                        "ALERT-REVIEW-FORBIDDEN",
+                        "Identidad interna no vinculada",
+                        403,
+                    )
+                if alert.version != command.expected_version:
+                    raise FraudEvaluationError(
+                        "ALERT-VERSION-CONFLICT",
+                        "La alerta fue modificada por otra revisión",
+                        409,
+                    )
+                if alert.estado_revision != AlertReviewStatus.PENDIENTE.value:
+                    raise FraudEvaluationError(
+                        "ALERT-ALREADY-REVIEWED",
+                        "La alerta ya tiene una decisión humana",
+                        409,
+                    )
+                now = datetime.now(timezone.utc)
+                alert.estado_revision = command.target.value
+                alert.justificacion_revision = command.justification.strip()
+                alert.version += 1
+                result = ReviewedAlert(
+                    alert_id=alert.id_alerta,
+                    claim_id=alert.id_siniestro,
+                    review_status=command.target,
+                    justification=alert.justificacion_revision,
+                    version=alert.version,
+                    reviewer_subject=principal.subject,
+                )
+                session.add(
+                    EventoLineaTiempo(
+                        id_siniestro=alert.id_siniestro,
+                        id_usuario=identity.id_usuario,
+                        tipo_evento="alerta_fraude_revisada",
+                        fecha=now,
+                        detalle={
+                            "id_alerta": alert.id_alerta,
+                            "estado_revision": command.target.value,
+                            "justificacion": alert.justificacion_revision,
+                            "version": alert.version,
+                        },
+                    )
+                )
+                session.add(
+                    SolicitudRevisionAlertaIdempotente(
+                        clave=idempotency_key,
+                        huella=fingerprint,
+                        id_alerta=alert.id_alerta,
+                        respuesta=self._serialize_review(result),
+                        creado_en=now,
+                    )
+                )
+            return result
+        except IntegrityError as exc:
+            stored = self.find_review_request(idempotency_key)
+            if stored is not None and stored.fingerprint == fingerprint:
+                return stored.result
+            if stored is not None:
+                raise FraudEvaluationError(
+                    "IDEMPOTENCY-CONFLICT",
+                    "Idempotency-Key ya fue utilizada con otro contenido",
+                    409,
+                ) from exc
+            raise
+
+    def audit_alert_access(
+        self,
+        claim_id: int,
+        alert_id: int,
+        principal: AuthenticatedPrincipal,
+    ) -> None:
+        with self._factory() as session, session.begin():
+            identity = session.get(
+                IdentidadActor,
+                (principal.subject, principal.tenant_id),
+            )
+            if identity is None or identity.id_usuario is None:
+                raise FraudEvaluationError(
+                    "ALERT-NOT-FOUND", "Alerta no encontrada", 404
+                )
+            session.add(
+                EventoLineaTiempo(
+                    id_siniestro=claim_id,
+                    id_usuario=identity.id_usuario,
+                    tipo_evento="acceso_alerta_fraude_sensible",
+                    fecha=datetime.now(timezone.utc),
+                    detalle={"id_alerta": alert_id},
+                )
             )
