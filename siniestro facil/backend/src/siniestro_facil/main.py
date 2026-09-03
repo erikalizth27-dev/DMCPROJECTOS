@@ -11,6 +11,7 @@ from siniestro_facil.api.routes.inspections import router as inspections_router
 from siniestro_facil.api.routes.payments import router as payments_router
 from siniestro_facil.api.routes.relations import router as relations_router
 from siniestro_facil.api.routes.timeline import router as timeline_router
+from siniestro_facil.api.routes.metrics import router as metrics_router
 
 
 def create_app() -> FastAPI:
@@ -30,6 +31,7 @@ def create_app() -> FastAPI:
     app.include_router(relations_router)
     app.include_router(payments_router)
     app.include_router(timeline_router)
+    app.include_router(metrics_router)
     return app
 
 
