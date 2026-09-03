@@ -166,3 +166,19 @@ def test_sprint5_fraud_evaluation_revision_is_reversible() -> None:
     assert "solicitud_evaluacion_fraude_idempotente" in revision
     assert "id_siniestro bigint NOT NULL REFERENCES" in revision
     assert "DROP TABLE IF EXISTS" in revision
+
+
+def test_sprint5_alert_review_revision_is_reversible() -> None:
+    revision = (
+        BACKEND_ROOT
+        / "alembic"
+        / "versions"
+        / "20260903_02_s5_alert_review.py"
+    ).read_text(encoding="utf-8")
+
+    assert 'revision = "20260903_02"' in revision
+    assert 'down_revision = "20260903_01"' in revision
+    assert "ADD COLUMN version bigint NOT NULL DEFAULT 0" in revision
+    assert "solicitud_revision_alerta_idempotente" in revision
+    assert "id_alerta bigint NOT NULL UNIQUE" in revision
+    assert "DROP COLUMN IF EXISTS version" in revision
