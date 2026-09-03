@@ -40,6 +40,15 @@
 
 Evidencia de aprobación: `141_registro_aprobacion_s6_decisiones.md`.
 
+## Evidencias S6-BE-01
+
+- Fundaciones: `143_primera_entrega_fundaciones_sprint_6.md`.
+- Validación de fundaciones: `144_evidencia_fundaciones_sprint_6_cloudshell.md`.
+- Primera entrega: `145_primera_entrega_s6_be_01.md`.
+- Validación inicial: `146_evidencia_primera_entrega_s6_be_01_cloudshell.md`.
+- Persistencia PostgreSQL: `147_segunda_entrega_s6_be_01.md`.
+- Migración y regresión Cloud SQL: `148_evidencia_migracion_s6_be_01_cloudsql.md`.
+
 ## Evidencia de cierre heredada
 
 - Sprint 5: `137_acta_cierre_sprint_5.md`.
