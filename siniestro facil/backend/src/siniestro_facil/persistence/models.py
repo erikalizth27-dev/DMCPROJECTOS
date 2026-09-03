@@ -494,3 +494,77 @@ class SolicitudDecisionPresupuestoIdempotente(Base):
         DateTime(timezone=True),
         nullable=False,
     )
+
+class PoliticaAlerta(Base):
+    __tablename__ = "politica_alerta"
+    __table_args__ = {"schema": SCHEMA}
+
+    id_politica_alerta: Mapped[int] = mapped_column(BigInteger, primary_key=True)
+    version: Mapped[str] = mapped_column(String(20), nullable=False, unique=True)
+    regla_bloqueo: Mapped[dict[str, object]] = mapped_column(JSON, nullable=False)
+    vigente_desde: Mapped[date] = mapped_column(Date, nullable=False)
+
+
+class Alerta(Base):
+    __tablename__ = "alerta"
+    __table_args__ = {"schema": SCHEMA}
+
+    id_alerta: Mapped[int] = mapped_column(BigInteger, primary_key=True)
+    id_siniestro: Mapped[int] = mapped_column(
+        ForeignKey(f"{SCHEMA}.siniestro.id_siniestro", ondelete="CASCADE"),
+        nullable=False,
+    )
+    tipo: Mapped[str] = mapped_column(String(50), nullable=False)
+    severidad: Mapped[str] = mapped_column(String(20), nullable=False)
+    explicacion: Mapped[str] = mapped_column(Text, nullable=False)
+    datos_origen: Mapped[dict[str, object]] = mapped_column(JSON, nullable=False)
+    fecha: Mapped[datetime] = mapped_column(DateTime(timezone=True), nullable=False)
+    modelo_o_regla: Mapped[str] = mapped_column(String(100), nullable=False)
+    id_politica_alerta: Mapped[int] = mapped_column(
+        ForeignKey(
+            f"{SCHEMA}.politica_alerta.id_politica_alerta",
+            ondelete="RESTRICT",
+        ),
+        nullable=False,
+    )
+    estado_revision: Mapped[str] = mapped_column(
+        String(25),
+        nullable=False,
+        default="pendiente",
+    )
+    justificacion_revision: Mapped[str | None] = mapped_column(Text)
+
+
+class SenalRiesgo(Base):
+    __tablename__ = "senal_riesgo"
+    __table_args__ = {"schema": SCHEMA}
+
+    id_senal: Mapped[int] = mapped_column(BigInteger, primary_key=True)
+    id_siniestro: Mapped[int] = mapped_column(
+        ForeignKey(f"{SCHEMA}.siniestro.id_siniestro", ondelete="CASCADE"),
+        nullable=False,
+    )
+    tipo_senal: Mapped[str] = mapped_column(String(40), nullable=False)
+    origen: Mapped[str] = mapped_column(String(20), nullable=False)
+
+
+class RelacionCasos(Base):
+    __tablename__ = "relacion_casos"
+    __table_args__ = (
+        CheckConstraint(
+            "id_siniestro_a < id_siniestro_b",
+            name="chk_relacion_orden",
+        ),
+        {"schema": SCHEMA},
+    )
+
+    id_relacion: Mapped[int] = mapped_column(BigInteger, primary_key=True)
+    id_siniestro_a: Mapped[int] = mapped_column(
+        ForeignKey(f"{SCHEMA}.siniestro.id_siniestro", ondelete="CASCADE"),
+        nullable=False,
+    )
+    id_siniestro_b: Mapped[int] = mapped_column(
+        ForeignKey(f"{SCHEMA}.siniestro.id_siniestro", ondelete="CASCADE"),
+        nullable=False,
+    )
+    criterio_relacion: Mapped[str] = mapped_column(String(30), nullable=False)
