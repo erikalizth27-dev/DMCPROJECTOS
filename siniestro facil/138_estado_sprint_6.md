@@ -2,7 +2,7 @@
 
 ## Estado general
 
-- Avance: **8% — preparación y línea base completadas**.
+- Avance: **12% — primera entrega de fundaciones publicada; validación pendiente**.
 - Rama: `agent/sprint-6-backend`.
 - Punto de partida: `main` en `50c5de8852ef74297d4056c46f0146da9d9f857e`.
 - Duración de referencia: 2 semanas.
@@ -45,7 +45,7 @@
 
 ## Próximo paso
 
-Implementar y validar las fundaciones de pagos, auditoría e indicadores.
+Validar en Cloud Shell las fundaciones y la suite esperada de 361 pruebas.
 
 
 ## Línea base validada
@@ -56,3 +56,15 @@ Implementar y validar las fundaciones de pagos, auditoría e indicadores.
 - Advertencia Starlette: conocida y no bloqueante.
 - Evidencia: `142_evidencia_linea_base_sprint_6_cloudshell.md`.
 - Próximo paso: fundaciones de pagos, auditoría e indicadores.
+
+
+## Primera entrega de fundaciones
+
+- Dominio de pagos y bloqueo por alerta crítica.
+- Adaptador de pagos determinístico y sin transferencia real.
+- Indicadores con disponibilidad y fuentes explícitas.
+- Auditoría sensible proyectada por rol.
+- Tablas `pago` y `comunicacion` mapeadas sin migración.
+- **19 pruebas nuevas; total esperado: 361**.
+- Evidencia: `143_primera_entrega_fundaciones_sprint_6.md`.
+- Pendiente: validación Cloud Shell.
