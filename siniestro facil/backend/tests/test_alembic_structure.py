@@ -135,3 +135,19 @@ def test_sprint4_budget_decision_revision_is_reversible() -> None:
     assert "solicitud_decision_presupuesto_idempotente" in revision
     assert "id_cambio bigint NOT NULL UNIQUE" in revision
     assert "DROP TABLE IF EXISTS" in revision
+
+
+def test_sprint4_budget_decision_types_revision_is_reversible() -> None:
+    revision = (
+        BACKEND_ROOT
+        / "alembic"
+        / "versions"
+        / "20260902_05_s4_budget_decision_types.py"
+    ).read_text(encoding="utf-8")
+
+    assert 'revision = "20260902_05"' in revision
+    assert 'down_revision = "20260902_04"' in revision
+    assert "'observacion'" in revision
+    assert "'aprobacion'" in revision
+    assert "'rechazo'" in revision
+    assert "DELETE FROM" not in revision
