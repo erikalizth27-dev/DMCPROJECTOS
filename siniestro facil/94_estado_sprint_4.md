@@ -2,7 +2,7 @@
 
 ## Estado general
 
-- Avance: **95% — validación integral completada; pendiente cierre formal y PR**.
+- Avance: **100% — Sprint 4 cerrado; PR pendiente de revisión y autorización de fusión**.
 - Rama: `agent/sprint-4-backend`.
 - Punto de partida: `main` en `2d4cc89b498d9ba11fa41f4926fc7110f5b0a6e8`.
 - Duración de referencia: 2 semanas.
@@ -205,4 +205,6 @@
 - S4-BE-01, S4-BE-02 y S4-BE-03: validados contra PostgreSQL.
 - Rollback y limpieza: sin registros sintéticos residuales.
 - Evidencia: `111_evidencia_validacion_integral_sprint_4.md`.
-- Próximo paso: acta de cierre, actualización final de trazabilidad y preparación del PR.
+- Acta de cierre: `112_acta_cierre_sprint_4.md`.
+- Estado: **Sprint 4 cerrado al 100%**.
+- Próximo paso: revisión del PR y autorización explícita antes de fusionar.
