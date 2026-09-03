@@ -29,3 +29,11 @@
 - S5-DEC-02: coincidencias exactas normalizadas y revisión humana sin fusión.
 - S5-DEC-03: adaptador determinístico simulado y reproducible.
 - Evidencia: `116_registro_aprobacion_s5_decisiones.md`.
+
+
+## Evidencia S5-BE-01
+
+- Evaluación determinística y reproducible: `120_primera_entrega_s5_be_01.md`.
+- Suite Cloud Shell de primera entrega: `121_evidencia_primera_entrega_s5_be_01.md`.
+- Persistencia y migración: `122_segunda_entrega_s5_be_01.md` y `123_evidencia_migracion_s5_be_01_cloudsql.md`.
+- Validación final PostgreSQL con rollback: `124_evidencia_final_s5_be_01_postgresql.md`.
