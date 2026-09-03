@@ -2,7 +2,7 @@
 
 ## Estado general
 
-- Avance: **38% — migración y regresión S6-BE-01 validadas; prueba PostgreSQL final pendiente**.
+- Avance: **40% — S6-BE-01 completado y validado integralmente en PostgreSQL**.
 - Rama: `agent/sprint-6-backend`.
 - Punto de partida: `main` en `50c5de8852ef74297d4056c46f0146da9d9f857e`.
 - Duración de referencia: 2 semanas.
@@ -45,7 +45,7 @@
 
 ## Próximo paso
 
-Ejecutar la validación PostgreSQL final de S6-BE-01 con rollback y comprobar la ausencia de residuos.
+Iniciar S6-BE-02: línea de tiempo consolidada, proyección sensible por rol y auditoría de consulta.
 
 ## Línea base validada
 
@@ -114,4 +114,5 @@ Ejecutar la validación PostgreSQL final de S6-BE-01 con rollback y comprobar la
 - Tablas de idempotencia y columnas de pago confirmadas en Cloud SQL.
 - Advertencia Starlette: conocida y no bloqueante.
 - Evidencia: `148_evidencia_migracion_s6_be_01_cloudsql.md`.
-- Pendiente: validación PostgreSQL transaccional final con rollback.
+- Validación final: `149_evidencia_final_s6_be_01_postgresql.md`.
+- Estado: **completado**.
