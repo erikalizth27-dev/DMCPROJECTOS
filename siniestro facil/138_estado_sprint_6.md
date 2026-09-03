@@ -2,7 +2,7 @@
 
 ## Estado general
 
-- Avance: **30% — primera entrega S6-BE-01 validada**.
+- Avance: **35% — segunda entrega S6-BE-01 publicada; migración pendiente**.
 - Rama: `agent/sprint-6-backend`.
 - Punto de partida: `main` en `50c5de8852ef74297d4056c46f0146da9d9f857e`.
 - Duración de referencia: 2 semanas.
@@ -45,7 +45,7 @@
 
 ## Próximo paso
 
-Implementar persistencia PostgreSQL, auditoría atómica e idempotencia persistente para S6-BE-01.
+Validar la regresión, aplicar `20260903_04` y ejecutar la prueba PostgreSQL de S6-BE-01.
 
 
 ## Línea base validada
@@ -101,3 +101,15 @@ Implementar persistencia PostgreSQL, auditoría atómica e idempotencia persiste
 - Alembic: `20260903_03 (head)`.
 - Evidencia: `146_evidencia_primera_entrega_s6_be_01_cloudshell.md`.
 - Próximo paso: segunda entrega PostgreSQL de S6-BE-01.
+
+
+## Segunda entrega S6-BE-01
+
+- Repositorio PostgreSQL implementado.
+- Identidad, asignación y segregación validadas en persistencia.
+- Auditoría e idempotencia transaccionales.
+- Revalidación atómica de alerta crítica.
+- Migración Alembic `20260903_04` y script administrativo.
+- **8 pruebas nuevas; total esperado: 386**.
+- Evidencia: `147_segunda_entrega_s6_be_01.md`.
+- Pendiente: regresión, migración Cloud SQL y validación con rollback.
