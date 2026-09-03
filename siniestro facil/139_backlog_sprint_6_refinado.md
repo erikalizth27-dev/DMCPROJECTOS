@@ -97,4 +97,4 @@ Criterios:
 |---|---|---|
 | S6-BE-01 | **Completado** | `149_evidencia_final_s6_be_01_postgresql.md` |
 | S6-BE-02 | **Completado** | `154_evidencia_final_s6_be_02_postgresql.md` |
-| S6-BE-03 | Pendiente | — |
+| S6-BE-03 | **Completado** | `159_evidencia_final_s6_be_03_postgresql.md` |
