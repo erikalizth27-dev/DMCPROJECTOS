@@ -2,7 +2,7 @@
 
 ## Estado general
 
-- Avance: **5% — rama, alcance y trazabilidad inicial creados**.
+- Avance: **12% — primera entrega de fundaciones publicada; pendiente validación Cloud Shell**.
 - Rama: `agent/sprint-5-backend`.
 - Punto de partida: `main` en `83d17c2cf2c2cc7c0922c457ebc28f389c11c618`.
 - Duración de referencia: 2 semanas.
@@ -57,3 +57,14 @@ Evidencia de aprobación: `116_registro_aprobacion_s5_decisiones.md`.
 - Advertencia Starlette: conocida y no bloqueante.
 - Evidencia: `117_evidencia_linea_base_sprint_5_cloudshell.md`.
 - Próximo paso: contratos, catálogos y persistencia base antifraude.
+
+## Primera entrega de fundaciones
+
+- Dominio antifraude y efectos por severidad implementados.
+- Normalización exacta y relación canónica sin autofusión.
+- Adaptador determinístico, versionado y reproducible.
+- Modelos de las cuatro tablas antifraude existentes.
+- Once pruebas nuevas publicadas.
+- Total esperado: **281 pruebas**.
+- No requiere migración.
+- Evidencia: `118_primera_entrega_fundaciones_sprint_5.md`.
