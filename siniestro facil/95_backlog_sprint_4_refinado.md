@@ -43,7 +43,7 @@ Criterios:
 
 Evidencia de cierre: `106_evidencia_final_s4_be_02_postgresql.md`.
 
-## S4-BE-03 — Decidir presupuesto y registrar cambios
+## S4-BE-03 — Decidir presupuesto y registrar cambios — COMPLETADO
 
 | Campo | Definición |
 |---|---|
@@ -61,6 +61,8 @@ Criterios:
 - Registrar observaciones, repuestos alternativos y ampliaciones.
 - Conservar el presupuesto original y el historial de cambios.
 - Aplicar idempotencia, concurrencia y auditoría atómica.
+
+Evidencia de cierre: `110_evidencia_final_s4_be_03_postgresql.md`.
 
 ## Fuera de alcance
 
