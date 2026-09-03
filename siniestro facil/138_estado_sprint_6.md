@@ -2,7 +2,7 @@
 
 ## Estado general
 
-- Avance: **60% — S6-BE-02 completado y validado integralmente en PostgreSQL**.
+- Avance: **70% — primera entrega S6-BE-03 publicada; validación Cloud Shell pendiente**.
 - Rama: `agent/sprint-6-backend`.
 - Punto de partida: `main` en `50c5de8852ef74297d4056c46f0146da9d9f857e`.
 - Duración de referencia: 2 semanas.
@@ -45,7 +45,7 @@
 
 ## Próximo paso
 
-Iniciar S6-BE-03: servicio de indicadores verificables y estados explícitos de no disponibilidad.
+Validar compilación y suite completa de la primera entrega S6-BE-03.
 
 ## Línea base validada
 
@@ -147,3 +147,17 @@ Iniciar S6-BE-03: servicio de indicadores verificables y estados explícitos de 
 - Suite: **405 pruebas aprobadas**.
 - Validación final: `154_evidencia_final_s6_be_02_postgresql.md`.
 - Estado: **completado**.
+
+
+## Primera entrega S6-BE-03
+
+- Servicio de indicadores restringido al supervisor.
+- Período obligatorio sin ventana inventada.
+- Cálculos solo con eventos disponibles.
+- Ausencia de datos representada como `no_disponible`, nunca como cero.
+- Indicadores sin fuente aprobada documentados explícitamente.
+- Endpoint autenticado registrado.
+- **10 pruebas nuevas; total esperado: 415**.
+- Migraciones nuevas: ninguna.
+- Evidencia: `155_primera_entrega_s6_be_03.md`.
+- Pendiente: compilación y regresión en Cloud Shell.
