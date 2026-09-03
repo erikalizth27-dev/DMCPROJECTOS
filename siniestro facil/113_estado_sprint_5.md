@@ -27,11 +27,11 @@
 - **S5-BE-02:** permitir al investigador o supervisor confirmar, descartar o solicitar información, registrando justificación, revisión humana y accesos sensibles.
 - **S5-BE-03:** relacionar casos por criterios permitidos sin fusionarlos y aplicar una política antifraude configurable y versionada.
 
-## Decisiones pendientes
+## Decisiones aprobadas
 
-- **S5-DEC-01:** aprobar para el piloto la política existente: crítica bloquea pago hasta revisión; alta deriva a investigación; media o baja aumenta prioridad. Ninguna alerta confirma fraude ni rechaza automáticamente.
-- **S5-DEC-02:** detectar relaciones únicamente mediante coincidencias exactas de valores normalizados disponibles; generar candidatos para revisión humana, sin fusión automática ni inferencia cuando falten datos.
-- **S5-DEC-03:** usar temporalmente un adaptador determinístico simulado de reglas/modelos, conservando versión, entradas y explicación; no integrar un modelo externo de IA en Sprint 5.
+- **S5-DEC-01 — APROBADA:** aprobar para el piloto la política existente: crítica bloquea pago hasta revisión; alta deriva a investigación; media o baja aumenta prioridad. Ninguna alerta confirma fraude ni rechaza automáticamente.
+- **S5-DEC-02 — APROBADA:** detectar relaciones únicamente mediante coincidencias exactas de valores normalizados disponibles; generar candidatos para revisión humana, sin fusión automática ni inferencia cuando falten datos.
+- **S5-DEC-03 — APROBADA:** usar temporalmente un adaptador determinístico simulado de reglas/modelos, conservando versión, entradas y explicación; no integrar un modelo externo de IA en Sprint 5.
 
 ## Restricciones
 
@@ -44,4 +44,6 @@
 
 ## Próximo paso
 
-Aprobar o ajustar S5-DEC-01, S5-DEC-02 y S5-DEC-03 para completar la Definition of Ready y comenzar las fundaciones.
+Ejecutar la línea base heredada y comenzar las fundaciones antifraude. Los tres incrementos están listos para desarrollo.
+
+Evidencia de aprobación: `116_registro_aprobacion_s5_decisiones.md`.
