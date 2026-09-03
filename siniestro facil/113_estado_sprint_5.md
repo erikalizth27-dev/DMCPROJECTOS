@@ -2,7 +2,7 @@
 
 ## Estado general
 
-- Avance: **40% — S5-BE-01 completado; inicia revisión humana S5-BE-02**.
+- Avance: **50% — primera entrega S5-BE-02 publicada; pendiente validación Cloud Shell**.
 - Rama: `agent/sprint-5-backend`.
 - Punto de partida: `main` en `83d17c2cf2c2cc7c0922c457ebc28f389c11c618`.
 - Duración de referencia: 2 semanas.
@@ -124,3 +124,16 @@ Evidencia de aprobación: `116_registro_aprobacion_s5_decisiones.md`.
 - Evidencia final: `124_evidencia_final_s5_be_01_postgresql.md`.
 - Estado: **completado**.
 - Próximo incremento: S5-BE-02 — revisión humana y acceso sensible.
+
+
+## Primera entrega S5-BE-02
+
+- Tres decisiones humanas admitidas.
+- Justificación obligatoria.
+- Control optimista de versión.
+- Idempotencia y conflicto HTTP 409.
+- Autorización restringida a investigador y supervisor.
+- Endpoint PATCH autenticado.
+- Catorce pruebas nuevas; total esperado: **314 pruebas**.
+- Evidencia de entrega: `125_primera_entrega_s5_be_02.md`.
+- Pendiente: validación Cloud Shell y persistencia PostgreSQL.
