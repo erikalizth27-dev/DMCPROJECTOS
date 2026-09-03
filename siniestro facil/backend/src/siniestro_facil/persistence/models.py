@@ -533,6 +533,7 @@ class Alerta(Base):
         default="pendiente",
     )
     justificacion_revision: Mapped[str | None] = mapped_column(Text)
+    version: Mapped[int] = mapped_column(BigInteger, nullable=False, default=0)
 
 
 class SenalRiesgo(Base):
@@ -589,6 +590,35 @@ class SolicitudEvaluacionFraudeIdempotente(Base):
     id_siniestro: Mapped[int] = mapped_column(
         ForeignKey(f"{SCHEMA}.siniestro.id_siniestro", ondelete="CASCADE"),
         nullable=False,
+    )
+    respuesta: Mapped[dict[str, object]] = mapped_column(JSON, nullable=False)
+    creado_en: Mapped[datetime] = mapped_column(
+        DateTime(timezone=True),
+        nullable=False,
+    )
+
+
+
+class SolicitudRevisionAlertaIdempotente(Base):
+    __tablename__ = "solicitud_revision_alerta_idempotente"
+    __table_args__ = (
+        CheckConstraint(
+            "char_length(clave) BETWEEN 16 AND 128",
+            name="chk_solicitud_revision_alerta_clave",
+        ),
+        CheckConstraint(
+            "char_length(huella) = 64",
+            name="chk_solicitud_revision_alerta_huella",
+        ),
+        {"schema": SCHEMA},
+    )
+
+    clave: Mapped[str] = mapped_column(String(128), primary_key=True)
+    huella: Mapped[str] = mapped_column(String(64), nullable=False)
+    id_alerta: Mapped[int] = mapped_column(
+        ForeignKey(f"{SCHEMA}.alerta.id_alerta", ondelete="CASCADE"),
+        nullable=False,
+        unique=True,
     )
     respuesta: Mapped[dict[str, object]] = mapped_column(JSON, nullable=False)
     creado_en: Mapped[datetime] = mapped_column(
