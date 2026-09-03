@@ -2,7 +2,7 @@
 
 ## Estado general
 
-- Avance: **58% — regresión S6-BE-02 aprobada; validación PostgreSQL final pendiente**.
+- Avance: **60% — S6-BE-02 completado y validado integralmente en PostgreSQL**.
 - Rama: `agent/sprint-6-backend`.
 - Punto de partida: `main` en `50c5de8852ef74297d4056c46f0146da9d9f857e`.
 - Duración de referencia: 2 semanas.
@@ -45,7 +45,7 @@
 
 ## Próximo paso
 
-Ejecutar `scripts/25_validate_s6_be_02_postgresql.py` contra Cloud SQL.
+Iniciar S6-BE-03: servicio de indicadores verificables y estados explícitos de no disponibilidad.
 
 ## Línea base validada
 
@@ -145,4 +145,5 @@ Ejecutar `scripts/25_validate_s6_be_02_postgresql.py` contra Cloud SQL.
 - Evidencia: `152_segunda_entrega_s6_be_02.md`.
 - Regresión: `153_evidencia_regresion_s6_be_02_cloudshell.md`.
 - Suite: **405 pruebas aprobadas**.
-- Pendiente: validación PostgreSQL real con `scripts/25_validate_s6_be_02_postgresql.py`.
+- Validación final: `154_evidencia_final_s6_be_02_postgresql.md`.
+- Estado: **completado**.
