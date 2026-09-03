@@ -2,7 +2,7 @@
 
 ## Estado general
 
-- Avance: **84% — migración S4-BE-03 validada; pendiente prueba funcional PostgreSQL**.
+- Avance: **85% — S4-BE-01, S4-BE-02 y S4-BE-03 completados; pendiente validación integral**.
 - Rama: `agent/sprint-4-backend`.
 - Punto de partida: `main` en `2d4cc89b498d9ba11fa41f4926fc7110f5b0a6e8`.
 - Duración de referencia: 2 semanas.
@@ -190,4 +190,8 @@
 - API conectada a PostgreSQL cuando existe `DATABASE_URL`.
 - Siete pruebas nuevas publicadas.
 - Validación Cloud Shell: **269/269 pruebas aprobadas en 2.74 segundos**.
-- Pendiente: regresión, aplicación de migración y validación PostgreSQL con rollback.
+- Migración de rectificación `20260902_05`: tipos `observacion`, `aprobacion` y `rechazo` alineados con la restricción física.
+- Validación PostgreSQL: **completada**, con roles, idempotencia, auditoría, rollback y cero registros residuales.
+- Evidencia final: `110_evidencia_final_s4_be_03_postgresql.md`.
+- Estado de S4-BE-03: **completado**.
+- Próximo paso: validación integral de Sprint 4.
