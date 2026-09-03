@@ -27,6 +27,7 @@ class OperationalMetricFacts:
     claim_created_at: datetime | None
     first_assistance_at: datetime | None
     first_decision_at: datetime | None
+    source_claim_id: int | None = None
 
 
 @dataclass(frozen=True, slots=True)
@@ -34,6 +35,7 @@ class OperationalMetricsResult:
     period_start: datetime
     period_end: datetime
     indicators: tuple[IndicatorResult, ...]
+    source_claim_id: int | None = None
 
 
 class OperationalMetricsRepository(Protocol):
@@ -42,6 +44,7 @@ class OperationalMetricsRepository(Protocol):
         *,
         period_start: datetime,
         period_end: datetime,
+        principal: AuthenticatedPrincipal,
     ) -> OperationalMetricFacts: ...
 
 
@@ -78,6 +81,7 @@ class GetOperationalMetricsService:
         facts = self._repository.load_facts(
             period_start=period_start,
             period_end=period_end,
+            principal=principal,
         )
         indicators = (
             elapsed_indicator(
@@ -128,4 +132,5 @@ class GetOperationalMetricsService:
             period_start=period_start,
             period_end=period_end,
             indicators=indicators,
+            source_claim_id=facts.source_claim_id,
         )
