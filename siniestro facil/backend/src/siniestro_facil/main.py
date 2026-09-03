@@ -6,6 +6,7 @@ from siniestro_facil.api.middleware import correlation_id_middleware
 from siniestro_facil.api.routes.assistance import router as assistance_router
 from siniestro_facil.api.routes.claims import router as claims_router
 from siniestro_facil.api.routes.health import router as health_router
+from siniestro_facil.api.routes.fraud import router as fraud_router
 from siniestro_facil.api.routes.inspections import router as inspections_router
 
 
@@ -22,6 +23,7 @@ def create_app() -> FastAPI:
     app.include_router(claims_router)
     app.include_router(assistance_router)
     app.include_router(inspections_router)
+    app.include_router(fraud_router)
     return app
 
 
