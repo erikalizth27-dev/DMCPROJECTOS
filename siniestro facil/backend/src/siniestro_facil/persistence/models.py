@@ -352,3 +352,145 @@ class EventoOutbox(Base):
         String(255),
     )
     ultimo_error: Mapped[str | None] = mapped_column(Text)
+
+
+class Inspeccion(Base):
+    __tablename__ = "inspeccion"
+    __table_args__ = {"schema": SCHEMA}
+
+    id_inspeccion: Mapped[int] = mapped_column(
+        BigInteger,
+        primary_key=True,
+    )
+    id_siniestro: Mapped[int] = mapped_column(
+        ForeignKey(f"{SCHEMA}.siniestro.id_siniestro", ondelete="CASCADE"),
+        nullable=False,
+    )
+    fecha_programada: Mapped[datetime] = mapped_column(
+        DateTime(timezone=True),
+        nullable=False,
+    )
+
+
+class Presupuesto(Base):
+    __tablename__ = "presupuesto"
+    __table_args__ = {"schema": SCHEMA}
+
+    id_presupuesto: Mapped[int] = mapped_column(
+        BigInteger,
+        primary_key=True,
+    )
+    id_siniestro: Mapped[int] = mapped_column(
+        ForeignKey(f"{SCHEMA}.siniestro.id_siniestro", ondelete="CASCADE"),
+        nullable=False,
+    )
+    id_inspeccion: Mapped[int | None] = mapped_column(
+        ForeignKey(f"{SCHEMA}.inspeccion.id_inspeccion", ondelete="RESTRICT")
+    )
+    id_proveedor: Mapped[int] = mapped_column(
+        ForeignKey(f"{SCHEMA}.proveedor.id_proveedor", ondelete="RESTRICT"),
+        nullable=False,
+    )
+    diagnostico: Mapped[str | None] = mapped_column(Text)
+    vigencia_desde: Mapped[date] = mapped_column(Date, nullable=False)
+    vigencia_hasta: Mapped[date] = mapped_column(Date, nullable=False)
+    estado: Mapped[str] = mapped_column(
+        String(20),
+        nullable=False,
+        default="recibido",
+    )
+
+
+class Autorizacion(Base):
+    __tablename__ = "autorizacion"
+    __table_args__ = {"schema": SCHEMA}
+
+    id_autorizacion: Mapped[int] = mapped_column(
+        BigInteger,
+        primary_key=True,
+    )
+    id_usuario_autoriza: Mapped[int] = mapped_column(
+        ForeignKey(
+            f"{SCHEMA}.usuario_interno.id_usuario",
+            ondelete="RESTRICT",
+        ),
+        nullable=False,
+    )
+    fecha: Mapped[datetime] = mapped_column(
+        DateTime(timezone=True),
+        nullable=False,
+    )
+    objeto_autorizado: Mapped[str] = mapped_column(
+        String(50),
+        nullable=False,
+    )
+
+
+class CambioPresupuesto(Base):
+    __tablename__ = "cambio_presupuesto"
+    __table_args__ = {"schema": SCHEMA}
+
+    id_cambio: Mapped[int] = mapped_column(
+        BigInteger,
+        primary_key=True,
+    )
+    id_presupuesto: Mapped[int] = mapped_column(
+        ForeignKey(
+            f"{SCHEMA}.presupuesto.id_presupuesto",
+            ondelete="CASCADE",
+        ),
+        nullable=False,
+    )
+    tipo_cambio: Mapped[str] = mapped_column(
+        String(30),
+        nullable=False,
+    )
+    id_autorizacion: Mapped[int] = mapped_column(
+        ForeignKey(
+            f"{SCHEMA}.autorizacion.id_autorizacion",
+            ondelete="RESTRICT",
+        ),
+        nullable=False,
+    )
+
+
+class SolicitudPresupuestoIdempotente(Base):
+    __tablename__ = "solicitud_presupuesto_idempotente"
+    __table_args__ = {"schema": SCHEMA}
+
+    clave: Mapped[str] = mapped_column(String(128), primary_key=True)
+    huella: Mapped[str] = mapped_column(String(64), nullable=False)
+    id_presupuesto: Mapped[int] = mapped_column(
+        ForeignKey(
+            f"{SCHEMA}.presupuesto.id_presupuesto",
+            ondelete="CASCADE",
+        ),
+        nullable=False,
+        unique=True,
+    )
+    respuesta: Mapped[dict[str, object]] = mapped_column(JSON, nullable=False)
+    creado_en: Mapped[datetime] = mapped_column(
+        DateTime(timezone=True),
+        nullable=False,
+    )
+
+
+class SolicitudDecisionPresupuestoIdempotente(Base):
+    __tablename__ = "solicitud_decision_presupuesto_idempotente"
+    __table_args__ = {"schema": SCHEMA}
+
+    clave: Mapped[str] = mapped_column(String(128), primary_key=True)
+    huella: Mapped[str] = mapped_column(String(64), nullable=False)
+    id_cambio: Mapped[int] = mapped_column(
+        ForeignKey(
+            f"{SCHEMA}.cambio_presupuesto.id_cambio",
+            ondelete="CASCADE",
+        ),
+        nullable=False,
+        unique=True,
+    )
+    respuesta: Mapped[dict[str, object]] = mapped_column(JSON, nullable=False)
+    creado_en: Mapped[datetime] = mapped_column(
+        DateTime(timezone=True),
+        nullable=False,
+    )

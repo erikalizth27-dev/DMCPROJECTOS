@@ -29,6 +29,12 @@ class PersistenceModelsTest(unittest.TestCase):
             "asistencia",
             "solicitud_asistencia_idempotente",
             "evento_outbox",
+            "inspeccion",
+            "presupuesto",
+            "solicitud_presupuesto_idempotente",
+            "solicitud_decision_presupuesto_idempotente",
+            "autorizacion",
+            "cambio_presupuesto",
         }
         mapped = {
             table.name
