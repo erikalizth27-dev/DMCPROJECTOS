@@ -60,3 +60,14 @@
 - Validación completa: `136_evidencia_validacion_integral_sprint_5.md`.
 - Revisión de base: `20260903_03 (head)`.
 - Resultado: S5-BE-01, S5-BE-02 y S5-BE-03 aprobados.
+
+
+## Cierre de trazabilidad
+
+| Incremento | Estado | Evidencia final |
+|---|---|---|
+| S5-BE-01 | Completado | `124_evidencia_final_s5_be_01_postgresql.md` |
+| S5-BE-02 | Completado | `129_evidencia_final_s5_be_02_postgresql.md` |
+| S5-BE-03 | Completado | `134_evidencia_final_s5_be_03_postgresql.md` |
+| Sprint 5 integral | Aprobado | `136_evidencia_validacion_integral_sprint_5.md` |
+| Acta | Cerrada | `137_acta_cierre_sprint_5.md` |
