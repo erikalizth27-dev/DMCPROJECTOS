@@ -2,7 +2,7 @@
 
 ## Estado general
 
-- Avance: **5% — rama, alcance y decisiones pendientes definidos**.
+- Avance: **5% — preparación completada y decisiones aprobadas**.
 - Rama: `agent/sprint-6-backend`.
 - Punto de partida: `main` en `50c5de8852ef74297d4056c46f0146da9d9f857e`.
 - Duración de referencia: 2 semanas.
@@ -27,11 +27,12 @@
 - **S6-BE-02:** consultar la línea de tiempo completa del caso y registrar accesos sensibles según rol y alcance.
 - **S6-BE-03:** exponer únicamente indicadores calculables con datos disponibles y documentar explícitamente los no calculables.
 
-## Decisiones pendientes
+## Decisiones aprobadas
 
-- **S6-DEC-01 — Adaptador de pagos del piloto:** confirmar si se utilizará un adaptador determinístico simulado, sin transferencia monetaria real ni proveedor externo.
-- **S6-DEC-02 — Indicadores:** confirmar que se calcularán solo métricas con eventos y datos disponibles; satisfacción, costo operativo y pérdidas evitadas quedarán sin valor hasta disponer de fuentes aprobadas.
-- **S6-DEC-03 — Seguridad:** confirmar que no se inventarán umbrales de autenticación reciente ni rate limiting; se validarán RBAC, alcance, segregación, auditoría y ausencia de secretos en respuestas/logs.
+- **S6-DEC-01 — APROBADA:** adaptador determinístico simulado, sin transferencias monetarias reales ni proveedor externo.
+- **S6-DEC-02 — APROBADA:** indicadores calculados solo con eventos y datos aprobados; satisfacción, costo operativo y pérdidas evitadas se muestran como no disponibles sin fuentes definidas.
+- **S6-DEC-03 — APROBADA:** sin umbrales inventados de autenticación reciente ni rate limiting; se validan RBAC, alcance, segregación, auditoría y protección de información sensible.
+- Evidencia: `141_registro_aprobacion_s6_decisiones.md`.
 
 ## Restricciones
 
@@ -44,4 +45,4 @@
 
 ## Próximo paso
 
-Aprobar S6-DEC-01, S6-DEC-02 y S6-DEC-03; después ejecutar la línea base y comenzar las fundaciones.
+Ejecutar la línea base heredada y comenzar las fundaciones de Sprint 6.
