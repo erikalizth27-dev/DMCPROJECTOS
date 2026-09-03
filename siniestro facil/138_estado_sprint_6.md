@@ -2,7 +2,7 @@
 
 ## Estado general
 
-- Avance: **95% — validación integral aprobada; documentación de cierre pendiente**.
+- Avance: **100% — Sprint 6 cerrado técnicamente; PR pendiente de revisión y autorización**.
 - Rama: `agent/sprint-6-backend`.
 - Punto de partida: `main` en `50c5de8852ef74297d4056c46f0146da9d9f857e`.
 - Duración de referencia: 2 semanas.
@@ -45,7 +45,7 @@
 
 ## Próximo paso
 
-Completar acta de cierre, matriz final y preparación del pull request.
+Crear o actualizar el pull request de Sprint 6 y esperar autorización explícita para fusionar.
 
 ## Línea base validada
 
@@ -205,3 +205,14 @@ Completar acta de cierre, matriz final y preparación del pull request.
 - Resultado: **aprobado**.
 - Evidencia: `163_evidencia_validacion_integral_sprint_6.md`.
 - Estado: **completado**.
+
+
+## Cierre
+
+- S6-BE-01, S6-BE-02 y S6-BE-03: **completados**.
+- Estabilización y validación integral: **completadas**.
+- Suite final: **428 pruebas aprobadas**.
+- Alembic: `20260903_04 (head)`.
+- Acta: `164_acta_cierre_sprint_6.md`.
+- Estado: **Sprint 6 completado al 100%**.
+- Fusión: pendiente de autorización explícita del Product Owner.
