@@ -20,7 +20,7 @@ class FactsRepository:
         self.facts = facts
         self.period = None
 
-    def load_facts(self, *, period_start, period_end):
+    def load_facts(self, *, period_start, period_end, principal):
         self.period = (period_start, period_end)
         return self.facts
 
