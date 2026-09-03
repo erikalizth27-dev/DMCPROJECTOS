@@ -55,8 +55,9 @@ def test_validation_details_exclude_raw_input_and_context() -> None:
 
 
 def test_validation_error_preserves_correlation_id() -> None:
-    response = TestClient(create_app()).get(
-        "/api/v1/indicadores/operativos",
+    response = TestClient(create_app()).post(
+        "/api/v1/siniestros",
+        json={},
         headers={"X-Correlation-ID": "s6-security-correlation"},
     )
     assert response.status_code == 422
