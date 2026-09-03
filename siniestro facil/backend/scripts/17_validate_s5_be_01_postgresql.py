@@ -167,12 +167,14 @@ with engine.connect() as connection:
             ).scalars()
         )
         require(len(signal_ids) == 1, "Señal no persistida")
-        stored_alert = connection.execute(
-            select(Alerta).where(Alerta.id_alerta == alert.id)
+        stored_policy_id = connection.execute(
+            select(Alerta.id_politica_alerta).where(
+                Alerta.id_alerta == alert.id
+            )
         ).scalar_one_or_none()
-        require(stored_alert is not None, "Alerta no persistida")
+        require(stored_policy_id is not None, "Alerta no persistida")
         require(
-            stored_alert.id_politica_alerta == policy_id,
+            stored_policy_id == policy_id,
             "Política no vinculada",
         )
         print(f"Siniestro probado: {claim_id}")
