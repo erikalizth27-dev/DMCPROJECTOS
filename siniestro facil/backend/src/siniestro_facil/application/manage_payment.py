@@ -76,6 +76,7 @@ class PaymentRepository(Protocol):
     def prepare(
         self,
         request: PaymentRequest,
+        principal: AuthenticatedPrincipal,
         *,
         idempotency_key: str,
         fingerprint: str,
@@ -120,6 +121,7 @@ class InMemoryPaymentRepository:
     def prepare(
         self,
         request: PaymentRequest,
+        principal: AuthenticatedPrincipal,
         *,
         idempotency_key: str,
         fingerprint: str,
@@ -262,6 +264,7 @@ class PreparePaymentService:
             return existing
         return self._repository.prepare(
             request,
+            principal,
             idempotency_key=key,
             fingerprint=fingerprint,
         )
