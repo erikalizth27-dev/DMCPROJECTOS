@@ -70,6 +70,13 @@ Criterios:
 
 | Incremento | Estado | Condición pendiente |
 |---|---|---|
-| S5-BE-01 | Listo | S5-DEC-01 y S5-DEC-03 aprobadas |
+| S5-BE-01 | Completado | Evidencia PostgreSQL y rollback aprobados |
 | S5-BE-02 | Listo | S5-DEC-01 aprobada |
 | S5-BE-03 | Listo | S5-DEC-01 y S5-DEC-02 aprobadas |
+
+
+## Evidencia de ejecución
+
+- S5-BE-01: **completado**.
+- Migración: `20260903_01`.
+- Evidencia final: `124_evidencia_final_s5_be_01_postgresql.md`.
