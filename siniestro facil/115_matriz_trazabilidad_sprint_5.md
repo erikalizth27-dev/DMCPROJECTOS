@@ -53,3 +53,10 @@
 - Suite Cloud Shell: `131_evidencia_primera_entrega_s5_be_03_cloudshell.md`.
 - Persistencia y migración: `132_segunda_entrega_s5_be_03.md` y `133_evidencia_migracion_s5_be_03_cloudsql.md`.
 - Validación final PostgreSQL: `134_evidencia_final_s5_be_03_postgresql.md`.
+
+
+## Evidencia integral
+
+- Validación completa: `136_evidencia_validacion_integral_sprint_5.md`.
+- Revisión de base: `20260903_03 (head)`.
+- Resultado: S5-BE-01, S5-BE-02 y S5-BE-03 aprobados.
