@@ -2,7 +2,7 @@
 
 ## Estado general
 
-- Avance: **12% — primera entrega de fundaciones publicada; validación pendiente**.
+- Avance: **15% — fundaciones completadas y validadas**.
 - Rama: `agent/sprint-6-backend`.
 - Punto de partida: `main` en `50c5de8852ef74297d4056c46f0146da9d9f857e`.
 - Duración de referencia: 2 semanas.
@@ -45,7 +45,7 @@
 
 ## Próximo paso
 
-Validar en Cloud Shell las fundaciones y la suite esperada de 361 pruebas.
+Implementar S6-BE-01 — preparación y autorización de pagos.
 
 
 ## Línea base validada
@@ -68,3 +68,14 @@ Validar en Cloud Shell las fundaciones y la suite esperada de 361 pruebas.
 - **19 pruebas nuevas; total esperado: 361**.
 - Evidencia: `143_primera_entrega_fundaciones_sprint_6.md`.
 - Pendiente: validación Cloud Shell.
+
+
+## Fundaciones validadas
+
+- Compilación: aprobada.
+- Suite: **361 pruebas esperadas, sin fallos reportados**.
+- Alembic: `20260903_03 (head)`.
+- Migraciones nuevas: ninguna.
+- Evidencia: `144_evidencia_fundaciones_sprint_6_cloudshell.md`.
+- Estado: **completado**.
+- Próximo incremento: S6-BE-01 — preparación y autorización de pagos.
