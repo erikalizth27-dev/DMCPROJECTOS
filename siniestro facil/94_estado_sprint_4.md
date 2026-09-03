@@ -2,7 +2,7 @@
 
 ## Estado general
 
-- Avance: **85% — S4-BE-01, S4-BE-02 y S4-BE-03 completados; pendiente validación integral**.
+- Avance: **95% — validación integral completada; pendiente cierre formal y PR**.
 - Rama: `agent/sprint-4-backend`.
 - Punto de partida: `main` en `2d4cc89b498d9ba11fa41f4926fc7110f5b0a6e8`.
 - Duración de referencia: 2 semanas.
@@ -195,3 +195,14 @@
 - Evidencia final: `110_evidencia_final_s4_be_03_postgresql.md`.
 - Estado de S4-BE-03: **completado**.
 - Próximo paso: validación integral de Sprint 4.
+
+
+## Validación integral
+
+- Script: `backend/scripts/15_validate_sprint4.sh`.
+- Compilación y suite completa: aprobadas.
+- Alembic: `20260902_05 (head)`.
+- S4-BE-01, S4-BE-02 y S4-BE-03: validados contra PostgreSQL.
+- Rollback y limpieza: sin registros sintéticos residuales.
+- Evidencia: `111_evidencia_validacion_integral_sprint_4.md`.
+- Próximo paso: acta de cierre, actualización final de trazabilidad y preparación del PR.
