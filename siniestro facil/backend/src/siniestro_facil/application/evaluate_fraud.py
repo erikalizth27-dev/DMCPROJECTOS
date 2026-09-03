@@ -137,6 +137,13 @@ class FraudAlertRepository(Protocol):
         fingerprint: str,
     ) -> ReviewedAlert: ...
 
+    def audit_alert_access(
+        self,
+        claim_id: int,
+        alert_id: int,
+        principal: AuthenticatedPrincipal,
+    ) -> None: ...
+
 
 class InMemoryFraudAlertRepository:
     def __init__(self) -> None:
@@ -230,6 +237,14 @@ class InMemoryFraudAlertRepository:
         )
         return result
 
+    def audit_alert_access(
+        self,
+        claim_id: int,
+        alert_id: int,
+        principal: AuthenticatedPrincipal,
+    ) -> None:
+        return None
+
 
 class EvaluateFraudService:
     def __init__(
@@ -320,6 +335,10 @@ class GetFraudAlertService:
                 404,
             )
         detailed = level is AlertDetailLevel.DETALLE
+        if detailed:
+            self._repository.audit_alert_access(
+                claim_id, alert_id, principal
+            )
         return AlertView(
             id=alert.id,
             claim_id=alert.claim_id,
