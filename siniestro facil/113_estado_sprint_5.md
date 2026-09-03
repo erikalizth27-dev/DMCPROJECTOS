@@ -2,7 +2,7 @@
 
 ## Estado general
 
-- Avance: **65% — S5-BE-02 completado; inicia relaciones y política S5-BE-03**.
+- Avance: **75% — primera entrega S5-BE-03 publicada; pendiente validación Cloud Shell**.
 - Rama: `agent/sprint-5-backend`.
 - Punto de partida: `main` en `83d17c2cf2c2cc7c0922c457ebc28f389c11c618`.
 - Duración de referencia: 2 semanas.
@@ -171,3 +171,15 @@ Evidencia de aprobación: `116_registro_aprobacion_s5_decisiones.md`.
 - Evidencia final: `129_evidencia_final_s5_be_02_postgresql.md`.
 - Estado: **completado**.
 - Próximo incremento: S5-BE-03 — relaciones exactas y política versionada.
+
+
+## Primera entrega S5-BE-03
+
+- Coincidencias exactas sobre valores normalizados presentes.
+- Pares canónicos y candidatos pendientes de revisión.
+- Sin inferencia ni fusión automática.
+- Idempotencia y autorización antifraude.
+- Endpoint POST autenticado.
+- Catorce pruebas nuevas; total esperado: **335 pruebas**.
+- Evidencia: `130_primera_entrega_s5_be_03.md`.
+- Pendiente: validación Cloud Shell y persistencia PostgreSQL.
