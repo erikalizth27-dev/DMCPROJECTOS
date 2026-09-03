@@ -10,6 +10,7 @@ from siniestro_facil.api.routes.fraud import router as fraud_router
 from siniestro_facil.api.routes.inspections import router as inspections_router
 from siniestro_facil.api.routes.payments import router as payments_router
 from siniestro_facil.api.routes.relations import router as relations_router
+from siniestro_facil.api.routes.timeline import router as timeline_router
 
 
 def create_app() -> FastAPI:
@@ -28,6 +29,7 @@ def create_app() -> FastAPI:
     app.include_router(fraud_router)
     app.include_router(relations_router)
     app.include_router(payments_router)
+    app.include_router(timeline_router)
     return app
 
 
