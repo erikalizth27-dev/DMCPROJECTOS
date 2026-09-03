@@ -72,7 +72,7 @@ Criterios:
 |---|---|---|
 | S5-BE-01 | Completado | Evidencia PostgreSQL y rollback aprobados |
 | S5-BE-02 | Completado | Evidencia PostgreSQL y rollback aprobados |
-| S5-BE-03 | Listo | S5-DEC-01 y S5-DEC-02 aprobadas |
+| S5-BE-03 | Completado | Evidencia PostgreSQL y rollback aprobados |
 
 
 ## Evidencia de ejecución
@@ -83,3 +83,6 @@ Criterios:
 
 
 - S5-BE-02: **completado** en `129_evidencia_final_s5_be_02_postgresql.md`.
+
+
+- S5-BE-03: **completado** en `134_evidencia_final_s5_be_03_postgresql.md`.
