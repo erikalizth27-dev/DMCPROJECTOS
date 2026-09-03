@@ -2,7 +2,7 @@
 
 ## Estado general
 
-- Avance: **12% — primera entrega de fundaciones publicada; pendiente validación Cloud Shell**.
+- Avance: **15% — fundaciones antifraude completadas; S5-BE-01 habilitado**.
 - Rama: `agent/sprint-5-backend`.
 - Punto de partida: `main` en `83d17c2cf2c2cc7c0922c457ebc28f389c11c618`.
 - Duración de referencia: 2 semanas.
@@ -68,3 +68,12 @@ Evidencia de aprobación: `116_registro_aprobacion_s5_decisiones.md`.
 - Total esperado: **281 pruebas**.
 - No requiere migración.
 - Evidencia: `118_primera_entrega_fundaciones_sprint_5.md`.
+
+## Fundaciones validadas
+
+- Cloud Shell: **281/281 pruebas aprobadas en 2.64 segundos**.
+- Alembic: `20260902_05 (head)`.
+- Fallos: cero.
+- Evidencia: `119_evidencia_fundaciones_sprint_5_cloudshell.md`.
+- Estado de fundaciones: **completado**.
+- Próximo incremento: S5-BE-01 — señales y alertas reproducibles.
