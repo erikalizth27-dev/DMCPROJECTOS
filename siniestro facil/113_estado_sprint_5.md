@@ -1,0 +1,47 @@
+# Estado Sprint 5 — Backend Siniestro Fácil
+
+## Estado general
+
+- Avance: **5% — rama, alcance y trazabilidad inicial creados**.
+- Rama: `agent/sprint-5-backend`.
+- Punto de partida: `main` en `83d17c2cf2c2cc7c0922c457ebc28f389c11c618`.
+- Duración de referencia: 2 semanas.
+- Objetivo: fraude, alertas reproducibles, relaciones entre casos y revisión humana.
+- Línea base heredada: Sprint 4 cerrado al 100% y Alembic `20260902_05 (head)`.
+
+## Distribución porcentual
+
+| Fase | Resultado | Peso | Acumulado |
+|---|---|---:|---:|
+| Preparación | Rama, alcance, trazabilidad y decisiones | 5% | 5% |
+| Fundaciones | Contratos, modelos y persistencia antifraude | 10% | 15% |
+| S5-BE-01 | Señales y alertas reproducibles | 25% | 40% |
+| S5-BE-02 | Revisión humana y acceso sensible | 25% | 65% |
+| S5-BE-03 | Relaciones y política versionada | 20% | 85% |
+| Integración | PostgreSQL y pruebas integrales | 10% | 95% |
+| Cierre | Evidencias, acta y PR | 5% | 100% |
+
+## Incrementos propuestos
+
+- **S5-BE-01:** registrar señales determinísticas o de modelo y generar alertas explicables con versión y datos de origen.
+- **S5-BE-02:** permitir al investigador o supervisor confirmar, descartar o solicitar información, registrando justificación, revisión humana y accesos sensibles.
+- **S5-BE-03:** relacionar casos por criterios permitidos sin fusionarlos y aplicar una política antifraude configurable y versionada.
+
+## Decisiones pendientes
+
+- **S5-DEC-01:** aprobar para el piloto la política existente: crítica bloquea pago hasta revisión; alta deriva a investigación; media o baja aumenta prioridad. Ninguna alerta confirma fraude ni rechaza automáticamente.
+- **S5-DEC-02:** detectar relaciones únicamente mediante coincidencias exactas de valores normalizados disponibles; generar candidatos para revisión humana, sin fusión automática ni inferencia cuando falten datos.
+- **S5-DEC-03:** usar temporalmente un adaptador determinístico simulado de reglas/modelos, conservando versión, entradas y explicación; no integrar un modelo externo de IA en Sprint 5.
+
+## Restricciones
+
+- No se inventan umbrales monetarios ni ponderaciones.
+- No se declara fraude automáticamente.
+- No se rechaza cobertura ni se emite pago por una alerta.
+- No se fusionan expedientes relacionados.
+- El detalle antifraude permanece restringido a investigador y supervisor.
+- No se fusiona el PR sin autorización explícita del Product Owner.
+
+## Próximo paso
+
+Aprobar o ajustar S5-DEC-01, S5-DEC-02 y S5-DEC-03 para completar la Definition of Ready y comenzar las fundaciones.
