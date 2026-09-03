@@ -37,3 +37,11 @@
 - Suite Cloud Shell de primera entrega: `121_evidencia_primera_entrega_s5_be_01.md`.
 - Persistencia y migración: `122_segunda_entrega_s5_be_01.md` y `123_evidencia_migracion_s5_be_01_cloudsql.md`.
 - Validación final PostgreSQL con rollback: `124_evidencia_final_s5_be_01_postgresql.md`.
+
+
+## Evidencia S5-BE-02
+
+- Contrato y API: `125_primera_entrega_s5_be_02.md`.
+- Suite Cloud Shell: `126_evidencia_primera_entrega_s5_be_02_cloudshell.md`.
+- Persistencia y migración: `127_segunda_entrega_s5_be_02.md` y `128_evidencia_migracion_s5_be_02_cloudsql.md`.
+- Validación final PostgreSQL: `129_evidencia_final_s5_be_02_postgresql.md`.
