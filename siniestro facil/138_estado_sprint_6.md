@@ -2,7 +2,7 @@
 
 ## Estado general
 
-- Avance: **90% — regresión de seguridad aprobada; validación integral pendiente**.
+- Avance: **95% — validación integral aprobada; documentación de cierre pendiente**.
 - Rama: `agent/sprint-6-backend`.
 - Punto de partida: `main` en `50c5de8852ef74297d4056c46f0146da9d9f857e`.
 - Duración de referencia: 2 semanas.
@@ -45,7 +45,7 @@
 
 ## Próximo paso
 
-Ejecutar `bash scripts/27_validate_sprint6.sh` con Cloud SQL Proxy activo.
+Completar acta de cierre, matriz final y preparación del pull request.
 
 ## Línea base validada
 
@@ -202,4 +202,6 @@ Ejecutar `bash scripts/27_validate_sprint6.sh` con Cloud SQL Proxy activo.
 - Rollback y ausencia de residuos en cada incremento.
 - Script: `backend/scripts/27_validate_sprint6.sh`.
 - Documento: `162_validador_integral_sprint_6.md`.
-- Pendiente: ejecución completa en Cloud Shell.
+- Resultado: **aprobado**.
+- Evidencia: `163_evidencia_validacion_integral_sprint_6.md`.
+- Estado: **completado**.
