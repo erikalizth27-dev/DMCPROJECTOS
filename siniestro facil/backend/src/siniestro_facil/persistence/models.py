@@ -686,12 +686,11 @@ class Pago(Base):
             ondelete="RESTRICT",
         )
     )
-    id_usuario_prepara: Mapped[int] = mapped_column(
+    id_usuario_prepara: Mapped[int | None] = mapped_column(
         ForeignKey(
             f"{SCHEMA}.usuario_interno.id_usuario",
             ondelete="RESTRICT",
-        ),
-        nullable=False,
+        )
     )
     monto: Mapped[Decimal] = mapped_column(Numeric(14, 2), nullable=False)
     estado: Mapped[str] = mapped_column(String(20), nullable=False)
