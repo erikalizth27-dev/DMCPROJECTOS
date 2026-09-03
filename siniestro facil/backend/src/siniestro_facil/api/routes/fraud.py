@@ -16,8 +16,15 @@ from siniestro_facil.application.evaluate_fraud import (
     FraudEvaluationResult,
     GetFraudAlertService,
     InMemoryFraudAlertRepository,
+    ReviewAlertCommand,
+    ReviewedAlert,
+    ReviewFraudAlertService,
 )
-from siniestro_facil.domain.fraud import AlertSeverity, RiskSignalType
+from siniestro_facil.domain.fraud import (
+    AlertReviewStatus,
+    AlertSeverity,
+    RiskSignalType,
+)
 from siniestro_facil.config import Settings
 from siniestro_facil.db import create_database_engine
 from siniestro_facil.domain.identity import AuthenticatedPrincipal
@@ -60,6 +67,20 @@ class EvaluacionFraudeResponse(ApiModel):
     alertas: list[AlertaFraudeResponse]
 
 
+class RevisarAlertaRequest(ApiModel):
+    estado: AlertReviewStatus
+    justificacion: str = Field(min_length=1, max_length=2000)
+    version: int = Field(ge=0)
+
+
+class RevisionAlertaResponse(ApiModel):
+    alerta_id: int = Field(alias="alertaId")
+    siniestro_id: int = Field(alias="siniestroId")
+    estado_revision: str = Field(alias="estadoRevision")
+    justificacion: str
+    version: int
+
+
 @lru_cache(maxsize=1)
 def get_fraud_repository():
     settings = Settings.from_environment()
@@ -98,6 +119,10 @@ def get_evaluate_fraud_service() -> EvaluateFraudService:
 
 def get_fraud_alert_service() -> GetFraudAlertService:
     return GetFraudAlertService(get_fraud_repository())
+
+
+def get_review_fraud_alert_service() -> ReviewFraudAlertService:
+    return ReviewFraudAlertService(get_fraud_repository())
 
 
 def _alert_response(alert: AlertView) -> AlertaFraudeResponse:
@@ -171,3 +196,42 @@ def get_fraud_alert(
         )
     except FraudEvaluationError as exc:
         raise BusinessError(exc.code, exc.message, exc.status_code) from exc
+
+
+
+@router.patch(
+    "/{siniestro_id}/alertas/{alerta_id}/revision",
+    response_model=RevisionAlertaResponse,
+)
+def review_fraud_alert(
+    siniestro_id: int,
+    alerta_id: int,
+    request: RevisarAlertaRequest,
+    idempotency_key: str = Header(alias="Idempotency-Key"),
+    principal: AuthenticatedPrincipal = Depends(get_authenticated_principal),
+    service: ReviewFraudAlertService = Depends(
+        get_review_fraud_alert_service
+    ),
+) -> RevisionAlertaResponse:
+    try:
+        result: ReviewedAlert = service.execute(
+            ReviewAlertCommand(
+                claim_id=siniestro_id,
+                alert_id=alerta_id,
+                target=request.estado,
+                justification=request.justificacion,
+                expected_version=request.version,
+            ),
+            principal,
+            idempotency_key=idempotency_key,
+            request_payload=request.model_dump(mode="json", by_alias=True),
+        )
+    except FraudEvaluationError as exc:
+        raise BusinessError(exc.code, exc.message, exc.status_code) from exc
+    return RevisionAlertaResponse(
+        alertaId=result.alert_id,
+        siniestroId=result.claim_id,
+        estadoRevision=result.review_status.value,
+        justificacion=result.justification,
+        version=result.version,
+    )
