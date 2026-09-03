@@ -2,7 +2,7 @@
 
 ## Estado general
 
-- Avance: **50% — primera entrega S6-BE-02 publicada; validación Cloud Shell pendiente**.
+- Avance: **55% — persistencia PostgreSQL S6-BE-02 publicada; regresión pendiente**.
 - Rama: `agent/sprint-6-backend`.
 - Punto de partida: `main` en `50c5de8852ef74297d4056c46f0146da9d9f857e`.
 - Duración de referencia: 2 semanas.
@@ -45,7 +45,7 @@
 
 ## Próximo paso
 
-Validar compilación y suite completa de la primera entrega S6-BE-02.
+Validar compilación y suite completa de la persistencia S6-BE-02.
 
 ## Línea base validada
 
@@ -129,4 +129,18 @@ Validar compilación y suite completa de la primera entrega S6-BE-02.
 - **12 pruebas nuevas; total esperado: 398**.
 - Migraciones nuevas: ninguna.
 - Evidencia: `150_primera_entrega_s6_be_02.md`.
-- Pendiente: compilación y regresión en Cloud Shell.
+- Validación: `151_evidencia_primera_entrega_s6_be_02_cloudshell.md`.
+- Estado: **validado**.
+
+
+## Segunda entrega S6-BE-02
+
+- Repositorio PostgreSQL y alcance persistente implementados.
+- Paginación estable por cursor.
+- Clasificación y redacción de eventos sensibles.
+- Auditoría persistente de accesos ampliados.
+- Endpoint conectado a PostgreSQL.
+- **7 pruebas nuevas; total esperado: 405**.
+- Migraciones nuevas: ninguna.
+- Evidencia: `152_segunda_entrega_s6_be_02.md`.
+- Pendiente: compilación, regresión y validación PostgreSQL real.
