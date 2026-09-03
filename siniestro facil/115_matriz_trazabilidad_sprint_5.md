@@ -23,8 +23,9 @@
 - `16_backlog_inicial_backend.md`: resultado esperado de Sprint 5.
 - `112_acta_cierre_sprint_4.md`: línea base y elementos diferidos.
 
-## Decisiones requeridas
+## Decisiones aprobadas
 
-- S5-DEC-01: tratamiento provisional por severidad.
-- S5-DEC-02: coincidencias normalizadas y revisión humana sin fusión.
+- S5-DEC-01: tratamiento provisional por severidad y revisión humana.
+- S5-DEC-02: coincidencias exactas normalizadas y revisión humana sin fusión.
 - S5-DEC-03: adaptador determinístico simulado y reproducible.
+- Evidencia: `116_registro_aprobacion_s5_decisiones.md`.
