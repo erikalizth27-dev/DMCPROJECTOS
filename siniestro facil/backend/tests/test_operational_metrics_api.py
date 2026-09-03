@@ -14,11 +14,12 @@ from siniestro_facil.main import create_app
 
 
 class ApiFactsRepository:
-    def load_facts(self, *, period_start, period_end):
+    def load_facts(self, *, period_start, period_end, principal):
         return OperationalMetricFacts(
             claim_created_at=period_start,
             first_assistance_at=period_start + timedelta(minutes=2),
             first_decision_at=None,
+            source_claim_id=4,
         )
 
 
@@ -54,6 +55,7 @@ def test_returns_period_sources_and_availability() -> None:
     )
     assert response.status_code == 200
     payload = response.json()
+    assert payload["siniestroFuenteId"] == 4
     assert payload["periodo"]["desde"] == "2026-09-01T00:00:00Z"
     assert payload["indicadores"][0]["valorSegundos"] == 120
     assert payload["indicadores"][0]["fuentes"] == [
