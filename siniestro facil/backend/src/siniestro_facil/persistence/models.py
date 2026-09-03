@@ -656,3 +656,58 @@ class SolicitudRelacionCasosIdempotente(Base):
     creado_en: Mapped[datetime] = mapped_column(
         DateTime(timezone=True), nullable=False
     )
+
+class Pago(Base):
+    __tablename__ = "pago"
+    __table_args__ = (
+        CheckConstraint("monto > 0", name="chk_pago_monto"),
+        CheckConstraint(
+            "estado IN ('bloqueado', 'emitido')",
+            name="chk_pago_estado",
+        ),
+        CheckConstraint(
+            "estado <> 'emitido' OR id_autorizacion IS NOT NULL",
+            name="chk_pago_emitido_autorizado",
+        ),
+        {"schema": SCHEMA},
+    )
+
+    id_pago: Mapped[int] = mapped_column(BigInteger, primary_key=True)
+    id_siniestro: Mapped[int] = mapped_column(
+        ForeignKey(
+            f"{SCHEMA}.siniestro.id_siniestro",
+            ondelete="RESTRICT",
+        ),
+        nullable=False,
+    )
+    id_autorizacion: Mapped[int | None] = mapped_column(
+        ForeignKey(
+            f"{SCHEMA}.autorizacion.id_autorizacion",
+            ondelete="RESTRICT",
+        )
+    )
+    monto: Mapped[Decimal] = mapped_column(Numeric(14, 2), nullable=False)
+    estado: Mapped[str] = mapped_column(String(20), nullable=False)
+
+
+class Comunicacion(Base):
+    __tablename__ = "comunicacion"
+    __table_args__ = {"schema": SCHEMA}
+
+    id_comunicacion: Mapped[int] = mapped_column(
+        BigInteger,
+        primary_key=True,
+    )
+    id_siniestro: Mapped[int] = mapped_column(
+        ForeignKey(
+            f"{SCHEMA}.siniestro.id_siniestro",
+            ondelete="CASCADE",
+        ),
+        nullable=False,
+    )
+    fecha: Mapped[datetime] = mapped_column(
+        DateTime(timezone=True),
+        nullable=False,
+    )
+    contenido: Mapped[str] = mapped_column(Text, nullable=False)
+
