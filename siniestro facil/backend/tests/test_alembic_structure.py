@@ -151,3 +151,18 @@ def test_sprint4_budget_decision_types_revision_is_reversible() -> None:
     assert "'aprobacion'" in revision
     assert "'rechazo'" in revision
     assert "DELETE FROM" not in revision
+
+
+def test_sprint5_fraud_evaluation_revision_is_reversible() -> None:
+    revision = (
+        BACKEND_ROOT
+        / "alembic"
+        / "versions"
+        / "20260903_01_s5_fraud_evaluation_idempotency.py"
+    ).read_text(encoding="utf-8")
+
+    assert 'revision = "20260903_01"' in revision
+    assert 'down_revision = "20260902_05"' in revision
+    assert "solicitud_evaluacion_fraude_idempotente" in revision
+    assert "id_siniestro bigint NOT NULL REFERENCES" in revision
+    assert "DROP TABLE IF EXISTS" in revision
