@@ -2,7 +2,7 @@
 
 ## Estado general
 
-- Avance: **87% — primera entrega de estabilización publicada; regresión pendiente**.
+- Avance: **90% — regresión de seguridad aprobada; validación integral pendiente**.
 - Rama: `agent/sprint-6-backend`.
 - Punto de partida: `main` en `50c5de8852ef74297d4056c46f0146da9d9f857e`.
 - Duración de referencia: 2 semanas.
@@ -45,7 +45,7 @@
 
 ## Próximo paso
 
-Validar compilación, suite completa y Alembic después del fortalecimiento de seguridad.
+Ejecutar `bash scripts/27_validate_sprint6.sh` con Cloud SQL Proxy activo.
 
 ## Línea base validada
 
@@ -190,4 +190,16 @@ Validar compilación, suite completa y Alembic después del fortalecimiento de s
 - **7 pruebas nuevas; total esperado: 428**.
 - Migraciones nuevas: ninguna.
 - Evidencia: `160_primera_entrega_estabilizacion_sprint_6.md`.
-- Pendiente: compilación y regresión completa.
+- Regresión: `161_evidencia_estabilizacion_seguridad_sprint_6.md`.
+- Suite: **428 pruebas aprobadas**.
+- Estado: **validado**.
+
+
+## Validador integral
+
+- Compilación, suite, Alembic y archivos sensibles.
+- Validaciones PostgreSQL S6-BE-01, S6-BE-02 y S6-BE-03.
+- Rollback y ausencia de residuos en cada incremento.
+- Script: `backend/scripts/27_validate_sprint6.sh`.
+- Documento: `162_validador_integral_sprint_6.md`.
+- Pendiente: ejecución completa en Cloud Shell.
