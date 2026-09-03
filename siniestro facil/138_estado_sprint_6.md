@@ -2,7 +2,7 @@
 
 ## Estado general
 
-- Avance: **75% — persistencia PostgreSQL S6-BE-03 publicada; regresión pendiente**.
+- Avance: **78% — regresión S6-BE-03 aprobada; validación PostgreSQL final pendiente**.
 - Rama: `agent/sprint-6-backend`.
 - Punto de partida: `main` en `50c5de8852ef74297d4056c46f0146da9d9f857e`.
 - Duración de referencia: 2 semanas.
@@ -45,7 +45,7 @@
 
 ## Próximo paso
 
-Validar compilación y suite completa de la persistencia S6-BE-03.
+Ejecutar `scripts/26_validate_s6_be_03_postgresql.py` contra Cloud SQL.
 
 ## Línea base validada
 
@@ -174,4 +174,6 @@ Validar compilación y suite completa de la persistencia S6-BE-03.
 - **6 pruebas nuevas; total esperado: 421**.
 - Migraciones nuevas: ninguna.
 - Evidencia: `157_segunda_entrega_s6_be_03.md`.
-- Pendiente: compilación, regresión y validación PostgreSQL real.
+- Regresión: `158_evidencia_regresion_s6_be_03_cloudshell.md`.
+- Suite: **421 pruebas aprobadas**.
+- Pendiente: validación PostgreSQL real con `scripts/26_validate_s6_be_03_postgresql.py`.
