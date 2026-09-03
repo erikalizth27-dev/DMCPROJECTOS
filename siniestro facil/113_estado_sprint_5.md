@@ -2,7 +2,7 @@
 
 ## Estado general
 
-- Avance: **60% — persistencia S5-BE-02 publicada; pendiente migración y validación Cloud SQL**.
+- Avance: **65% — S5-BE-02 completado; inicia relaciones y política S5-BE-03**.
 - Rama: `agent/sprint-5-backend`.
 - Punto de partida: `main` en `83d17c2cf2c2cc7c0922c457ebc28f389c11c618`.
 - Duración de referencia: 2 semanas.
@@ -157,3 +157,17 @@ Evidencia de aprobación: `116_registro_aprobacion_s5_decisiones.md`.
 - Siete pruebas nuevas; total esperado: **321 pruebas**.
 - Evidencia de entrega: `127_segunda_entrega_s5_be_02.md`.
 - Pendiente: migración, regresión y validación PostgreSQL con rollback.
+
+
+## Cierre S5-BE-02
+
+- Migración aplicada: `20260903_02 (head)`.
+- Regresión: **321 pruebas esperadas, sin fallos reportados**.
+- Revisión humana, justificación y versión: validadas.
+- Resumen operativo sin detalle: validado.
+- Acceso sensible con identidad: auditado.
+- Idempotencia y conflicto HTTP 409: validados.
+- Rollback: sin registros residuales.
+- Evidencia final: `129_evidencia_final_s5_be_02_postgresql.md`.
+- Estado: **completado**.
+- Próximo incremento: S5-BE-03 — relaciones exactas y política versionada.
