@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from dataclasses import dataclass
+from dataclasses import dataclass, replace
 from typing import Mapping, Protocol
 
 from siniestro_facil.domain.authorization import (
@@ -50,6 +50,7 @@ class GeneratedAlert:
     policy_version: str
     effect: AlertEffect
     review_status: AlertReviewStatus = AlertReviewStatus.PENDIENTE
+    version: int = 0
 
 
 @dataclass(frozen=True, slots=True)
@@ -83,6 +84,31 @@ class FraudRuleAdapter(Protocol):
     def evaluate(self, facts: Mapping[str, object]) -> FraudEvaluation: ...
 
 
+@dataclass(frozen=True, slots=True)
+class ReviewAlertCommand:
+    claim_id: int
+    alert_id: int
+    target: AlertReviewStatus
+    justification: str
+    expected_version: int
+
+
+@dataclass(frozen=True, slots=True)
+class ReviewedAlert:
+    alert_id: int
+    claim_id: int
+    review_status: AlertReviewStatus
+    justification: str
+    version: int
+    reviewer_subject: str
+
+
+@dataclass(frozen=True, slots=True)
+class StoredReviewRequest:
+    fingerprint: str
+    result: ReviewedAlert
+
+
 class FraudAlertRepository(Protocol):
     def find_request(self, idempotency_key: str) -> StoredFraudRequest | None: ...
 
@@ -98,12 +124,26 @@ class FraudAlertRepository(Protocol):
 
     def get_alert(self, claim_id: int, alert_id: int) -> GeneratedAlert | None: ...
 
+    def find_review_request(
+        self, idempotency_key: str
+    ) -> StoredReviewRequest | None: ...
+
+    def review(
+        self,
+        command: ReviewAlertCommand,
+        principal: AuthenticatedPrincipal,
+        *,
+        idempotency_key: str,
+        fingerprint: str,
+    ) -> ReviewedAlert: ...
+
 
 class InMemoryFraudAlertRepository:
     def __init__(self) -> None:
         self._next_id = 1
         self._alerts: dict[int, GeneratedAlert] = {}
         self._requests: dict[str, StoredFraudRequest] = {}
+        self._review_requests: dict[str, StoredReviewRequest] = {}
 
     def find_request(self, idempotency_key: str) -> StoredFraudRequest | None:
         return self._requests.get(idempotency_key)
@@ -140,6 +180,55 @@ class InMemoryFraudAlertRepository:
     def get_alert(self, claim_id: int, alert_id: int) -> GeneratedAlert | None:
         alert = self._alerts.get(alert_id)
         return alert if alert is not None and alert.claim_id == claim_id else None
+
+    def find_review_request(
+        self, idempotency_key: str
+    ) -> StoredReviewRequest | None:
+        return self._review_requests.get(idempotency_key)
+
+    def review(
+        self,
+        command: ReviewAlertCommand,
+        principal: AuthenticatedPrincipal,
+        *,
+        idempotency_key: str,
+        fingerprint: str,
+    ) -> ReviewedAlert:
+        alert = self.get_alert(command.claim_id, command.alert_id)
+        if alert is None:
+            raise FraudEvaluationError(
+                "ALERT-NOT-FOUND", "Alerta no encontrada", 404
+            )
+        if alert.version != command.expected_version:
+            raise FraudEvaluationError(
+                "ALERT-VERSION-CONFLICT",
+                "La alerta fue modificada por otra revisión",
+                409,
+            )
+        if alert.review_status is not AlertReviewStatus.PENDIENTE:
+            raise FraudEvaluationError(
+                "ALERT-ALREADY-REVIEWED",
+                "La alerta ya tiene una decisión humana",
+                409,
+            )
+        updated = replace(
+            alert,
+            review_status=command.target,
+            version=alert.version + 1,
+        )
+        self._alerts[alert.id] = updated
+        result = ReviewedAlert(
+            alert_id=updated.id,
+            claim_id=updated.claim_id,
+            review_status=updated.review_status,
+            justification=command.justification.strip(),
+            version=updated.version,
+            reviewer_subject=principal.subject,
+        )
+        self._review_requests[idempotency_key] = StoredReviewRequest(
+            fingerprint, result
+        )
+        return result
 
 
 class EvaluateFraudService:
@@ -243,4 +332,71 @@ class GetFraudAlertService:
             source_data=alert.source_data if detailed else None,
             rule_or_model=alert.rule_or_model if detailed else None,
             policy_version=alert.policy_version if detailed else None,
+        )
+
+
+
+class ReviewFraudAlertService:
+    def __init__(self, repository: FraudAlertRepository) -> None:
+        self._repository = repository
+
+    def execute(
+        self,
+        command: ReviewAlertCommand,
+        principal: AuthenticatedPrincipal,
+        *,
+        idempotency_key: str,
+        request_payload: object,
+    ) -> ReviewedAlert:
+        try:
+            authorize(
+                principal.role,
+                Action.REVISAR_ALERTA,
+                resource_in_scope=True,
+            )
+        except AuthorizationDenied as exc:
+            raise FraudEvaluationError(
+                "ALERT-REVIEW-FORBIDDEN",
+                "Solo investigador o supervisor puede revisar alertas",
+                403,
+            ) from exc
+        if command.target is AlertReviewStatus.PENDIENTE:
+            raise FraudEvaluationError(
+                "ALERT-REVIEW-INVALID",
+                "La revisión debe registrar una decisión humana",
+                422,
+            )
+        if not command.justification.strip():
+            raise FraudEvaluationError(
+                "ALERT-REVIEW-JUSTIFICATION-REQUIRED",
+                "La justificación de revisión es obligatoria",
+                422,
+            )
+        if command.expected_version < 0:
+            raise FraudEvaluationError(
+                "ALERT-REVIEW-INVALID",
+                "La versión esperada es inválida",
+                422,
+            )
+        try:
+            key = validate_idempotency_key(idempotency_key)
+        except ValueError as exc:
+            raise FraudEvaluationError(
+                "IDEMPOTENCY-INVALID", str(exc), 422
+            ) from exc
+        fingerprint = fingerprint_request(request_payload)
+        existing = self._repository.find_review_request(key)
+        if existing is not None:
+            if existing.fingerprint != fingerprint:
+                raise FraudEvaluationError(
+                    "IDEMPOTENCY-CONFLICT",
+                    "Idempotency-Key ya fue utilizada con otro contenido",
+                    409,
+                )
+            return existing.result
+        return self._repository.review(
+            command,
+            principal,
+            idempotency_key=key,
+            fingerprint=fingerprint,
         )
