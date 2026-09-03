@@ -569,6 +569,10 @@ class RelacionCasos(Base):
         nullable=False,
     )
     criterio_relacion: Mapped[str] = mapped_column(String(30), nullable=False)
+    valor_normalizado: Mapped[str | None] = mapped_column(String(255))
+    estado_revision: Mapped[str] = mapped_column(
+        String(25), nullable=False, default="pendiente_revision"
+    )
 
 
 class SolicitudEvaluacionFraudeIdempotente(Base):
@@ -624,4 +628,31 @@ class SolicitudRevisionAlertaIdempotente(Base):
     creado_en: Mapped[datetime] = mapped_column(
         DateTime(timezone=True),
         nullable=False,
+    )
+
+
+
+class SolicitudRelacionCasosIdempotente(Base):
+    __tablename__ = "solicitud_relacion_casos_idempotente"
+    __table_args__ = (
+        CheckConstraint(
+            "char_length(clave) BETWEEN 16 AND 128",
+            name="chk_solicitud_relacion_casos_clave",
+        ),
+        CheckConstraint(
+            "char_length(huella) = 64",
+            name="chk_solicitud_relacion_casos_huella",
+        ),
+        {"schema": SCHEMA},
+    )
+
+    clave: Mapped[str] = mapped_column(String(128), primary_key=True)
+    huella: Mapped[str] = mapped_column(String(64), nullable=False)
+    id_siniestro: Mapped[int] = mapped_column(
+        ForeignKey(f"{SCHEMA}.siniestro.id_siniestro", ondelete="CASCADE"),
+        nullable=False,
+    )
+    respuesta: Mapped[dict[str, object]] = mapped_column(JSON, nullable=False)
+    creado_en: Mapped[datetime] = mapped_column(
+        DateTime(timezone=True), nullable=False
     )
