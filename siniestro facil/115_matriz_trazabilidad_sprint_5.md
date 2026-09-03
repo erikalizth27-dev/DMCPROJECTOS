@@ -1,0 +1,73 @@
+# Matriz de trazabilidad — Sprint 5 Backend
+
+| Incremento | HU | Criterio verificable | RF | CU | Datos |
+|---|---|---|---|---|---|
+| S5-BE-01 | HU-22 | Alerta explicable y no equivalente a fraude confirmado | RF-19, RF-27 | CU-07 | alerta |
+| S5-BE-01 | HU-23 | Señales visibles y origen diferenciado | RF-20 | CU-07 | senal_riesgo |
+| S5-BE-01 | HU-26 | Versión, entradas y explicación reproducibles | RF-26 | CU-07, CU-09 | alerta, politica_alerta |
+| S5-BE-02 | HU-22 | Confirmar, descartar o solicitar información con justificación | RF-21 | CU-07 | alerta, evento_linea_tiempo |
+| S5-BE-02 | HU-24 | Detalle restringido y acceso sensible auditado | RF-23 | CU-09 | identidad_actor, evento_linea_tiempo |
+| S5-BE-02 | HU-30 | Revisión humana de recomendación asistida | RF-27 | CU-07 | alerta, evento_linea_tiempo |
+| S5-BE-03 | HU-25 | Relaciones visibles sin fusión de expedientes | RF-24, RF-25 | CU-08 | relacion_casos, siniestro |
+| S5-BE-03 | HU-27 | Política configurable y versionada | RF-22, RF-26 | CU-07 | politica_alerta, alerta |
+
+## Fuentes
+
+- `01_historias_usuario.md`: HU-22 a HU-27 y HU-30.
+- `02_criterios_aceptacion.md`: señales, revisión, acceso, relaciones y reproducibilidad.
+- `03_requerimientos_funcionales.md`: RF-19 a RF-27.
+- `05_casos_uso.md`: CU-07, CU-08 y CU-09.
+- `07_modelo_logico.md`: alerta, senal_riesgo, politica_alerta y relacion_casos.
+- `13_seguridad_rbac.md`: resumen operativo y detalle antifraude restringido.
+- `14_flujos_reglas_backend.md`: tratamiento provisional por severidad y decisión humana.
+- `16_backlog_inicial_backend.md`: resultado esperado de Sprint 5.
+- `112_acta_cierre_sprint_4.md`: línea base y elementos diferidos.
+
+## Decisiones aprobadas
+
+- S5-DEC-01: tratamiento provisional por severidad y revisión humana.
+- S5-DEC-02: coincidencias exactas normalizadas y revisión humana sin fusión.
+- S5-DEC-03: adaptador determinístico simulado y reproducible.
+- Evidencia: `116_registro_aprobacion_s5_decisiones.md`.
+
+
+## Evidencia S5-BE-01
+
+- Evaluación determinística y reproducible: `120_primera_entrega_s5_be_01.md`.
+- Suite Cloud Shell de primera entrega: `121_evidencia_primera_entrega_s5_be_01.md`.
+- Persistencia y migración: `122_segunda_entrega_s5_be_01.md` y `123_evidencia_migracion_s5_be_01_cloudsql.md`.
+- Validación final PostgreSQL con rollback: `124_evidencia_final_s5_be_01_postgresql.md`.
+
+
+## Evidencia S5-BE-02
+
+- Contrato y API: `125_primera_entrega_s5_be_02.md`.
+- Suite Cloud Shell: `126_evidencia_primera_entrega_s5_be_02_cloudshell.md`.
+- Persistencia y migración: `127_segunda_entrega_s5_be_02.md` y `128_evidencia_migracion_s5_be_02_cloudsql.md`.
+- Validación final PostgreSQL: `129_evidencia_final_s5_be_02_postgresql.md`.
+
+
+## Evidencia S5-BE-03
+
+- Contrato y API: `130_primera_entrega_s5_be_03.md`.
+- Suite Cloud Shell: `131_evidencia_primera_entrega_s5_be_03_cloudshell.md`.
+- Persistencia y migración: `132_segunda_entrega_s5_be_03.md` y `133_evidencia_migracion_s5_be_03_cloudsql.md`.
+- Validación final PostgreSQL: `134_evidencia_final_s5_be_03_postgresql.md`.
+
+
+## Evidencia integral
+
+- Validación completa: `136_evidencia_validacion_integral_sprint_5.md`.
+- Revisión de base: `20260903_03 (head)`.
+- Resultado: S5-BE-01, S5-BE-02 y S5-BE-03 aprobados.
+
+
+## Cierre de trazabilidad
+
+| Incremento | Estado | Evidencia final |
+|---|---|---|
+| S5-BE-01 | Completado | `124_evidencia_final_s5_be_01_postgresql.md` |
+| S5-BE-02 | Completado | `129_evidencia_final_s5_be_02_postgresql.md` |
+| S5-BE-03 | Completado | `134_evidencia_final_s5_be_03_postgresql.md` |
+| Sprint 5 integral | Aprobado | `136_evidencia_validacion_integral_sprint_5.md` |
+| Acta | Cerrada | `137_acta_cierre_sprint_5.md` |

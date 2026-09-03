@@ -151,3 +151,50 @@ def test_sprint4_budget_decision_types_revision_is_reversible() -> None:
     assert "'aprobacion'" in revision
     assert "'rechazo'" in revision
     assert "DELETE FROM" not in revision
+
+
+def test_sprint5_fraud_evaluation_revision_is_reversible() -> None:
+    revision = (
+        BACKEND_ROOT
+        / "alembic"
+        / "versions"
+        / "20260903_01_s5_fraud_evaluation_idempotency.py"
+    ).read_text(encoding="utf-8")
+
+    assert 'revision = "20260903_01"' in revision
+    assert 'down_revision = "20260902_05"' in revision
+    assert "solicitud_evaluacion_fraude_idempotente" in revision
+    assert "id_siniestro bigint NOT NULL REFERENCES" in revision
+    assert "DROP TABLE IF EXISTS" in revision
+
+
+def test_sprint5_alert_review_revision_is_reversible() -> None:
+    revision = (
+        BACKEND_ROOT
+        / "alembic"
+        / "versions"
+        / "20260903_02_s5_alert_review.py"
+    ).read_text(encoding="utf-8")
+
+    assert 'revision = "20260903_02"' in revision
+    assert 'down_revision = "20260903_01"' in revision
+    assert "ADD COLUMN version bigint NOT NULL DEFAULT 0" in revision
+    assert "solicitud_revision_alerta_idempotente" in revision
+    assert "id_alerta bigint NOT NULL UNIQUE" in revision
+    assert "DROP COLUMN IF EXISTS version" in revision
+
+
+def test_sprint5_case_relations_revision_is_reversible() -> None:
+    revision = (
+        BACKEND_ROOT
+        / "alembic"
+        / "versions"
+        / "20260903_03_s5_case_relations.py"
+    ).read_text(encoding="utf-8")
+
+    assert 'revision = "20260903_03"' in revision
+    assert 'down_revision = "20260903_02"' in revision
+    assert "valor_normalizado varchar(255)" in revision
+    assert "uq_relacion_casos_par_criterio" in revision
+    assert "solicitud_relacion_casos_idempotente" in revision
+    assert "DROP COLUMN IF EXISTS valor_normalizado" in revision
