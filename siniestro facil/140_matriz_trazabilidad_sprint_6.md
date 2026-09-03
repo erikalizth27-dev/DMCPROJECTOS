@@ -65,3 +65,4 @@ Evidencia de aprobación: `141_registro_aprobacion_s6_decisiones.md`.
 - Persistencia PostgreSQL: `152_segunda_entrega_s6_be_02.md`.
 - Regresión completa: `153_evidencia_regresion_s6_be_02_cloudshell.md`.
 - Validador PostgreSQL: `backend/scripts/25_validate_s6_be_02_postgresql.py`.
+- Validación final PostgreSQL: `154_evidencia_final_s6_be_02_postgresql.md`.
