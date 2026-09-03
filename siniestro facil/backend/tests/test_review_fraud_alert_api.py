@@ -51,7 +51,9 @@ def client_with_alert(role=PrincipalRole.INVESTIGADOR_FRAUDE):
             ),
         ),
     )
-    app.dependency_overrides[get_authenticated_principal] = lambda: principal(role)
+    app.dependency_overrides[get_authenticated_principal] = lambda: principal(
+        PrincipalRole.INVESTIGADOR_FRAUDE
+    )
     app.dependency_overrides[get_evaluate_fraud_service] = lambda: (
         EvaluateFraudService(adapter, repository)
     )
@@ -64,7 +66,9 @@ def client_with_alert(role=PrincipalRole.INVESTIGADOR_FRAUDE):
         json={"hechos": {"foto_reutilizada": True}},
         headers={"Idempotency-Key": "fraud-review-api-setup"},
     )
-    return client, created.json()["alertas"][0]["id"]
+    alert_id = created.json()["alertas"][0]["id"]
+    app.dependency_overrides[get_authenticated_principal] = lambda: principal(role)
+    return client, alert_id
 
 
 def review(client, alert_id, *, state="confirmada", key="fraud-review-api-0001"):
