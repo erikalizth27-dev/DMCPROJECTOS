@@ -21,7 +21,7 @@ Criterios:
 - Bloquear la autorización mientras exista una alerta crítica pendiente de revisión.
 - Registrar monto, estado, autorización y eventos auditables.
 - Aplicar concurrencia optimista e idempotencia.
-- No transferir dinero real mientras el adaptador del piloto no esté aprobado.
+- Ejecutar el flujo mediante el adaptador determinístico simulado aprobado, sin transferir dinero real.
 
 ## S6-BE-02 — Consultar auditoría integral del caso
 
@@ -79,7 +79,13 @@ Criterios:
 
 | Incremento | Estado | Condición pendiente |
 |---|---|---|
-| S6-BE-01 | Condicionado | Aprobar S6-DEC-01 |
+| S6-BE-01 | Listo | S6-DEC-01 aprobada; ejecutar línea base |
 | S6-BE-02 | Listo | Ejecutar línea base |
-| S6-BE-03 | Condicionado | Aprobar S6-DEC-02 |
-| Seguridad | Condicionado | Aprobar S6-DEC-03 |
+| S6-BE-03 | Listo | S6-DEC-02 aprobada; ejecutar línea base |
+| Seguridad | Listo | S6-DEC-03 aprobada; ejecutar línea base |
+
+
+## Decisiones aprobadas
+
+- S6-DEC-01, S6-DEC-02 y S6-DEC-03 aprobadas por el Product Owner.
+- Evidencia: `141_registro_aprobacion_s6_decisiones.md`.
