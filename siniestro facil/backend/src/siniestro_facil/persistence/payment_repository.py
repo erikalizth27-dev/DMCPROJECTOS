@@ -177,36 +177,6 @@ class PostgreSQLPaymentRepository(InMemoryPaymentRepository):
     def prepare(
         self,
         request,
-        *,
-        idempotency_key: str,
-        fingerprint: str,
-    ) -> PaymentRecord:
-        try:
-            with self._factory() as session, session.begin():
-                existing = session.get(
-                    SolicitudPreparacionPagoIdempotente,
-                    idempotency_key,
-                    with_for_update=True,
-                )
-                if existing is not None:
-                    if existing.huella == fingerprint:
-                        return self._deserialize(existing.respuesta)
-                    raise PaymentOperationError(
-                        "IDEMPOTENCY-CONFLICT",
-                        "Idempotency-Key ya fue utilizada con otro contenido",
-                        409,
-                    )
-                identity = self._identity(
-                    session,
-                    AuthenticatedPrincipal,
-                )
-                raise AssertionError("principal requerido")
-        except AssertionError:
-            raise
-
-    def prepare_for_principal(
-        self,
-        request,
         principal: AuthenticatedPrincipal,
         *,
         idempotency_key: str,
