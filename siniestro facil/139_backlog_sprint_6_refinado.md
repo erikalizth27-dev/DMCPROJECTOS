@@ -96,5 +96,5 @@ Criterios:
 | Incremento | Estado | Evidencia final |
 |---|---|---|
 | S6-BE-01 | **Completado** | `149_evidencia_final_s6_be_01_postgresql.md` |
-| S6-BE-02 | Pendiente | — |
+| S6-BE-02 | **Completado** | `154_evidencia_final_s6_be_02_postgresql.md` |
 | S6-BE-03 | Pendiente | — |
