@@ -89,7 +89,8 @@ class FraudAlertRepository(Protocol):
     def create(
         self,
         claim_id: int,
-        recommendations: tuple[AlertRecommendation, ...],
+        evaluation: FraudEvaluation,
+        principal: AuthenticatedPrincipal,
         *,
         idempotency_key: str,
         fingerprint: str,
@@ -110,13 +111,14 @@ class InMemoryFraudAlertRepository:
     def create(
         self,
         claim_id: int,
-        recommendations: tuple[AlertRecommendation, ...],
+        evaluation: FraudEvaluation,
+        principal: AuthenticatedPrincipal,
         *,
         idempotency_key: str,
         fingerprint: str,
     ) -> FraudEvaluationResult:
         generated: list[GeneratedAlert] = []
-        for recommendation in recommendations:
+        for recommendation in evaluation.alerts:
             alert = GeneratedAlert(
                 id=self._next_id,
                 claim_id=claim_id,
@@ -196,7 +198,8 @@ class EvaluateFraudService:
         evaluation = self._adapter.evaluate(command.facts)
         return self._repository.create(
             command.claim_id,
-            evaluation.alerts,
+            evaluation,
+            principal,
             idempotency_key=key,
             fingerprint=fingerprint,
         )
