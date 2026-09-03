@@ -83,3 +83,4 @@ Evidencia de aprobación: `141_registro_aprobacion_s6_decisiones.md`.
 - Regresión de seguridad: `161_evidencia_estabilizacion_seguridad_sprint_6.md`.
 - Validador integral: `162_validador_integral_sprint_6.md`.
 - Script reproducible: `backend/scripts/27_validate_sprint6.sh`.
+- Validación integral: `163_evidencia_validacion_integral_sprint_6.md`.
