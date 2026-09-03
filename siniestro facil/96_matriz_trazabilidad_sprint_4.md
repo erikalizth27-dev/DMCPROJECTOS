@@ -32,4 +32,4 @@
 - `104_evidencia_regresion_s4_be_02.md`: 250/250 pruebas aprobadas.
 - `105_evidencia_migracion_s4_be_02_cloudsql.md`: migración `20260902_03` validada.
 - `106_evidencia_final_s4_be_02_postgresql.md`: presupuesto, inspección, idempotencia y auditoría validados.
-
+- `110_evidencia_final_s4_be_03_postgresql.md`: roles, decisiones formales, idempotencia, auditoría y rollback validados.
