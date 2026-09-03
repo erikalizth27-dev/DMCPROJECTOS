@@ -33,3 +33,4 @@
 - `105_evidencia_migracion_s4_be_02_cloudsql.md`: migración `20260902_03` validada.
 - `106_evidencia_final_s4_be_02_postgresql.md`: presupuesto, inspección, idempotencia y auditoría validados.
 - `110_evidencia_final_s4_be_03_postgresql.md`: roles, decisiones formales, idempotencia, auditoría y rollback validados.
+- `111_evidencia_validacion_integral_sprint_4.md`: compilación, regresión, Alembic y tres validaciones PostgreSQL completadas.
