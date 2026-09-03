@@ -2,7 +2,7 @@
 
 ## Estado general
 
-- Avance: **15% — fundaciones antifraude completadas; S5-BE-01 habilitado**.
+- Avance: **30% — primera entrega S5-BE-01 publicada; pendiente validación Cloud Shell**.
 - Rama: `agent/sprint-5-backend`.
 - Punto de partida: `main` en `83d17c2cf2c2cc7c0922c457ebc28f389c11c618`.
 - Duración de referencia: 2 semanas.
@@ -77,3 +77,15 @@ Evidencia de aprobación: `116_registro_aprobacion_s5_decisiones.md`.
 - Evidencia: `119_evidencia_fundaciones_sprint_5_cloudshell.md`.
 - Estado de fundaciones: **completado**.
 - Próximo incremento: S5-BE-01 — señales y alertas reproducibles.
+
+## Primera entrega S5-BE-01
+
+- Evaluación antifraude determinística y versionada.
+- Efectos por severidad sin confirmación automática de fraude.
+- Idempotencia y conflicto HTTP 409.
+- Consulta de resumen o detalle según rol.
+- Endpoints POST y GET autenticados.
+- Doce pruebas nuevas publicadas.
+- Total esperado: **293 pruebas**.
+- Evidencia: `120_primera_entrega_s5_be_01.md`.
+- Pendiente: PostgreSQL, auditoría atómica y validación con rollback.
