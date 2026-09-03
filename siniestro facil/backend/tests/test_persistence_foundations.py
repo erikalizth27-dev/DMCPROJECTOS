@@ -42,6 +42,8 @@ class PersistenceModelsTest(unittest.TestCase):
             "solicitud_evaluacion_fraude_idempotente",
             "solicitud_revision_alerta_idempotente",
             "solicitud_relacion_casos_idempotente",
+            "pago",
+            "comunicacion",
         }
         mapped = {
             table.name
