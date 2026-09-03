@@ -16,8 +16,14 @@ from siniestro_facil.application.detect_case_relations import (
     DetectCaseRelationsService,
     InMemoryCaseRelationRepository,
 )
+from siniestro_facil.config import Settings
+from siniestro_facil.db import create_database_engine
 from siniestro_facil.domain.fraud import RelationCriterion
 from siniestro_facil.domain.identity import AuthenticatedPrincipal
+from siniestro_facil.persistence.case_relation_repository import (
+    PostgreSQLCaseRelationRepository,
+)
+from siniestro_facil.persistence.session import create_session_factory
 
 
 router = APIRouter(prefix="/api/v1/siniestros", tags=["Fraude"])
@@ -48,8 +54,12 @@ class RelacionesDetectadasResponse(ApiModel):
 
 
 @lru_cache(maxsize=1)
-def get_case_relation_repository() -> InMemoryCaseRelationRepository:
-    return InMemoryCaseRelationRepository()
+def get_case_relation_repository():
+    settings = Settings.from_environment()
+    if not settings.database_url:
+        return InMemoryCaseRelationRepository()
+    engine = create_database_engine(settings)
+    return PostgreSQLCaseRelationRepository(create_session_factory(engine))
 
 
 def get_detect_case_relations_service() -> DetectCaseRelationsService:
