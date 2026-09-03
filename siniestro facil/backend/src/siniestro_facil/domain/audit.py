@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 from dataclasses import dataclass
+from datetime import datetime
 from enum import StrEnum
 from typing import Mapping
 
@@ -22,6 +23,7 @@ class TimelineEvent:
     actor_id: int | None
     detail: Mapping[str, object]
     sensitive: bool = False
+    occurred_at: datetime | None = None
 
 
 @dataclass(frozen=True, slots=True)
@@ -32,6 +34,7 @@ class TimelineEventView:
     actor_id: int | None
     detail: Mapping[str, object]
     detail_level: AuditDetailLevel
+    occurred_at: datetime | None
 
 
 def audit_detail_level(role: PrincipalRole) -> AuditDetailLevel:
@@ -65,4 +68,5 @@ def project_timeline_event(
         actor_id=event.actor_id,
         detail=detail,
         detail_level=level,
+        occurred_at=event.occurred_at,
     )
