@@ -2,7 +2,7 @@
 
 ## Estado general
 
-- Avance: **30% — primera entrega S5-BE-01 publicada; pendiente validación Cloud Shell**.
+- Avance: **30% — primera entrega S5-BE-01 validada; persistencia PostgreSQL en preparación**.
 - Rama: `agent/sprint-5-backend`.
 - Punto de partida: `main` en `83d17c2cf2c2cc7c0922c457ebc28f389c11c618`.
 - Duración de referencia: 2 semanas.
@@ -89,3 +89,11 @@ Evidencia de aprobación: `116_registro_aprobacion_s5_decisiones.md`.
 - Total esperado: **293 pruebas**.
 - Evidencia: `120_primera_entrega_s5_be_01.md`.
 - Pendiente: PostgreSQL, auditoría atómica y validación con rollback.
+
+## Primera entrega S5-BE-01 validada
+
+- Cloud Shell: **293/293 pruebas aprobadas en 3.02 segundos**.
+- Alembic: `20260902_05 (head)`.
+- Fallos: cero.
+- Evidencia: `121_evidencia_primera_entrega_s5_be_01.md`.
+- Próximo paso: persistencia PostgreSQL, idempotencia persistente y auditoría atómica.
