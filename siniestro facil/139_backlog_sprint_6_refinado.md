@@ -107,3 +107,13 @@ Criterios:
 - Alembic: `20260903_04 (head)`.
 - Validaciones PostgreSQL: S6-BE-01, S6-BE-02 y S6-BE-03 aprobadas con rollback.
 - Evidencia: `163_evidencia_validacion_integral_sprint_6.md`.
+
+
+## Cierre del Sprint
+
+- S6-BE-01: completado.
+- S6-BE-02: completado.
+- S6-BE-03: completado.
+- Estabilización: completada.
+- Acta: `164_acta_cierre_sprint_6.md`.
+- Estado final: **100%**.
