@@ -9,6 +9,12 @@ Las respuestas propuestas a las siete preguntas iniciales están en `19_decision
 - **S1-DEC-01 APROBADA:** adaptador simulado de pólizas hasta disponer de la API real.
 - **S1-DEC-02 APROBADA:** posibles duplicados por placa y fecha del evento, con revisión humana y sin fusión automática.
 
+## Definition of Ready del Sprint 5 — RESUELTA
+
+- **S5-DEC-01 APROBADA:** tratamiento provisional por severidad con revisión humana y sin fraude o rechazo automático.
+- **S5-DEC-02 APROBADA:** coincidencias exactas normalizadas, revisión humana y sin fusión de expedientes.
+- **S5-DEC-03 APROBADA:** adaptador determinístico simulado, reproducible y sin modelo externo de IA.
+
 ## Necesarias antes de integrar servicios reales
 
 1. ¿Se aprueba Cloud Run para el backend del piloto o existe una obligación de utilizar GKE?
@@ -29,7 +35,7 @@ Las respuestas propuestas a las siete preguntas iniciales están en `19_decision
 ## Necesarias antes de producción
 
 7. ¿Se aprueban los SLA simulados del piloto?
-8. ¿Se aprueban los umbrales y severidades antifraude simulados?
+8. **RESUELTA PARA EL PILOTO:** severidades y efectos aprobados en S5-DEC-01; los umbrales definitivos de producción continúan pendientes.
 9. ¿Qué normativa, país y política corporativa gobiernan datos personales y retención?
 10. ¿Cuál es el volumen máximo esperado para el piloto y el crecimiento proyectado?
 11. ¿Cuánto tiempo deben conservarse logs técnicos, auditorías y claves de idempotencia?
