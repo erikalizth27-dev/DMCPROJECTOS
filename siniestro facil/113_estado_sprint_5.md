@@ -2,7 +2,7 @@
 
 ## Estado general
 
-- Avance: **30% — primera entrega S5-BE-01 validada; persistencia PostgreSQL en preparación**.
+- Avance: **35% — persistencia S5-BE-01 publicada; pendiente migración y validación Cloud SQL**.
 - Rama: `agent/sprint-5-backend`.
 - Punto de partida: `main` en `83d17c2cf2c2cc7c0922c457ebc28f389c11c618`.
 - Duración de referencia: 2 semanas.
@@ -97,3 +97,17 @@ Evidencia de aprobación: `116_registro_aprobacion_s5_decisiones.md`.
 - Fallos: cero.
 - Evidencia: `121_evidencia_primera_entrega_s5_be_01.md`.
 - Próximo paso: persistencia PostgreSQL, idempotencia persistente y auditoría atómica.
+
+
+## Segunda entrega S5-BE-01
+
+- Repositorio PostgreSQL para señales y alertas.
+- Política antifraude localizada por versión exacta.
+- Señales, alertas, auditoría e idempotencia en una transacción.
+- Bloqueo del siniestro durante el registro.
+- Recuperación segura frente a carreras de idempotencia.
+- API conectada a PostgreSQL cuando existe `DATABASE_URL`.
+- Migración Alembic `20260903_01` y script administrativo.
+- Siete verificaciones nuevas; total esperado: **300 pruebas**.
+- Evidencia de entrega: `122_segunda_entrega_s5_be_01.md`.
+- Pendiente: aplicar migración, ejecutar regresión y validar PostgreSQL con rollback.
