@@ -2,7 +2,7 @@
 
 ## Estado general
 
-- Avance: **30% — primera entrega S6-BE-01 publicada; validación pendiente**.
+- Avance: **30% — primera entrega S6-BE-01 validada**.
 - Rama: `agent/sprint-6-backend`.
 - Punto de partida: `main` en `50c5de8852ef74297d4056c46f0146da9d9f857e`.
 - Duración de referencia: 2 semanas.
@@ -45,7 +45,7 @@
 
 ## Próximo paso
 
-Validar la primera entrega S6-BE-01 y la suite esperada de 378 pruebas.
+Implementar persistencia PostgreSQL, auditoría atómica e idempotencia persistente para S6-BE-01.
 
 
 ## Línea base validada
@@ -92,3 +92,12 @@ Validar la primera entrega S6-BE-01 y la suite esperada de 378 pruebas.
 - **17 pruebas nuevas; total esperado: 378**.
 - Evidencia: `145_primera_entrega_s6_be_01.md`.
 - Pendiente: validación Cloud Shell y persistencia PostgreSQL.
+
+
+## Primera entrega S6-BE-01 validada
+
+- Compilación: aprobada.
+- Suite: **378 pruebas esperadas, sin fallos reportados**.
+- Alembic: `20260903_03 (head)`.
+- Evidencia: `146_evidencia_primera_entrega_s6_be_01_cloudshell.md`.
+- Próximo paso: segunda entrega PostgreSQL de S6-BE-01.
