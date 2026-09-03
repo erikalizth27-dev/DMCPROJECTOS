@@ -35,6 +35,10 @@ class PersistenceModelsTest(unittest.TestCase):
             "solicitud_decision_presupuesto_idempotente",
             "autorizacion",
             "cambio_presupuesto",
+            "politica_alerta",
+            "alerta",
+            "senal_riesgo",
+            "relacion_casos",
         }
         mapped = {
             table.name
