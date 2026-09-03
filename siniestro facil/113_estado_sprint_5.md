@@ -2,7 +2,7 @@
 
 ## Estado general
 
-- Avance: **95% — validación integral completada; pendiente acta y PR de cierre**.
+- Avance: **100% — Sprint 5 cerrado; PR pendiente de autorización para fusión**.
 - Rama: `agent/sprint-5-backend`.
 - Punto de partida: `main` en `83d17c2cf2c2cc7c0922c457ebc28f389c11c618`.
 - Duración de referencia: 2 semanas.
@@ -228,3 +228,14 @@ Evidencia de aprobación: `116_registro_aprobacion_s5_decisiones.md`.
 - Evidencia: `136_evidencia_validacion_integral_sprint_5.md`.
 - Resultado: **SPRINT 5 — VALIDACIÓN INTEGRAL COMPLETADA**.
 - Próximo paso: acta, matriz final y PR.
+
+
+## Cierre
+
+- S5-BE-01: completado.
+- S5-BE-02: completado.
+- S5-BE-03: completado.
+- Validación integral: aprobada.
+- Acta: `137_acta_cierre_sprint_5.md`.
+- Estado final: **100%**.
+- El PR no se fusionará sin autorización explícita.
