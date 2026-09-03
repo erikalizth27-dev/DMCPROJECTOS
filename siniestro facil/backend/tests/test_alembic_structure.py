@@ -182,3 +182,19 @@ def test_sprint5_alert_review_revision_is_reversible() -> None:
     assert "solicitud_revision_alerta_idempotente" in revision
     assert "id_alerta bigint NOT NULL UNIQUE" in revision
     assert "DROP COLUMN IF EXISTS version" in revision
+
+
+def test_sprint5_case_relations_revision_is_reversible() -> None:
+    revision = (
+        BACKEND_ROOT
+        / "alembic"
+        / "versions"
+        / "20260903_03_s5_case_relations.py"
+    ).read_text(encoding="utf-8")
+
+    assert 'revision = "20260903_03"' in revision
+    assert 'down_revision = "20260903_02"' in revision
+    assert "valor_normalizado varchar(255)" in revision
+    assert "uq_relacion_casos_par_criterio" in revision
+    assert "solicitud_relacion_casos_idempotente" in revision
+    assert "DROP COLUMN IF EXISTS valor_normalizado" in revision
