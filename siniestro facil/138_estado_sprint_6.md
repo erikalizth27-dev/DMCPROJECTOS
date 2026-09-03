@@ -2,7 +2,7 @@
 
 ## Estado general
 
-- Avance: **40% — S6-BE-01 completado y validado integralmente en PostgreSQL**.
+- Avance: **50% — primera entrega S6-BE-02 publicada; validación Cloud Shell pendiente**.
 - Rama: `agent/sprint-6-backend`.
 - Punto de partida: `main` en `50c5de8852ef74297d4056c46f0146da9d9f857e`.
 - Duración de referencia: 2 semanas.
@@ -45,7 +45,7 @@
 
 ## Próximo paso
 
-Iniciar S6-BE-02: línea de tiempo consolidada, proyección sensible por rol y auditoría de consulta.
+Validar compilación y suite completa de la primera entrega S6-BE-02.
 
 ## Línea base validada
 
@@ -116,3 +116,17 @@ Iniciar S6-BE-02: línea de tiempo consolidada, proyección sensible por rol y a
 - Evidencia: `148_evidencia_migracion_s6_be_01_cloudsql.md`.
 - Validación final: `149_evidencia_final_s6_be_01_postgresql.md`.
 - Estado: **completado**.
+
+
+## Primera entrega S6-BE-02
+
+- Servicio y contrato de línea de tiempo implementados.
+- Cursor y cantidad opcional sin inventar umbrales de negocio.
+- Actor, fecha, tipo y detalle permitido incluidos.
+- Redacción de eventos sensibles según rol.
+- Acceso ampliado de investigador y supervisor sujeto a auditoría.
+- Endpoint autenticado registrado.
+- **12 pruebas nuevas; total esperado: 398**.
+- Migraciones nuevas: ninguna.
+- Evidencia: `150_primera_entrega_s6_be_02.md`.
+- Pendiente: compilación y regresión en Cloud Shell.
