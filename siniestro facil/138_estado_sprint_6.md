@@ -2,7 +2,7 @@
 
 ## Estado general
 
-- Avance: **15% — fundaciones completadas y validadas**.
+- Avance: **30% — primera entrega S6-BE-01 publicada; validación pendiente**.
 - Rama: `agent/sprint-6-backend`.
 - Punto de partida: `main` en `50c5de8852ef74297d4056c46f0146da9d9f857e`.
 - Duración de referencia: 2 semanas.
@@ -45,7 +45,7 @@
 
 ## Próximo paso
 
-Implementar S6-BE-01 — preparación y autorización de pagos.
+Validar la primera entrega S6-BE-01 y la suite esperada de 378 pruebas.
 
 
 ## Línea base validada
@@ -79,3 +79,16 @@ Implementar S6-BE-01 — preparación y autorización de pagos.
 - Evidencia: `144_evidencia_fundaciones_sprint_6_cloudshell.md`.
 - Estado: **completado**.
 - Próximo incremento: S6-BE-01 — preparación y autorización de pagos.
+
+
+## Primera entrega S6-BE-01
+
+- Preparación y autorización de pagos implementadas.
+- Segregación entre preparador y supervisor autorizador.
+- Bloqueo por alerta crítica pendiente.
+- Versión e idempotencia con conflicto HTTP 409.
+- Adaptador simulado sin transferencia real.
+- Endpoints autenticados registrados.
+- **17 pruebas nuevas; total esperado: 378**.
+- Evidencia: `145_primera_entrega_s6_be_01.md`.
+- Pendiente: validación Cloud Shell y persistencia PostgreSQL.
