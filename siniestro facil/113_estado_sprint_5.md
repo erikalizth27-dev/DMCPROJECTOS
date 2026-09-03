@@ -2,7 +2,7 @@
 
 ## Estado general
 
-- Avance: **85% — S5-BE-03 completado; pendiente validación integral**.
+- Avance: **95% — validación integral completada; pendiente acta y PR de cierre**.
 - Rama: `agent/sprint-5-backend`.
 - Punto de partida: `main` en `83d17c2cf2c2cc7c0922c457ebc28f389c11c618`.
 - Duración de referencia: 2 semanas.
@@ -216,3 +216,15 @@ Evidencia de aprobación: `116_registro_aprobacion_s5_decisiones.md`.
 - Evidencia final: `134_evidencia_final_s5_be_03_postgresql.md`.
 - Estado: **completado**.
 - Próximo paso: validación integral Sprint 5.
+
+
+## Validación integral
+
+- Compilación: aprobada.
+- Suite: **342 pruebas esperadas**, sin fallos reportados.
+- Alembic: `20260903_03 (head)`.
+- S5-BE-01, S5-BE-02 y S5-BE-03: aprobados en PostgreSQL.
+- Rollback y ausencia de residuos: confirmados.
+- Evidencia: `136_evidencia_validacion_integral_sprint_5.md`.
+- Resultado: **SPRINT 5 — VALIDACIÓN INTEGRAL COMPLETADA**.
+- Próximo paso: acta, matriz final y PR.
