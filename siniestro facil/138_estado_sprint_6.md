@@ -2,7 +2,7 @@
 
 ## Estado general
 
-- Avance: **5% — preparación completada y decisiones aprobadas**.
+- Avance: **8% — preparación y línea base completadas**.
 - Rama: `agent/sprint-6-backend`.
 - Punto de partida: `main` en `50c5de8852ef74297d4056c46f0146da9d9f857e`.
 - Duración de referencia: 2 semanas.
@@ -45,4 +45,14 @@
 
 ## Próximo paso
 
-Ejecutar la línea base heredada y comenzar las fundaciones de Sprint 6.
+Implementar y validar las fundaciones de pagos, auditoría e indicadores.
+
+
+## Línea base validada
+
+- Compilación: aprobada.
+- Suite heredada: **342 pruebas esperadas, sin fallos reportados**.
+- Alembic: `20260903_03 (head)`.
+- Advertencia Starlette: conocida y no bloqueante.
+- Evidencia: `142_evidencia_linea_base_sprint_6_cloudshell.md`.
+- Próximo paso: fundaciones de pagos, auditoría e indicadores.
