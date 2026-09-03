@@ -18,10 +18,16 @@ from siniestro_facil.application.manage_payment import (
     PreparePaymentCommand,
     PreparePaymentService,
 )
+from siniestro_facil.config import Settings
+from siniestro_facil.db import create_database_engine
 from siniestro_facil.domain.identity import AuthenticatedPrincipal
 from siniestro_facil.infrastructure.payment_adapter import (
     DeterministicPaymentAdapter,
 )
+from siniestro_facil.persistence.payment_repository import (
+    PostgreSQLPaymentRepository,
+)
+from siniestro_facil.persistence.session import create_session_factory
 
 
 router = APIRouter(prefix="/api/v1/siniestros", tags=["Pagos"])
@@ -48,9 +54,12 @@ class PagoResponse(ApiModel):
 
 
 @lru_cache(maxsize=1)
-def get_payment_repository() -> InMemoryPaymentRepository:
-    # Primera entrega: se sustituye por PostgreSQL en la segunda entrega.
-    return InMemoryPaymentRepository()
+def get_payment_repository():
+    settings = Settings.from_environment()
+    if not settings.database_url:
+        return InMemoryPaymentRepository()
+    engine = create_database_engine(settings)
+    return PostgreSQLPaymentRepository(create_session_factory(engine))
 
 
 def get_prepare_payment_service() -> PreparePaymentService:
