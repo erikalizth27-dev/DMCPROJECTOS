@@ -2,7 +2,7 @@
 
 ## Estado general
 
-- Avance: **80% — S6-BE-03 completado; inicia estabilización transversal**.
+- Avance: **87% — primera entrega de estabilización publicada; regresión pendiente**.
 - Rama: `agent/sprint-6-backend`.
 - Punto de partida: `main` en `50c5de8852ef74297d4056c46f0146da9d9f857e`.
 - Duración de referencia: 2 semanas.
@@ -45,7 +45,7 @@
 
 ## Próximo paso
 
-Fortalecer respuestas de validación, ocultar configuración sensible y ejecutar regresión de seguridad.
+Validar compilación, suite completa y Alembic después del fortalecimiento de seguridad.
 
 ## Línea base validada
 
@@ -178,3 +178,16 @@ Fortalecer respuestas de validación, ocultar configuración sensible y ejecutar
 - Suite: **421 pruebas aprobadas**.
 - Validación final: `159_evidencia_final_s6_be_03_postgresql.md`.
 - Estado: **completado**.
+
+
+## Primera entrega de estabilización
+
+- URL de base de datos excluida de representaciones textuales.
+- Errores de validación saneados sin valores de entrada ni contexto interno.
+- Correlation ID preservado.
+- RBAC de pagos, redacción sensible y adaptador simulado verificados.
+- Sin umbrales inventados de autenticación o rate limiting.
+- **7 pruebas nuevas; total esperado: 428**.
+- Migraciones nuevas: ninguna.
+- Evidencia: `160_primera_entrega_estabilizacion_sprint_6.md`.
+- Pendiente: compilación y regresión completa.
