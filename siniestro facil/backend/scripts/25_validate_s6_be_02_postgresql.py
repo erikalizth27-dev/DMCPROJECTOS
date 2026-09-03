@@ -250,13 +250,17 @@ with engine.connect() as connection:
         )
 
         access_rows = connection.execute(
-            select(EventoLineaTiempo).where(
+            select(
+                EventoLineaTiempo.id_evento,
+                EventoLineaTiempo.detalle,
+                EventoLineaTiempo.id_usuario,
+            ).where(
                 EventoLineaTiempo.id_evento > max_event_before_access,
                 EventoLineaTiempo.id_siniestro == claim_id,
                 EventoLineaTiempo.tipo_evento
                 == "consulta_auditoria_sensible",
             )
-        ).scalars().all()
+        ).all()
         require(len(access_rows) == 1, "Acceso sensible no auditado")
         access = access_rows[0]
         created["access_audits"].append(access.id_evento)
