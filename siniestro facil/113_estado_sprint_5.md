@@ -2,7 +2,7 @@
 
 ## Estado general
 
-- Avance: **80% — persistencia S5-BE-03 publicada; pendiente migración y validación Cloud SQL**.
+- Avance: **85% — S5-BE-03 completado; pendiente validación integral**.
 - Rama: `agent/sprint-5-backend`.
 - Punto de partida: `main` en `83d17c2cf2c2cc7c0922c457ebc28f389c11c618`.
 - Duración de referencia: 2 semanas.
@@ -203,3 +203,16 @@ Evidencia de aprobación: `116_registro_aprobacion_s5_decisiones.md`.
 - Migración Alembic `20260903_03`.
 - Siete pruebas nuevas; total esperado: **342 pruebas**.
 - Evidencia: `132_segunda_entrega_s5_be_03.md`.
+
+
+## Cierre S5-BE-03
+
+- Migración aplicada: `20260903_03 (head)`.
+- Regresión: **342 pruebas esperadas, sin fallos reportados**.
+- Relación exacta, normalización y deduplicación: validadas.
+- No fusión ni inferencia: validadas.
+- Auditoría e idempotencia: validadas.
+- Rollback: sin registros residuales.
+- Evidencia final: `134_evidencia_final_s5_be_03_postgresql.md`.
+- Estado: **completado**.
+- Próximo paso: validación integral Sprint 5.
