@@ -198,3 +198,20 @@ def test_sprint5_case_relations_revision_is_reversible() -> None:
     assert "uq_relacion_casos_par_criterio" in revision
     assert "solicitud_relacion_casos_idempotente" in revision
     assert "DROP COLUMN IF EXISTS valor_normalizado" in revision
+
+def test_sprint6_payment_revision_is_reversible() -> None:
+    revision = (
+        BACKEND_ROOT
+        / "alembic"
+        / "versions"
+        / "20260903_04_s6_payment_idempotency.py"
+    ).read_text(encoding="utf-8")
+
+    assert 'revision = "20260903_04"' in revision
+    assert 'down_revision = "20260903_03"' in revision
+    assert "id_usuario_prepara bigint REFERENCES" in revision
+    assert "ADD COLUMN version bigint NOT NULL DEFAULT 0" in revision
+    assert "solicitud_preparacion_pago_idempotente" in revision
+    assert "solicitud_autorizacion_pago_idempotente" in revision
+    assert "DROP COLUMN IF EXISTS id_usuario_prepara" in revision
+
