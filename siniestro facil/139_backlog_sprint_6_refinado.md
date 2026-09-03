@@ -89,3 +89,12 @@ Criterios:
 
 - S6-DEC-01, S6-DEC-02 y S6-DEC-03 aprobadas por el Product Owner.
 - Evidencia: `141_registro_aprobacion_s6_decisiones.md`.
+
+
+## Estado de ejecución
+
+| Incremento | Estado | Evidencia final |
+|---|---|---|
+| S6-BE-01 | **Completado** | `149_evidencia_final_s6_be_01_postgresql.md` |
+| S6-BE-02 | Pendiente | — |
+| S6-BE-03 | Pendiente | — |
