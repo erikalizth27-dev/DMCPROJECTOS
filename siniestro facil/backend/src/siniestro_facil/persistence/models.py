@@ -686,8 +686,56 @@ class Pago(Base):
             ondelete="RESTRICT",
         )
     )
+    id_usuario_prepara: Mapped[int] = mapped_column(
+        ForeignKey(
+            f"{SCHEMA}.usuario_interno.id_usuario",
+            ondelete="RESTRICT",
+        ),
+        nullable=False,
+    )
     monto: Mapped[Decimal] = mapped_column(Numeric(14, 2), nullable=False)
     estado: Mapped[str] = mapped_column(String(20), nullable=False)
+    version: Mapped[int] = mapped_column(
+        BigInteger,
+        nullable=False,
+        default=0,
+    )
+
+
+class SolicitudPreparacionPagoIdempotente(Base):
+    __tablename__ = "solicitud_preparacion_pago_idempotente"
+    __table_args__ = {"schema": SCHEMA}
+
+    clave: Mapped[str] = mapped_column(String(128), primary_key=True)
+    huella: Mapped[str] = mapped_column(String(64), nullable=False)
+    id_pago: Mapped[int] = mapped_column(
+        ForeignKey(f"{SCHEMA}.pago.id_pago", ondelete="CASCADE"),
+        nullable=False,
+        unique=True,
+    )
+    respuesta: Mapped[dict[str, object]] = mapped_column(JSON, nullable=False)
+    creado_en: Mapped[datetime] = mapped_column(
+        DateTime(timezone=True),
+        nullable=False,
+    )
+
+
+class SolicitudAutorizacionPagoIdempotente(Base):
+    __tablename__ = "solicitud_autorizacion_pago_idempotente"
+    __table_args__ = {"schema": SCHEMA}
+
+    clave: Mapped[str] = mapped_column(String(128), primary_key=True)
+    huella: Mapped[str] = mapped_column(String(64), nullable=False)
+    id_pago: Mapped[int] = mapped_column(
+        ForeignKey(f"{SCHEMA}.pago.id_pago", ondelete="CASCADE"),
+        nullable=False,
+        unique=True,
+    )
+    respuesta: Mapped[dict[str, object]] = mapped_column(JSON, nullable=False)
+    creado_en: Mapped[datetime] = mapped_column(
+        DateTime(timezone=True),
+        nullable=False,
+    )
 
 
 class Comunicacion(Base):
