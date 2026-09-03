@@ -56,3 +56,12 @@ Evidencia de aprobación: `141_registro_aprobacion_s6_decisiones.md`.
 - Commit base: `50c5de8852ef74297d4056c46f0146da9d9f857e`.
 - Suite heredada: **342 pruebas**.
 - Alembic heredado: `20260903_03 (head)`.
+
+
+## Evidencias S6-BE-02
+
+- Primera entrega: `150_primera_entrega_s6_be_02.md`.
+- Validación inicial: `151_evidencia_primera_entrega_s6_be_02_cloudshell.md`.
+- Persistencia PostgreSQL: `152_segunda_entrega_s6_be_02.md`.
+- Regresión completa: `153_evidencia_regresion_s6_be_02_cloudshell.md`.
+- Validador PostgreSQL: `backend/scripts/25_validate_s6_be_02_postgresql.py`.
