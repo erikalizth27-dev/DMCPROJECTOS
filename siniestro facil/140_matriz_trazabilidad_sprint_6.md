@@ -34,9 +34,11 @@
 
 | Decisión | Impacto | Estado |
 |---|---|---|
-| S6-DEC-01 | Habilita fundación y pruebas del flujo de pago del piloto | Pendiente |
-| S6-DEC-02 | Delimita indicadores calculables y valores no disponibles | Pendiente |
-| S6-DEC-03 | Delimita estabilización de seguridad sin cifras inventadas | Pendiente |
+| S6-DEC-01 | Habilita fundación y pruebas del flujo de pago simulado | Aprobada |
+| S6-DEC-02 | Delimita indicadores calculables y valores no disponibles | Aprobada |
+| S6-DEC-03 | Delimita estabilización de seguridad sin cifras inventadas | Aprobada |
+
+Evidencia de aprobación: `141_registro_aprobacion_s6_decisiones.md`.
 
 ## Evidencia de cierre heredada
 
