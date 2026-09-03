@@ -84,3 +84,17 @@ Evidencia de aprobación: `141_registro_aprobacion_s6_decisiones.md`.
 - Validador integral: `162_validador_integral_sprint_6.md`.
 - Script reproducible: `backend/scripts/27_validate_sprint6.sh`.
 - Validación integral: `163_evidencia_validacion_integral_sprint_6.md`.
+
+
+## Cierre
+
+| Elemento | Evidencia | Estado |
+|---|---|---|
+| S6-BE-01 | `149_evidencia_final_s6_be_01_postgresql.md` | Cumplido |
+| S6-BE-02 | `154_evidencia_final_s6_be_02_postgresql.md` | Cumplido |
+| S6-BE-03 | `159_evidencia_final_s6_be_03_postgresql.md` | Cumplido |
+| Seguridad y regresión | `161_evidencia_estabilizacion_seguridad_sprint_6.md` | Cumplido |
+| Validación integral | `163_evidencia_validacion_integral_sprint_6.md` | Cumplido |
+| Acta de cierre | `164_acta_cierre_sprint_6.md` | Cumplido |
+
+La trazabilidad funcional, técnica y de pruebas queda completa para el alcance aprobado de Sprint 6.
