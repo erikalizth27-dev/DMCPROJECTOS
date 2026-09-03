@@ -2,7 +2,7 @@
 
 ## Estado general
 
-- Avance: **35% — segunda entrega S6-BE-01 publicada; migración pendiente**.
+- Avance: **38% — migración y regresión S6-BE-01 validadas; prueba PostgreSQL final pendiente**.
 - Rama: `agent/sprint-6-backend`.
 - Punto de partida: `main` en `50c5de8852ef74297d4056c46f0146da9d9f857e`.
 - Duración de referencia: 2 semanas.
@@ -45,8 +45,7 @@
 
 ## Próximo paso
 
-Validar la regresión, aplicar `20260903_04` y ejecutar la prueba PostgreSQL de S6-BE-01.
-
+Ejecutar la validación PostgreSQL final de S6-BE-01 con rollback y comprobar la ausencia de residuos.
 
 ## Línea base validada
 
@@ -56,7 +55,6 @@ Validar la regresión, aplicar `20260903_04` y ejecutar la prueba PostgreSQL de 
 - Advertencia Starlette: conocida y no bloqueante.
 - Evidencia: `142_evidencia_linea_base_sprint_6_cloudshell.md`.
 - Próximo paso: fundaciones de pagos, auditoría e indicadores.
-
 
 ## Primera entrega de fundaciones
 
@@ -69,7 +67,6 @@ Validar la regresión, aplicar `20260903_04` y ejecutar la prueba PostgreSQL de 
 - Evidencia: `143_primera_entrega_fundaciones_sprint_6.md`.
 - Pendiente: validación Cloud Shell.
 
-
 ## Fundaciones validadas
 
 - Compilación: aprobada.
@@ -79,7 +76,6 @@ Validar la regresión, aplicar `20260903_04` y ejecutar la prueba PostgreSQL de 
 - Evidencia: `144_evidencia_fundaciones_sprint_6_cloudshell.md`.
 - Estado: **completado**.
 - Próximo incremento: S6-BE-01 — preparación y autorización de pagos.
-
 
 ## Primera entrega S6-BE-01
 
@@ -93,7 +89,6 @@ Validar la regresión, aplicar `20260903_04` y ejecutar la prueba PostgreSQL de 
 - Evidencia: `145_primera_entrega_s6_be_01.md`.
 - Pendiente: validación Cloud Shell y persistencia PostgreSQL.
 
-
 ## Primera entrega S6-BE-01 validada
 
 - Compilación: aprobada.
@@ -101,7 +96,6 @@ Validar la regresión, aplicar `20260903_04` y ejecutar la prueba PostgreSQL de 
 - Alembic: `20260903_03 (head)`.
 - Evidencia: `146_evidencia_primera_entrega_s6_be_01_cloudshell.md`.
 - Próximo paso: segunda entrega PostgreSQL de S6-BE-01.
-
 
 ## Segunda entrega S6-BE-01
 
@@ -112,4 +106,12 @@ Validar la regresión, aplicar `20260903_04` y ejecutar la prueba PostgreSQL de 
 - Migración Alembic `20260903_04` y script administrativo.
 - **8 pruebas nuevas; total esperado: 386**.
 - Evidencia: `147_segunda_entrega_s6_be_01.md`.
-- Pendiente: regresión, migración Cloud SQL y validación con rollback.
+
+## Migración y regresión S6-BE-01 validadas
+
+- Suite: **386 pruebas aprobadas**.
+- Alembic: `20260903_04 (head)`.
+- Tablas de idempotencia y columnas de pago confirmadas en Cloud SQL.
+- Advertencia Starlette: conocida y no bloqueante.
+- Evidencia: `148_evidencia_migracion_s6_be_01_cloudsql.md`.
+- Pendiente: validación PostgreSQL transaccional final con rollback.
