@@ -39,6 +39,7 @@ class PersistenceModelsTest(unittest.TestCase):
             "alerta",
             "senal_riesgo",
             "relacion_casos",
+            "solicitud_evaluacion_fraude_idempotente",
         }
         mapped = {
             table.name
