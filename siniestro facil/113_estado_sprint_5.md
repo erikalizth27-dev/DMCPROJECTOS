@@ -47,3 +47,13 @@
 Ejecutar la línea base heredada y comenzar las fundaciones antifraude. Los tres incrementos están listos para desarrollo.
 
 Evidencia de aprobación: `116_registro_aprobacion_s5_decisiones.md`.
+
+## Línea base validada
+
+- Compilación: aprobada.
+- Suite heredada: **270/270 pruebas aprobadas en 2.79 segundos**.
+- Alembic: `20260902_05 (head)`.
+- Fallos: cero.
+- Advertencia Starlette: conocida y no bloqueante.
+- Evidencia: `117_evidencia_linea_base_sprint_5_cloudshell.md`.
+- Próximo paso: contratos, catálogos y persistencia base antifraude.
