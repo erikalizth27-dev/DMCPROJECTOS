@@ -18,11 +18,17 @@ from siniestro_facil.application.evaluate_fraud import (
     InMemoryFraudAlertRepository,
 )
 from siniestro_facil.domain.fraud import AlertSeverity, RiskSignalType
+from siniestro_facil.config import Settings
+from siniestro_facil.db import create_database_engine
 from siniestro_facil.domain.identity import AuthenticatedPrincipal
 from siniestro_facil.infrastructure.fraud_adapter import (
     DeterministicFraudAdapter,
     DeterministicRule,
 )
+from siniestro_facil.persistence.fraud_repository import (
+    PostgreSQLFraudAlertRepository,
+)
+from siniestro_facil.persistence.session import create_session_factory
 
 
 router = APIRouter(prefix="/api/v1/siniestros", tags=["Fraude"])
@@ -55,8 +61,12 @@ class EvaluacionFraudeResponse(ApiModel):
 
 
 @lru_cache(maxsize=1)
-def get_fraud_repository() -> InMemoryFraudAlertRepository:
-    return InMemoryFraudAlertRepository()
+def get_fraud_repository():
+    settings = Settings.from_environment()
+    if not settings.database_url:
+        return InMemoryFraudAlertRepository()
+    engine = create_database_engine(settings)
+    return PostgreSQLFraudAlertRepository(create_session_factory(engine))
 
 
 @lru_cache(maxsize=1)
