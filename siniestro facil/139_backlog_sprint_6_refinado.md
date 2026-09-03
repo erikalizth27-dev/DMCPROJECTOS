@@ -98,3 +98,12 @@ Criterios:
 | S6-BE-01 | **Completado** | `149_evidencia_final_s6_be_01_postgresql.md` |
 | S6-BE-02 | **Completado** | `154_evidencia_final_s6_be_02_postgresql.md` |
 | S6-BE-03 | **Completado** | `159_evidencia_final_s6_be_03_postgresql.md` |
+
+
+## Estabilización y validación integral
+
+- Estado: **Completado**.
+- Suite: **428 pruebas aprobadas**.
+- Alembic: `20260903_04 (head)`.
+- Validaciones PostgreSQL: S6-BE-01, S6-BE-02 y S6-BE-03 aprobadas con rollback.
+- Evidencia: `163_evidencia_validacion_integral_sprint_6.md`.
