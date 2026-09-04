@@ -1,6 +1,8 @@
 import { FormEvent, useState } from "react";
 import { ApiClientError, crearSiniestro, obtenerSiniestro } from "./api/client";
 import type { CrearSiniestro, Siniestro } from "./types";
+import { useAuth } from "./auth/AuthContext";
+import { LoginScreen } from "./auth/LoginScreen";
 
 type View = "reportar" | "consultar";
 
@@ -42,12 +44,17 @@ function Icon({ name }: { name: "shield" | "file" | "search" | "arrow" }) {
 }
 
 function App() {
+  const { session, signOut } = useAuth();
   const [view, setView] = useState<View>("reportar");
   const [form, setForm] = useState<CrearSiniestro>(initialForm);
   const [caseId, setCaseId] = useState("");
   const [result, setResult] = useState<Siniestro | null>(null);
   const [notice, setNotice] = useState<{ tone: "error" | "success"; text: string } | null>(null);
   const [busy, setBusy] = useState(false);
+
+  if (!session) {
+    return <LoginScreen />;
+  }
 
   function updateField(field: keyof CrearSiniestro, value: string) {
     setForm((current) => ({ ...current, [field]: value }));
@@ -69,7 +76,7 @@ function App() {
         Object.entries(form).filter(([, value]) => value !== ""),
       ) as unknown as CrearSiniestro;
       payload.fechaEvento = new Date(form.fechaEvento).toISOString();
-      const created = await crearSiniestro(payload);
+      const created = await crearSiniestro(payload, session.idToken);
       setResult(created);
       setCaseId(String(created.id));
       setNotice({ tone: "success", text: `Reporte #${created.id} registrado correctamente.` });
@@ -94,7 +101,7 @@ function App() {
 
     setBusy(true);
     try {
-      const found = await obtenerSiniestro(id);
+      const found = await obtenerSiniestro(id, session.idToken);
       setResult(found);
     } catch (error) {
       setResult(null);
@@ -114,7 +121,7 @@ function App() {
           <span className="brand-mark"><Icon name="shield" /></span>
           <span>Siniestro <strong>Fácil</strong></span>
         </a>
-        <span className="secure-label">Canal seguro</span>
+        <div className="account"><span>{session.user.email}</span><button type="button" onClick={signOut}>Salir</button></div>
       </header>
 
       <main>
