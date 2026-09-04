@@ -62,3 +62,9 @@ Evidencia: `169_registro_aprobacion_c7_decisiones.md`.
 - Primera entrega: `170_primera_entrega_c7_plat_01.md`.
 - Validación final Cloud Shell: `171_evidencia_final_c7_plat_01_cloudshell.md`.
 - Resultado: contenedor reproducible, no privilegiado, sin secretos embebidos y saludable contra Cloud SQL.
+
+
+## Evidencia inicial C7-PLAT-02
+
+- Artifact Registry y Cloud Build: `172_evidencia_artifact_registry_c7_plat_02.md`.
+- Imagen publicada por commit y verificada mediante digest SHA-256.
