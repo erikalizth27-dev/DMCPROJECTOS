@@ -2,7 +2,7 @@
 
 ## Estado general
 
-- Avance: **30% — identidades y secreto de runtime configurados**.
+- Avance: **40% — C7-PLAT-02 completado**.
 - Rama: `agent/ciclo-7-plataforma-backend`.
 - Punto de partida: `main` en `53eed88e476c12ae1fdf70a68cbf72fc4473049e`.
 - Backend funcional heredado: **6 sprints completados**.
@@ -81,6 +81,17 @@
 - Credencial migradora: pendiente de su etapa exclusiva.
 - Evidencia: `173_evidencia_iam_secret_manager_c7_plat_03.md`.
 
+## Validación final C7-PLAT-02
+
+- Cloud Run privado: desplegado.
+- Imagen inmutable: desplegada por digest.
+- Identidad de runtime: aplicada.
+- Secreto de runtime: montado mediante Secret Manager.
+- Liveness autenticado: aprobado.
+- Readiness y conexión Cloud SQL: aprobados.
+- Evidencia: `174_evidencia_final_c7_plat_02_cloud_run.md`.
+- Estado: **completado**.
+
 ## Próximo paso
 
-Desplegar la imagen inmutable en Cloud Run privado, conectarla a Cloud SQL y ejecutar smoke tests autenticados.
+Completar C7-PLAT-03 con permisos mínimos verificados y credencial independiente para la identidad migradora.
