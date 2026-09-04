@@ -27,7 +27,7 @@ def test_pipeline_runs_tests_before_build() -> None:
 
 def test_image_is_tagged_from_required_substitution() -> None:
     assert CONFIG["substitutions"]["_IMAGE_TAG"] == "manual"
-    assert "$_IMAGE_TAG" in str(CONFIG["steps"][1])
+    assert "${_IMAGE_TAG}" in str(CONFIG["steps"][1])
     assert "git rev-parse --short=12 HEAD" in SCRIPT
 
 
