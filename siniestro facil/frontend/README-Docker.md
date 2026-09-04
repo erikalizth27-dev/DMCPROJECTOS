@@ -23,5 +23,5 @@ docker build \
 docker run --rm -p 8081:8080 siniestro-facil-frontend:local
 ```
 
-Comprobar `http://localhost:8081/healthz` y la aplicación en
+Comprobar `http://localhost:8081/health/live` y la aplicación en
 `http://localhost:8081/`.
