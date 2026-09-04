@@ -89,5 +89,5 @@ Preparar el backend Siniestro Fácil para ejecución controlada en GCP, conserva
 | C7-PLAT-02 | **Completado** | `174_evidencia_final_c7_plat_02_cloud_run.md` |
 | C7-PLAT-03 | **Completado** | `175_evidencia_final_c7_plat_03_iam.md` |
 | C7-PLAT-04 | **Completado** | `177_evidencia_final_c7_plat_04_cicd.md` |
-| C7-PLAT-05 | Pendiente | — |
-| C7-PLAT-06 | Pendiente | — |
+| C7-PLAT-05 | **Completado** | `180_evidencia_final_c7_plat_05_observabilidad.md` |
+| C7-PLAT-06 | En progreso | — |
