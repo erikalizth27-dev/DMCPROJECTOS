@@ -1,0 +1,88 @@
+substitutions:
+  _REGION: us-central1
+  _REPOSITORY: siniestro-facil
+  _IMAGE_NAME: backend
+  _IMAGE_TAG: manual
+  _SERVICE: siniestro-facil-backend-prod
+  _MIGRATION_JOB: siniestro-facil-migrator-prod
+  _DEPLOYER_SA: siniestro-deployer-prod
+
+options:
+  logging: CLOUD_LOGGING_ONLY
+
+steps:
+  - id: test
+    dir: backend
+    name: python:3.12-slim
+    entrypoint: bash
+    args: [-ceu, 'python -m pip install --disable-pip-version-check --no-cache-dir ".[test,gcp]" && python -m compileall -q src tests alembic && python -m pytest -q']
+
+  - id: build
+    dir: backend
+    name: gcr.io/cloud-builders/docker
+    args: [build, --tag, '${_REGION}-docker.pkg.dev/$PROJECT_ID/${_REPOSITORY}/${_IMAGE_NAME}:${_IMAGE_TAG}', .]
+
+  - id: push
+    name: gcr.io/cloud-builders/docker
+    args: [push, '${_REGION}-docker.pkg.dev/$PROJECT_ID/${_REPOSITORY}/${_IMAGE_NAME}:${_IMAGE_TAG}']
+
+  - id: resolve-digest
+    name: gcr.io/google.com/cloudsdktool/google-cloud-cli:slim
+    entrypoint: bash
+    args:
+      - -ceu
+      - |
+        IMAGE="${_REGION}-docker.pkg.dev/$PROJECT_ID/${_REPOSITORY}/${_IMAGE_NAME}:${_IMAGE_TAG}"
+        DIGEST="${gcloud artifacts docker images describe "${IMAGE}" --project="$PROJECT_ID" --format='value(image_summary.fully_qualified_digest)')"
+        test -n "${DIGEST}"
+        printf '%s' "${DIGEST}" >/workspace/production-image-digest
+        echo "Imagen inmutable: ${DIGEST}"
+
+  - id: configure-migration
+    name: gcr.io/google.com/cloudsdktool/google-cloud-cli:slim
+    entrypoint: bash
+    args:
+      - -ceu
+      - |
+        DIGEST="${cat /workspace/production-image-digest)"
+        gcloud run jobs update "${_MIGRATION_JOB}" --project="$PROJECT_ID" --region="${_REGION}" --image="${DIGEST}" --command=alembic --args=upgrade,head
+
+  - id: migrate
+    name: gcr.io/google.com/cloudsdktool/google-cloud-cli:slim
+    entrypoint: gcloud
+    args: [run, jobs, execute, '${_MIGRATION_JOB}', '--project=$PROJECT_ID', '--region=${_REGION}', --wait]
+
+  - id: deploy
+    name: gcr.io/google.com/cloudsdktool/google-cloud-cli:slim
+    entrypoint: bash
+    args:
+      - -ceu
+      - |
+        DIGEST="${cat /workspace/production-image-digest)"
+        gcloud run services update "${_SERVICE}" --project="$PROJECT_ID" --region="${_REGION}" --image="${DIGEST}" --no-allow-unauthenticated
+
+  - id: smoke
+    name: gcr.io/google.com/cloudsdktool/google-cloud-cli:slim
+    entrypoint: bash
+    args:
+      - -ceu
+      - |
+        SERVICE_URL="${gcloud run services describe "${_SERVICE}" --project="$PROJECT_ID" --region="${_REGION}" --format='value(status.url)')"
+        DEPLOYER_EMAIL="${_DEPLOYER_SA}@$PROJECT_ID.iam.gserviceaccount.com"
+        ID_TOKEN="${gcloud auth print-identity-token --impersonate-service-account="${DEPLOYER_EMAIL}" --audiences="${SERVICE_URL}" --include-email)"
+        python3 - "${SERVICE_URL}" "${ID_TOKEN}" <<'PY'
+        import json
+        import sys
+        from urllib.request import Request, urlopen
+        service_url, token = sys.argv[1:3]
+        for path, expected in (("/health/live", "ok"), ("/health/ready", "ready")):
+            request = Request(service_url + path, headers={"Authorization": f"Bearer {token}"})
+            with urlopen(request, timeout=30) as response:
+                body = json.load(response)
+            if body.get("status") != expected:
+                raise SystemExit(f"{path}: respuesta inesperada {body}")
+            print(f"{path}: {expected}")
+        PY
+
+images:
+  - ${_REGION}-docker.pkg.dev/$PROJECT_ID/${_REPOSITORY}/${_IMAGE_NAME}:${_IMAGE_TAG}
