@@ -55,3 +55,10 @@ Evidencia: `169_registro_aprobacion_c7_decisiones.md`.
 - Recursos, escalado y concurrencia basados en mediciones.
 - SLO y condiciones de alerta basados en datos.
 - Destinatarios operativos de alertas.
+
+
+## Evidencias C7-PLAT-01
+
+- Primera entrega: `170_primera_entrega_c7_plat_01.md`.
+- Validación final Cloud Shell: `171_evidencia_final_c7_plat_01_cloudshell.md`.
+- Resultado: contenedor reproducible, no privilegiado, sin secretos embebidos y saludable contra Cloud SQL.
