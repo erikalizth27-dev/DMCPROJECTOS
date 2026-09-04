@@ -27,10 +27,18 @@ Construir el frontend de Siniestro Fácil en React, con trazabilidad directa a h
 | Payload y respuestas | `12_api_backend_openapi.yaml` |
 | Autenticación pendiente | `13_seguridad_rbac.md` y cierre del Ciclo 7 |
 
-## Pendientes de validación
+## Validación técnica
 
-- Instalar dependencias y generar el lockfile.
-- Ejecutar `npm run typecheck`.
-- Ejecutar `npm run build`.
-- Validar integración contra backend local.
+- Dependencias instaladas y `package-lock.json` registrado.
+- Auditoría npm: 0 vulnerabilidades.
+- Script de instalación de `esbuild` aprobado explícitamente.
+- `npm run typecheck`: aprobado.
+- `npm run build`: aprobado.
+- Vite: 30 módulos transformados.
+- Salida: HTML 0.54 kB, CSS 6.35 kB y JavaScript 200.69 kB.
+- Árbol Git: limpio después del build.
+
+## Pendientes funcionales
+
+- Validar integración contra el backend local.
 - Definir autenticación del navegador antes de integrar producción.
