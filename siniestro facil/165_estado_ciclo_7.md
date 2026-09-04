@@ -133,6 +133,28 @@
 - Runbook de diagnóstico sin SLO ni umbrales inventados.
 - Evidencias: `178_primera_entrega_c7_plat_05.md` y `179_runbook_observabilidad_ciclo_7.md`.
 
-## Próximo paso
+## Validación final C7-PLAT-05
 
-Validar la suite ampliada, desplegar mediante el pipeline y confirmar los eventos como `jsonPayload` en Cloud Logging.
+- Suite ampliada: **451 pruebas aprobadas**.
+- Despliegue: `d5993f9b1b27` mediante build `d565c93b-db05-4f74-b6f8-5e13a04f1ac2`.
+- Cloud Logging: evento `http_request` correlacionado y estructurado.
+- Datos sensibles: no detectados.
+- Evidencia: `180_evidencia_final_c7_plat_05_observabilidad.md`.
+- Estado: **completado**.
+
+## Validación integral C7-PLAT-06
+
+- Código, suite y Alembic: aprobados.
+- Cloud Run privado y autenticado: aprobado.
+- Liveness y readiness: aprobados.
+- Logs estructurados sin datos sensibles: aprobados.
+- Secretos e identidades separados: aprobados.
+- Job migrador: `Ready`.
+- Revisión activa y build exitoso: verificados.
+- Evidencia: `182_evidencia_validacion_integral_ciclo_7.md`.
+- Acta: `183_acta_cierre_ciclo_7.md`.
+- Estado: **completado**.
+
+## Cierre
+
+El Ciclo 7 queda **completado al 100%**. La rama está lista para revisión mediante Pull Request y no debe fusionarse sin autorización explícita del Product Owner.
