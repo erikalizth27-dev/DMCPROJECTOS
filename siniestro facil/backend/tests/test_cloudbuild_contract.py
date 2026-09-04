@@ -61,7 +61,8 @@ def test_private_smoke_checks_both_health_endpoints() -> None:
     assert "/health/live" in smoke
     assert "/health/ready" in smoke
     assert "$${SERVICE_URL}" in smoke
-    assert "$${ID_TOKEN}" in smoke
+    assert "${ID_TOKEN}" in smoke
+    assert "python3 -" in smoke
 
 
 def test_submission_requires_dedicated_deployer_identity() -> None:
