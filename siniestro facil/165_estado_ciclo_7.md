@@ -2,7 +2,7 @@
 
 ## Estado general
 
-- Avance: **90% — C7-PLAT-05 completado**.
+- Avance: **95% — validador C7-PLAT-06 preparado**.
 - Rama: `agent/ciclo-7-plataforma-backend`.
 - Punto de partida: `main` en `53eed88e476c12ae1fdf70a68cbf72fc4473049e`.
 - Backend funcional heredado: **6 sprints completados**.
