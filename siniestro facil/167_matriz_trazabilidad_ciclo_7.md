@@ -82,3 +82,9 @@ Evidencia: `169_registro_aprobacion_c7_decisiones.md`.
 - Cloud Run privado y smoke tests: `174_evidencia_final_c7_plat_02_cloud_run.md`.
 - Liveness y readiness autenticados aprobados.
 - Conectividad Cloud SQL validada desde el servicio desplegado.
+
+
+## Evidencia final C7-PLAT-03
+
+- IAM, secretos y job migrador: `175_evidencia_final_c7_plat_03_iam.md`.
+- Acceso mínimo y separación de credenciales validados mediante una ejecución real.
