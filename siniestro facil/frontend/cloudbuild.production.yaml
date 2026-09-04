@@ -1,0 +1,64 @@
+substitutions:
+  _REGION: us-central1
+  _REPOSITORY: siniestro-facil
+  _SERVICE: siniestro-facil-frontend-prod
+  _BFF_URL: https://siniestro-facil-bff-prod-6oegsjqmba-uc.a.run.app
+  _IDENTITY_PLATFORM_API_KEY: REEMPLAZAR
+
+steps:
+  - id: validate
+    name: node:22.20.0
+    dir: siniestro facil/frontend
+    entrypoint: bash
+    args:
+      - -ceu
+      - |
+        npm ci
+        npm run typecheck
+        npm run build
+    env:
+      - VITE_API_BASE_URL=${_BFF_URL}/api/v1
+      - VITE_IDENTITY_PLATFORM_API_KEY=${_IDENTITY_PLATFORM_API_KEY}
+
+  - id: build
+    name: gcr.io/cloud-builders/docker
+    args:
+      - build
+      - --build-arg
+      - VITE_API_BASE_URL=${_BFF_URL}/api/v1
+      - --build-arg
+      - VITE_IDENTITY_PLATFORM_API_KEY=${_IDENTITY_PLATFORM_API_KEY}
+      - --tag
+      - ${_REGION}-docker.pkg.dev/${PROJECT_ID}/${_REPOSITORY}/frontend:${SHORT_SHA}
+      - siniestro facil/frontend
+
+  - id: push
+    name: gcr.io/cloud-builders/docker
+    args:
+      - push
+      - ${_REGION}-docker.pkg.dev/${PROJECT_ID}/${_REPOSITORY}/frontend:${SHORT_SHA}
+
+  - id: deploy
+    name: gcr.io/google.com/cloudsdktool/cloud-sdk:slim
+    entrypoint: gcloud
+    args:
+      - run
+      - deploy
+      - ${_SERVICE}
+      - --project=${PROJECT_ID}
+      - --region=${_REGION}
+      - --platform=managed
+      - --image=${_REGION}-docker.pkg.dev/${PROJECT_ID}/${_REPOSITORY}/frontend:${SHORT_SHA}
+      - --allow-unauthenticated
+      - --no-cpu-boost
+      - --min=0
+      - --max=10
+      - --memory=256Mi
+      - --cpu=1
+      - --concurrency=80
+
+images:
+  - ${_REGION}-docker.pkg.dev/${PROJECT_ID}/${_REPOSITORY}/frontend:${SHORT_SHA}
+
+options:
+  logging: CLOUD_LOGGING_ONLY
