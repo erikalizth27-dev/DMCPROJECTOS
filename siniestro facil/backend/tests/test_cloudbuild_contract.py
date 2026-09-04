@@ -56,6 +56,8 @@ def test_service_is_updated_only_after_successful_migration() -> None:
 def test_private_smoke_checks_both_health_endpoints() -> None:
     smoke = str(steps()["smoke"])
     assert "gcloud auth print-identity-token" in smoke
+    assert "--impersonate-service-account=" in smoke
+    assert '--audiences="$${SERVICE_URL}"' in smoke
     assert "/health/live" in smoke
     assert "/health/ready" in smoke
     assert "$${SERVICE_URL}" in smoke
