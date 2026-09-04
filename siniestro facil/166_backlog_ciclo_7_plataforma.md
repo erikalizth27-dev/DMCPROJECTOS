@@ -72,7 +72,7 @@ Preparar el backend Siniestro Fácil para ejecución controlada en GCP, conserva
 | C7-PLAT-03 | Listo | Separación de identidades y Secret Manager aprobados |
 | C7-PLAT-04 | Listo | Cloud Build, Artifact Registry y migración exclusiva aprobados |
 | C7-PLAT-05 | Parcial | Observabilidad base aprobada; umbrales y destinatarios siguen pendientes |
-| C7-PLAT-06 | Pendiente | Completar incrementos anteriores |
+| C7-PLAT-06 | **Completado** | Incrementos anteriores y validador integral aprobados |
 
 
 ## Decisiones aprobadas
@@ -90,4 +90,4 @@ Preparar el backend Siniestro Fácil para ejecución controlada en GCP, conserva
 | C7-PLAT-03 | **Completado** | `175_evidencia_final_c7_plat_03_iam.md` |
 | C7-PLAT-04 | **Completado** | `177_evidencia_final_c7_plat_04_cicd.md` |
 | C7-PLAT-05 | **Completado** | `180_evidencia_final_c7_plat_05_observabilidad.md` |
-| C7-PLAT-06 | En progreso | — |
+| C7-PLAT-06 | **Completado** | `182_evidencia_validacion_integral_ciclo_7.md` |
