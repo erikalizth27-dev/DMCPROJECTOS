@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 import os
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 
 
 @dataclass(frozen=True, slots=True)
@@ -9,7 +9,7 @@ class Settings:
     app_env: str = "local"
     app_name: str = "Siniestro Facil Backend"
     app_version: str = "0.1.0"
-    database_url: str | None = None
+    database_url: str | None = field(default=None, repr=False)
     database_schema: str = "siniestro_facil"
     identity_issuer: str | None = None
     identity_audience: str | None = None
