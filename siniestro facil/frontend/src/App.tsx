@@ -56,6 +56,8 @@ function App() {
     return <LoginScreen />;
   }
 
+  const accessToken = accessToken;
+
   function updateField(field: keyof CrearSiniestro, value: string) {
     setForm((current) => ({ ...current, [field]: value }));
     setNotice(null);
@@ -76,7 +78,7 @@ function App() {
         Object.entries(form).filter(([, value]) => value !== ""),
       ) as unknown as CrearSiniestro;
       payload.fechaEvento = new Date(form.fechaEvento).toISOString();
-      const created = await crearSiniestro(payload, session.idToken);
+      const created = await crearSiniestro(payload, accessToken);
       setResult(created);
       setCaseId(String(created.id));
       setNotice({ tone: "success", text: `Reporte #${created.id} registrado correctamente.` });
@@ -101,7 +103,7 @@ function App() {
 
     setBusy(true);
     try {
-      const found = await obtenerSiniestro(id, session.idToken);
+      const found = await obtenerSiniestro(id, accessToken);
       setResult(found);
     } catch (error) {
       setResult(null);
