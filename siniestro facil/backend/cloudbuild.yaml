@@ -84,7 +84,7 @@ steps:
         SERVICE_URL="$$(gcloud run services describe "${_SERVICE}"           --project="$PROJECT_ID"           --region="${_REGION}"           --format='value(status.url)')"
         DEPLOYER_EMAIL="${_DEPLOYER_SA}@$PROJECT_ID.iam.gserviceaccount.com"
         ID_TOKEN="$$(gcloud auth print-identity-token --impersonate-service-account="$${DEPLOYER_EMAIL}" --audiences="$${SERVICE_URL}" --include-email)"
-        python - "$${SERVICE_URL}" "$${ID_TOKEN}" <<'PY'
+        python3 - "$${SERVICE_URL}" "$${ID_TOKEN}" <<'PY'
         import json
         import sys
         from urllib.request import Request, urlopen
