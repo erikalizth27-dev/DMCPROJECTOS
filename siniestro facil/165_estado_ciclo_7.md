@@ -2,7 +2,7 @@
 
 ## Estado general
 
-- Avance: **75% — C7-PLAT-04 completado**.
+- Avance: **82% — primera entrega C7-PLAT-05 implementada**.
 - Rama: `agent/ciclo-7-plataforma-backend`.
 - Punto de partida: `main` en `53eed88e476c12ae1fdf70a68cbf72fc4473049e`.
 - Backend funcional heredado: **6 sprints completados**.
@@ -124,6 +124,15 @@
 - Evidencia: `177_evidencia_final_c7_plat_04_cicd.md`.
 - Estado: **completado**.
 
+## Primera entrega C7-PLAT-05
+
+- Logs HTTP en JSON de una línea.
+- Correlation ID validado contra inyección y longitud excesiva.
+- Método, ruta, estado y latencia registrados.
+- Cuerpos, queries, cabeceras, tokens y excepciones excluidos.
+- Runbook de diagnóstico sin SLO ni umbrales inventados.
+- Evidencias: `178_primera_entrega_c7_plat_05.md` y `179_runbook_observabilidad_ciclo_7.md`.
+
 ## Próximo paso
 
-Iniciar C7-PLAT-05 con logs estructurados, consultas operativas, métricas administradas y un runbook sin umbrales inventados.
+Validar la suite ampliada, desplegar mediante el pipeline y confirmar los eventos como `jsonPayload` en Cloud Logging.
