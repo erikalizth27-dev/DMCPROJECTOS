@@ -1,0 +1,59 @@
+substitutions:
+  _REGION: us-central1
+  _REPOSITORY: siniestro-facil
+  _BFF_SERVICE: siniestro-facil-bff-prod
+  _BFF_SERVICE_ACCOUNT: siniestro-bff-prod@${PROJECT_ID}.iam.gserviceaccount.com
+  _BACKEND_URL: https://siniestro-facil-backend-prod-112296734690.us-central1.run.app
+  _FRONTEND_ORIGIN: https://REEMPLAZAR_FRONTEND
+
+steps:
+  - id: test-bff
+    name: node:22.20.0
+    dir: siniestro facil/bff
+    entrypoint: bash
+    args:
+      - -ceu
+      - |
+        npm install --ignore-scripts
+        npm test
+
+  - id: build-bff
+    name: gcr.io/cloud-builders/docker
+    args:
+      - build
+      - --tag
+      - ${_REGION}-docker.pkg.dev/${PROJECT_ID}/${_REPOSITORY}/bff:${SHORT_SHA}
+      - siniestro facil/bff
+
+  - id: push-bff
+    name: gcr.io/cloud-builders/docker
+    args:
+      - push
+      - ${_REGION}-docker.pkg.dev/${PROJECT_ID}/${_REPOSITORY}/bff:${SHORT_SHA}
+
+  - id: deploy-bff
+    name: gcr.io/google.com/cloudsdktool/cloud-sdk:slim
+    entrypoint: gcloud
+    args:
+      - run
+      - deploy
+      - ${_BFF_SERVICE}
+      - --project=${PROJECT_ID}
+      - --region=${_REGION}
+      - --platform=managed
+      - --image=${_REGION}-docker.pkg.dev/${PROJECT_ID}/${_REPOSITORY}/bff:${SHORT_SHA}
+      - --service-account=${_BFF_SERVICE_ACCOUNT}
+      - --set-env-vars=BACKEND_URL=${_BACKEND_URL},BACKEND_AUDIENCE=${_BACKEND_URL},FRONTEND_ORIGIN=${_FRONTEND_ORIGIN}
+      - --allow-unauthenticated
+      - --no-cpu-boost
+      - --min=0
+      - --max=10
+      - --memory=256Mi
+      - --cpu=1
+      - --concurrency=40
+
+images:
+  - ${_REGION}-docker.pkg.dev/${PROJECT_ID}/${_REPOSITORY}/bff:${SHORT_SHA}
+
+options:
+  logging: CLOUD_LOGGING_ONLY

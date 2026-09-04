@@ -1,0 +1,16 @@
+{
+  "name": "siniestro-facil-bff",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "engines": { "node": ">=22" },
+  "scripts": {
+    "start": "node src/server.mjs",
+    "test": "node --test"
+  },
+  "dependencies": {
+    "express": "5.1.0",
+    "firebase-admin": "13.4.0",
+    "google-auth-library": "10.3.0"
+  }
+}
