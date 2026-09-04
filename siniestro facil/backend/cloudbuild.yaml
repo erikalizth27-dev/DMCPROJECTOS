@@ -78,9 +78,9 @@ steps:
     args:
       - -ceu
       - |
-        SERVICE_URL="$(gcloud run services describe "${_SERVICE}"           --project="$PROJECT_ID"           --region="${_REGION}"           --format='value(status.url)')"
-        ID_TOKEN="$(gcloud auth print-identity-token)"
-        python - "${SERVICE_URL}" "${ID_TOKEN}" <<'PY'
+        SERVICE_URL="$$(gcloud run services describe "${_SERVICE}"           --project="$PROJECT_ID"           --region="${_REGION}"           --format='value(status.url)')"
+        ID_TOKEN="$$(gcloud auth print-identity-token)"
+        python - "$${SERVICE_URL}" "$${ID_TOKEN}" <<'PY'
         import json
         import sys
         from urllib.request import Request, urlopen
