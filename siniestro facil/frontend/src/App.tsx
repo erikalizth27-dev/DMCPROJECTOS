@@ -68,6 +68,7 @@ function App() {
       const payload = Object.fromEntries(
         Object.entries(form).filter(([, value]) => value !== ""),
       ) as unknown as CrearSiniestro;
+      payload.fechaEvento = new Date(form.fechaEvento).toISOString();
       const created = await crearSiniestro(payload);
       setResult(created);
       setCaseId(String(created.id));
