@@ -5,6 +5,7 @@ substitutions:
   _IMAGE_TAG: manual
   _SERVICE: siniestro-facil-backend-piloto
   _MIGRATION_JOB: siniestro-facil-migrator-piloto
+  _DEPLOYER_SA: siniestro-deployer-piloto
 
 options:
   logging: CLOUD_LOGGING_ONLY
@@ -81,7 +82,8 @@ steps:
       - -ceu
       - |
         SERVICE_URL="$$(gcloud run services describe "${_SERVICE}"           --project="$PROJECT_ID"           --region="${_REGION}"           --format='value(status.url)')"
-        ID_TOKEN="$$(gcloud auth print-identity-token)"
+        DEPLOYER_EMAIL="${_DEPLOYER_SA}@$PROJECT_ID.iam.gserviceaccount.com"
+        ID_TOKEN="$$(gcloud auth print-identity-token --impersonate-service-account="$${DEPLOYER_EMAIL}" --audiences="$${SERVICE_URL}" --include-email)"
         python - "$${SERVICE_URL}" "$${ID_TOKEN}" <<'PY'
         import json
         import sys
