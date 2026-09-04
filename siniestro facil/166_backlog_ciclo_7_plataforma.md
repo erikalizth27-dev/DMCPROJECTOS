@@ -79,3 +79,15 @@ Preparar el backend Siniestro Fácil para ejecución controlada en GCP, conserva
 
 - C7-DEC-01 a C7-DEC-06 aprobadas por el Product Owner.
 - Evidencia: `169_registro_aprobacion_c7_decisiones.md`.
+
+
+## Estado de ejecución
+
+| Incremento | Estado | Evidencia |
+|---|---|---|
+| C7-PLAT-01 | **Completado** | `171_evidencia_final_c7_plat_01_cloudshell.md` |
+| C7-PLAT-02 | Pendiente | — |
+| C7-PLAT-03 | Pendiente | — |
+| C7-PLAT-04 | Pendiente | — |
+| C7-PLAT-05 | Pendiente | — |
+| C7-PLAT-06 | Pendiente | — |
