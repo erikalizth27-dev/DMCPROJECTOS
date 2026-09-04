@@ -11,6 +11,7 @@ options:
 
 steps:
   - id: test
+    dir: backend
     name: python:3.12-slim
     entrypoint: bash
     args:
@@ -21,6 +22,7 @@ steps:
         python -m pytest -q
 
   - id: build
+    dir: backend
     name: gcr.io/cloud-builders/docker
     args:
       - build
