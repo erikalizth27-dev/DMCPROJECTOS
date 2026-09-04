@@ -5,6 +5,8 @@ PROJECT_ID="${PROJECT_ID:-project-77c17016-86bc-4fc4-a97}"
 REGION="${REGION:-us-central1}"
 DEPLOYER_SERVICE_ACCOUNT="${DEPLOYER_SERVICE_ACCOUNT:-siniestro-deployer-piloto@${PROJECT_ID}.iam.gserviceaccount.com}"
 IMAGE_TAG="${IMAGE_TAG:-$(git rev-parse --short=12 HEAD)}"
+BACKEND_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
+CASE_DIR="$(cd "${BACKEND_DIR}/.." && pwd)"
 
 if [[ -n "$(git status --short)" ]]; then
   echo "ERROR: el árbol Git debe estar limpio" >&2
