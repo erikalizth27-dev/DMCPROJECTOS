@@ -2,7 +2,7 @@
 
 ## Estado general
 
-- Avance: **5% — preparación iniciada**.
+- Avance: **5% — preparación completada; decisiones aprobadas**.
 - Rama: `agent/ciclo-7-plataforma-backend`.
 - Punto de partida: `main` en `53eed88e476c12ae1fdf70a68cbf72fc4473049e`.
 - Backend funcional heredado: **6 sprints completados**.
@@ -31,6 +31,11 @@
 - No inventar SLO, umbrales, presupuestos ni políticas de escalado.
 - No fusionar el PR sin autorización explícita del Product Owner.
 
+## Decisiones aprobadas
+
+- C7-DEC-01 a C7-DEC-06: **aprobadas**.
+- Evidencia: `169_registro_aprobacion_c7_decisiones.md`.
+
 ## Próximo paso
 
-Resolver las decisiones C7-DEC-01 a C7-DEC-06 y validar la línea base antes de construir el contenedor.
+Validar la línea base del Ciclo 7 y comenzar C7-PLAT-01 con el contenedor reproducible y seguro.
