@@ -8,7 +8,7 @@ ENV VITE_API_BASE_URL=${VITE_API_BASE_URL}
 ENV VITE_IDENTITY_PLATFORM_API_KEY=${VITE_IDENTITY_PLATFORM_API_KEY}
 
 COPY package.json package-lock.json ./
-RUN npm ci --ignore-scripts
+RUN npm ci
 COPY . .
 RUN npm run build
 
