@@ -2,7 +2,7 @@
 
 ## Estado general
 
-- Avance: **12% — primera entrega C7-PLAT-01 implementada**.
+- Avance: **20% — C7-PLAT-01 completado**.
 - Rama: `agent/ciclo-7-plataforma-backend`.
 - Punto de partida: `main` en `53eed88e476c12ae1fdf70a68cbf72fc4473049e`.
 - Backend funcional heredado: **6 sprints completados**.
@@ -53,6 +53,16 @@
 - Contrato automatizado y validador integral del contenedor añadidos.
 - Evidencia: `170_primera_entrega_c7_plat_01.md`.
 
+## Validación final C7-PLAT-01
+
+- Imagen Docker: construida correctamente.
+- Usuario: `10001:10001`.
+- Secretos embebidos: no detectados.
+- Liveness y readiness con Cloud SQL: aprobados.
+- Alembic dentro de la imagen: `20260903_04 (head)`.
+- Evidencia: `171_evidencia_final_c7_plat_01_cloudshell.md`.
+- Estado: **completado**.
+
 ## Próximo paso
 
-Validar la suite ampliada y ejecutar `backend/scripts/28_validate_container.sh` en Cloud Shell.
+Iniciar C7-PLAT-02: habilitar servicios requeridos, crear Artifact Registry, publicar una imagen inmutable y preparar Cloud Run privado.
