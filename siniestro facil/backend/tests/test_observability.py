@@ -69,3 +69,25 @@ def test_formatter_emits_single_line_json() -> None:
     rendered = JsonLineFormatter().format(log_record)
     assert "\n" not in rendered
     assert json.loads(rendered) == payload
+
+
+def test_valid_correlation_id_is_preserved() -> None:
+    from siniestro_facil.api.middleware import normalized_correlation_id
+
+    assert normalized_correlation_id("c7-valid_01:trace") == "c7-valid_01:trace"
+
+
+def test_invalid_correlation_id_is_replaced() -> None:
+    from siniestro_facil.api.middleware import normalized_correlation_id
+
+    supplied = "invalid correlation\nforged-log"
+    generated = normalized_correlation_id(supplied)
+    assert generated != supplied
+    assert "\n" not in generated
+
+
+def test_oversized_correlation_id_is_replaced() -> None:
+    from siniestro_facil.api.middleware import normalized_correlation_id
+
+    supplied = "x" * 129
+    assert normalized_correlation_id(supplied) != supplied
