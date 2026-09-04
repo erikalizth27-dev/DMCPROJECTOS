@@ -2,7 +2,7 @@
 
 ## Estado general
 
-- Avance: **40% — C7-PLAT-02 completado**.
+- Avance: **55% — C7-PLAT-03 completado**.
 - Rama: `agent/ciclo-7-plataforma-backend`.
 - Punto de partida: `main` en `53eed88e476c12ae1fdf70a68cbf72fc4473049e`.
 - Backend funcional heredado: **6 sprints completados**.
@@ -92,6 +92,16 @@
 - Evidencia: `174_evidencia_final_c7_plat_02_cloud_run.md`.
 - Estado: **completado**.
 
+## Validación final C7-PLAT-03
+
+- Identidades de runtime y migración: separadas.
+- Secretos: separados y con acceso específico por recurso.
+- Rol PostgreSQL migrador: LOGIN sin privilegios administrativos.
+- Propiedad y permisos de Alembic: verificados.
+- Cloud Run Job migrador: ejecución exitosa.
+- Evidencia: `175_evidencia_final_c7_plat_03_iam.md`.
+- Estado: **completado**.
+
 ## Próximo paso
 
-Completar C7-PLAT-03 con permisos mínimos verificados y credencial independiente para la identidad migradora.
+Iniciar C7-PLAT-04: definir Cloud Build, pruebas, imagen por commit, migración exclusiva y despliegue controlado.
