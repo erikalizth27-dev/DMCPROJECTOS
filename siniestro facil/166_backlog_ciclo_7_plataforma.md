@@ -67,9 +67,15 @@ Preparar el backend Siniestro Fácil para ejecución controlada en GCP, conserva
 
 | Incremento | Estado | Condición |
 |---|---|---|
-| C7-PLAT-01 | Parcial | Aprobar runtime y parámetros del contenedor |
-| C7-PLAT-02 | Pendiente | Aprobar región, servicio y acceso |
-| C7-PLAT-03 | Pendiente | Aprobar IAM y nombres de secretos |
-| C7-PLAT-04 | Pendiente | Aprobar mecanismo CI/CD y estrategia de migración |
-| C7-PLAT-05 | Pendiente | Definir destinatarios y umbrales |
+| C7-PLAT-01 | Listo | Decisiones aprobadas; validar línea base |
+| C7-PLAT-02 | Listo | Región, servicio privado y acceso aprobados |
+| C7-PLAT-03 | Listo | Separación de identidades y Secret Manager aprobados |
+| C7-PLAT-04 | Listo | Cloud Build, Artifact Registry y migración exclusiva aprobados |
+| C7-PLAT-05 | Parcial | Observabilidad base aprobada; umbrales y destinatarios siguen pendientes |
 | C7-PLAT-06 | Pendiente | Completar incrementos anteriores |
+
+
+## Decisiones aprobadas
+
+- C7-DEC-01 a C7-DEC-06 aprobadas por el Product Owner.
+- Evidencia: `169_registro_aprobacion_c7_decisiones.md`.
