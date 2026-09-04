@@ -68,3 +68,10 @@ Evidencia: `169_registro_aprobacion_c7_decisiones.md`.
 
 - Artifact Registry y Cloud Build: `172_evidencia_artifact_registry_c7_plat_02.md`.
 - Imagen publicada por commit y verificada mediante digest SHA-256.
+
+
+## Evidencia inicial C7-PLAT-03
+
+- Identidades e IAM de Secret Manager: `173_evidencia_iam_secret_manager_c7_plat_03.md`.
+- Separación entre runtime y migración preservada.
+- Secreto de runtime versionado sin exponer su contenido.
