@@ -2,7 +2,7 @@
 
 ## Estado general
 
-- Avance: **25% — imagen de C7-PLAT-02 publicada**.
+- Avance: **30% — identidades y secreto de runtime configurados**.
 - Rama: `agent/ciclo-7-plataforma-backend`.
 - Punto de partida: `main` en `53eed88e476c12ae1fdf70a68cbf72fc4473049e`.
 - Backend funcional heredado: **6 sprints completados**.
@@ -72,6 +72,15 @@
 - Digest inmutable: `sha256:37e81b3ed7dd0aee3f85d2ce286ecc541a44162677a01cad91932cd455612381`.
 - Evidencia: `172_evidencia_artifact_registry_c7_plat_02.md`.
 
+## Avance C7-PLAT-03
+
+- Cuenta de runtime: creada.
+- Cuenta migradora: creada y separada.
+- Secreto de conexión del runtime: versión 1 habilitada.
+- Acceso al secreto: limitado a la cuenta de runtime.
+- Credencial migradora: pendiente de su etapa exclusiva.
+- Evidencia: `173_evidencia_iam_secret_manager_c7_plat_03.md`.
+
 ## Próximo paso
 
-Preparar identidades separadas, Secret Manager y permisos mínimos antes de desplegar Cloud Run privado.
+Desplegar la imagen inmutable en Cloud Run privado, conectarla a Cloud SQL y ejecutar smoke tests autenticados.
