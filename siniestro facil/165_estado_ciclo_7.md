@@ -2,7 +2,7 @@
 
 ## Estado general
 
-- Avance: **5% — preparación completada; decisiones aprobadas**.
+- Avance: **12% — primera entrega C7-PLAT-01 implementada**.
 - Rama: `agent/ciclo-7-plataforma-backend`.
 - Punto de partida: `main` en `53eed88e476c12ae1fdf70a68cbf72fc4473049e`.
 - Backend funcional heredado: **6 sprints completados**.
@@ -36,6 +36,23 @@
 - C7-DEC-01 a C7-DEC-06: **aprobadas**.
 - Evidencia: `169_registro_aprobacion_c7_decisiones.md`.
 
+## Línea base validada
+
+- Compilación: aprobada.
+- Suite: **428 pruebas aprobadas**.
+- Alembic: `20260903_04 (head)`.
+- Cloud SQL Proxy: operativo.
+- Advertencia Starlette: conocida y no bloqueante.
+
+## Primera entrega C7-PLAT-01
+
+- Contenedor Python 3.12 creado.
+- Usuario no privilegiado configurado.
+- Puerto Cloud Run y terminación por señales configurados.
+- Contexto de construcción protegido con `.dockerignore`.
+- Contrato automatizado y validador integral del contenedor añadidos.
+- Evidencia: `170_primera_entrega_c7_plat_01.md`.
+
 ## Próximo paso
 
-Validar la línea base del Ciclo 7 y comenzar C7-PLAT-01 con el contenedor reproducible y seguro.
+Validar la suite ampliada y ejecutar `backend/scripts/28_validate_container.sh` en Cloud Shell.
