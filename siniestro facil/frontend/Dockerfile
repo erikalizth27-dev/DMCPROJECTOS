@@ -1,16 +1,15 @@
 FROM node:22.20.0-alpine AS build
 WORKDIR /app
 
-ARG VITE_API_BASE_URL
-ARG VITE_IDENTITY_PLATFORM_API_KEY
-
-ENV VITE_API_BASE_URL=${VITE_API_BASE_URL}
-ENV VITE_IDENTITY_PLATFORM_API_KEY=${VITE_IDENTITY_PLATFORM_API_KEY}
+ARG PUBLIC_API_BASE_URL
+ARG PUBLIC_IDENTITY_CONFIG
 
 COPY package.json package-lock.json ./
 RUN npm ci
 COPY . .
-RUN npm run build
+RUN VITE_API_BASE_URL="${PUBLIC_API_BASE_URL}" \
+    VITE_IDENTITY_PLATFORM_API_KEY="${PUBLIC_IDENTITY_CONFIG}" \
+    npm run build
 
 FROM nginxinc/nginx-unprivileged:1.29-alpine
 COPY nginx.conf /etc/nginx/conf.d/default.conf
