@@ -56,7 +56,7 @@ function App() {
     return <LoginScreen />;
   }
 
-  const accessToken = accessToken;
+  const accessToken: string = session.idToken;
 
   function updateField(field: keyof CrearSiniestro, value: string) {
     setForm((current) => ({ ...current, [field]: value }));
