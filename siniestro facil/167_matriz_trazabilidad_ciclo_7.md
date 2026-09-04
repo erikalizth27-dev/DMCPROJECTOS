@@ -100,3 +100,11 @@ Evidencia: `169_registro_aprobacion_c7_decisiones.md`.
 
 - Logs estructurados y protección sensible: `180_evidencia_final_c7_plat_05_observabilidad.md`.
 - Runbook: `179_runbook_observabilidad_ciclo_7.md`.
+
+## Evidencia final C7-PLAT-06
+
+- Validador: `backend/scripts/30_validate_cycle7.sh`.
+- Resultado integral: `182_evidencia_validacion_integral_ciclo_7.md`.
+- Acta de cierre: `183_acta_cierre_ciclo_7.md`.
+- Código, Alembic, servicio privado, salud autenticada, observabilidad segura, separación de identidades, migración y entrega: aprobados.
+- Resultado: **Ciclo 7 completado al 100%**.
