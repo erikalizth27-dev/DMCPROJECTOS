@@ -22,6 +22,8 @@ def test_pipeline_uses_cloud_logging_without_implicit_bucket() -> None:
 def test_pipeline_runs_tests_before_build() -> None:
     ordered = [step["id"] for step in CONFIG["steps"]]
     assert ordered[:3] == ["test", "build", "push"]
+    assert CONFIG["steps"][0]["dir"] == "backend"
+    assert CONFIG["steps"][1]["dir"] == "backend"
     assert "python -m pytest -q" in CONFIG["steps"][0]["args"][-1]
 
 
@@ -63,3 +65,9 @@ def test_private_smoke_checks_both_health_endpoints() -> None:
 def test_submission_requires_dedicated_deployer_identity() -> None:
     assert "--service-account=" in SCRIPT
     assert "siniestro-deployer-piloto@" in SCRIPT
+
+
+def test_submission_includes_case_level_openapi_contract() -> None:
+    assert 'CASE_DIR=' in SCRIPT
+    assert 'cd "${CASE_DIR}"' in SCRIPT
+    assert "--config=backend/cloudbuild.yaml" in SCRIPT
