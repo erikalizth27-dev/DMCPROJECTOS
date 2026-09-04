@@ -2,7 +2,7 @@
 
 ## Estado general
 
-- Avance: **20% — C7-PLAT-01 completado**.
+- Avance: **25% — imagen de C7-PLAT-02 publicada**.
 - Rama: `agent/ciclo-7-plataforma-backend`.
 - Punto de partida: `main` en `53eed88e476c12ae1fdf70a68cbf72fc4473049e`.
 - Backend funcional heredado: **6 sprints completados**.
@@ -63,6 +63,15 @@
 - Evidencia: `171_evidencia_final_c7_plat_01_cloudshell.md`.
 - Estado: **completado**.
 
+## Avance C7-PLAT-02
+
+- APIs de plataforma: habilitadas.
+- Artifact Registry: creado y validado.
+- Cloud Build: ejecución exitosa.
+- Imagen identificada por commit: `44e590b320ac`.
+- Digest inmutable: `sha256:37e81b3ed7dd0aee3f85d2ce286ecc541a44162677a01cad91932cd455612381`.
+- Evidencia: `172_evidencia_artifact_registry_c7_plat_02.md`.
+
 ## Próximo paso
 
-Iniciar C7-PLAT-02: habilitar servicios requeridos, crear Artifact Registry, publicar una imagen inmutable y preparar Cloud Run privado.
+Preparar identidades separadas, Secret Manager y permisos mínimos antes de desplegar Cloud Run privado.
