@@ -94,3 +94,9 @@ Evidencia: `169_registro_aprobacion_c7_decisiones.md`.
 
 - Pipeline real de Cloud Build: `177_evidencia_final_c7_plat_04_cicd.md`.
 - Pruebas, imagen, migración, despliegue y smoke tests completados en orden.
+
+
+## Evidencia final C7-PLAT-05
+
+- Logs estructurados y protección sensible: `180_evidencia_final_c7_plat_05_observabilidad.md`.
+- Runbook: `179_runbook_observabilidad_ciclo_7.md`.
