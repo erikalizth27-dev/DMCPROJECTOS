@@ -36,11 +36,22 @@
 - Idempotencia y concurrencia optimista.
 - Migraciones separadas del runtime.
 
-## Vacíos que requieren decisión
+## Decisiones aprobadas
 
-- Región y nombre definitivo de Cloud Run.
-- Mecanismo de autenticación perimetral.
-- Ambientes requeridos.
-- Recursos, escalado y concurrencia.
-- Tecnología del pipeline.
-- Umbrales y destinatarios de alertas.
+| Decisión | Resultado |
+|---|---|
+| C7-DEC-01 | `us-central1` y servicio `siniestro-facil-backend-piloto` |
+| C7-DEC-02 | Servicio privado con invocación autenticada |
+| C7-DEC-03 | Único ambiente piloto |
+| C7-DEC-04 | Identidades separadas y secretos administrados |
+| C7-DEC-05 | Artifact Registry, Cloud Build y migración exclusiva |
+| C7-DEC-06 | Sin valores inventados de capacidad, SLO o alertas |
+
+Evidencia: `169_registro_aprobacion_c7_decisiones.md`.
+
+## Vacíos posteriores a las decisiones
+
+- Autenticación de usuarios finales fuera del piloto.
+- Recursos, escalado y concurrencia basados en mediciones.
+- SLO y condiciones de alerta basados en datos.
+- Destinatarios operativos de alertas.
