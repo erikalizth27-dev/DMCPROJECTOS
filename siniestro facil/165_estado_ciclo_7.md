@@ -2,7 +2,7 @@
 
 ## Estado general
 
-- Avance: **55% — C7-PLAT-03 completado**.
+- Avance: **62% — primera entrega C7-PLAT-04 implementada**.
 - Rama: `agent/ciclo-7-plataforma-backend`.
 - Punto de partida: `main` en `53eed88e476c12ae1fdf70a68cbf72fc4473049e`.
 - Backend funcional heredado: **6 sprints completados**.
@@ -102,6 +102,17 @@
 - Evidencia: `175_evidencia_final_c7_plat_03_iam.md`.
 - Estado: **completado**.
 
+## Primera entrega C7-PLAT-04
+
+- Pipeline Cloud Build declarativo.
+- Compilación y suite antes de construir.
+- Imagen etiquetada por commit.
+- Migración exclusiva mediante Cloud Run Job.
+- Despliegue condicionado al éxito de la migración.
+- Smoke tests privados de liveness y readiness.
+- Identidad de despliegue dedicada exigida.
+- Evidencia: `176_primera_entrega_c7_plat_04.md`.
+
 ## Próximo paso
 
-Iniciar C7-PLAT-04: definir Cloud Build, pruebas, imagen por commit, migración exclusiva y despliegue controlado.
+Validar la suite ampliada y preparar la cuenta de despliegue con permisos mínimos para ejecutar el pipeline real.
