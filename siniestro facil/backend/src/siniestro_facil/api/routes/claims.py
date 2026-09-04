@@ -6,6 +6,7 @@ from functools import lru_cache
 
 from fastapi import APIRouter, Depends, Header, status
 
+from siniestro_facil.api.auth import get_authenticated_principal
 from siniestro_facil.api.errors import BusinessError
 from siniestro_facil.api.schemas import (
     CambiarEstadoRequest,
@@ -67,16 +68,6 @@ from siniestro_facil.persistence.session import create_session_factory
 
 
 router = APIRouter(prefix="/api/v1/siniestros", tags=["Siniestros"])
-
-
-def get_authenticated_principal() -> AuthenticatedPrincipal:
-    # Denegación por defecto hasta que el adaptador criptográfico entregue
-    # claims ya verificados. Las pruebas sustituyen esta dependencia.
-    raise BusinessError(
-        "AUTHENTICATION-REQUIRED",
-        "Autenticación requerida",
-        401,
-    )
 
 
 @lru_cache(maxsize=1)
