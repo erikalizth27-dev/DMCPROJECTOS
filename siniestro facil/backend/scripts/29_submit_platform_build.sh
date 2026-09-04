@@ -18,4 +18,6 @@ echo "Etiqueta: ${IMAGE_TAG}"
 echo "Servicio: siniestro-facil-backend-piloto"
 echo "Migración: siniestro-facil-migrator-piloto"
 
-gcloud builds submit   --project="${PROJECT_ID}"   --region="${REGION}"   --config=cloudbuild.yaml   --service-account="projects/${PROJECT_ID}/serviceAccounts/${DEPLOYER_SERVICE_ACCOUNT}"   --substitutions="_REGION=${REGION},_IMAGE_TAG=${IMAGE_TAG}"   .
+cd "${CASE_DIR}"
+
+gcloud builds submit --project="${PROJECT_ID}" --region="${REGION}" --config=backend/cloudbuild.yaml --service-account="projects/${PROJECT_ID}/serviceAccounts/${DEPLOYER_SERVICE_ACCOUNT}" --substitutions="_REGION=${REGION},_IMAGE_TAG=${IMAGE_TAG}" .
