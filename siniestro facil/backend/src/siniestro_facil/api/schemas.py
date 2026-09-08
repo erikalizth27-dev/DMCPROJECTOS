@@ -77,6 +77,23 @@ class RegistrarEvidenciaRequest(ApiModel):
     metadatos: dict[str, object] = Field(default_factory=dict)
 
 
+class SolicitarCargaEvidenciaRequest(ApiModel):
+    nombre_archivo: str = Field(alias="nombreArchivo", min_length=1, max_length=180)
+    tipo_contenido: Literal[
+        "image/jpeg",
+        "image/png",
+        "application/pdf",
+    ] = Field(alias="tipoContenido")
+    tamano_bytes: int = Field(alias="tamanoBytes", gt=0, le=10 * 1024 * 1024)
+
+
+class CargaEvidenciaResponse(ApiModel):
+    url_carga: str = Field(alias="urlCarga")
+    contenido_original_uri: str = Field(alias="contenidoOriginalUri")
+    expira_en: datetime = Field(alias="expiraEn")
+    tipo_contenido: str = Field(alias="tipoContenido")
+
+
 class EvidenciaResponse(ApiModel):
     id: int
     siniestro_id: int = Field(alias="siniestroId")
