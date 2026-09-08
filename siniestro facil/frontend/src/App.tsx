@@ -52,6 +52,8 @@ function App() {
   const [timeline, setTimeline] = useState<LineaTiempoSiniestro | null>(null);
   const [notice, setNotice] = useState<{ tone: "error" | "success"; text: string } | null>(null);
   const [busy, setBusy] = useState(false);
+  const [timelineBusy, setTimelineBusy] = useState(false);
+  const [timelineError, setTimelineError] = useState<string | null>(null);
 
   if (!session) {
     return <LoginScreen />;
@@ -96,6 +98,7 @@ function App() {
   async function searchCase(event: FormEvent) {
     event.preventDefault();
     setNotice(null);
+    setTimelineError(null);
     const id = Number(caseId);
     if (!Number.isInteger(id) || id < 1) {
       setNotice({ tone: "error", text: "Ingresa un número de caso válido." });
@@ -119,6 +122,37 @@ function App() {
       });
     } finally {
       setBusy(false);
+    }
+  }
+
+  async function loadMoreTimeline() {
+    if (!result || !timeline?.siguienteCursor || timelineBusy) {
+      return;
+    }
+
+    setTimelineBusy(true);
+    setTimelineError(null);
+    try {
+      const nextPage = await obtenerLineaTiempo(
+        result.id,
+        accessToken,
+        timeline.siguienteCursor,
+      );
+      const eventsById = new Map(
+        [...timeline.eventos, ...nextPage.eventos].map((event) => [event.id, event]),
+      );
+      setTimeline({
+        ...nextPage,
+        eventos: [...eventsById.values()],
+      });
+    } catch (error) {
+      setTimelineError(
+        error instanceof ApiClientError
+          ? error.message
+          : "No fue posible cargar más movimientos.",
+      );
+    } finally {
+      setTimelineBusy(false);
     }
   }
 
@@ -222,6 +256,19 @@ function App() {
                       </ol>
                     ) : (
                       <p className="timeline-empty">Todavía no hay movimientos visibles para este caso.</p>
+                    )}
+                    {timelineError && (
+                      <p className="timeline-error" role="alert">{timelineError}</p>
+                    )}
+                    {timeline?.siguienteCursor != null && (
+                      <button
+                        className="timeline-more"
+                        type="button"
+                        onClick={loadMoreTimeline}
+                        disabled={timelineBusy}
+                      >
+                        {timelineBusy ? "Cargando movimientos…" : "Cargar más movimientos"}
+                      </button>
                     )}
                   </section>
                 </article>
