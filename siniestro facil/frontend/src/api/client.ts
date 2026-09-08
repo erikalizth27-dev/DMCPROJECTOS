@@ -1,4 +1,4 @@
-import type { ApiError, CrearSiniestro, Siniestro } from "../types";
+import type { ApiError, CrearSiniestro, LineaTiempoSiniestro, Siniestro } from "../types";
 
 const baseUrl = (import.meta.env.VITE_API_BASE_URL as string | undefined)?.replace(/\/$/, "");
 
@@ -71,4 +71,15 @@ export function obtenerSiniestro(
   accessToken?: string,
 ): Promise<Siniestro> {
   return request<Siniestro>(`/siniestros/${siniestroId}`, {}, accessToken);
+}
+
+export function obtenerLineaTiempo(
+  siniestroId: number,
+  accessToken?: string,
+): Promise<LineaTiempoSiniestro> {
+  return request<LineaTiempoSiniestro>(
+    `/siniestros/${siniestroId}/linea-tiempo?cantidad=20`,
+    {},
+    accessToken,
+  );
 }

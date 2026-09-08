@@ -1,6 +1,6 @@
 import { FormEvent, useState } from "react";
-import { ApiClientError, crearSiniestro, obtenerSiniestro } from "./api/client";
-import type { CrearSiniestro, Siniestro } from "./types";
+import { ApiClientError, crearSiniestro, obtenerLineaTiempo, obtenerSiniestro } from "./api/client";
+import type { CrearSiniestro, LineaTiempoSiniestro, Siniestro } from "./types";
 import { useAuth } from "./auth/AuthContext";
 import { LoginScreen } from "./auth/LoginScreen";
 
@@ -49,6 +49,7 @@ function App() {
   const [form, setForm] = useState<CrearSiniestro>(initialForm);
   const [caseId, setCaseId] = useState("");
   const [result, setResult] = useState<Siniestro | null>(null);
+  const [timeline, setTimeline] = useState<LineaTiempoSiniestro | null>(null);
   const [notice, setNotice] = useState<{ tone: "error" | "success"; text: string } | null>(null);
   const [busy, setBusy] = useState(false);
 
@@ -103,10 +104,15 @@ function App() {
 
     setBusy(true);
     try {
-      const found = await obtenerSiniestro(id, accessToken);
+      const [found, history] = await Promise.all([
+        obtenerSiniestro(id, accessToken),
+        obtenerLineaTiempo(id, accessToken),
+      ]);
       setResult(found);
+      setTimeline(history);
     } catch (error) {
       setResult(null);
+      setTimeline(null);
       setNotice({
         tone: "error",
         text: error instanceof ApiClientError ? error.message : "No fue posible consultar el caso.",
@@ -195,6 +201,29 @@ function App() {
                     <div><dt>Fecha</dt><dd>{new Intl.DateTimeFormat("es", { dateStyle: "medium", timeStyle: "short" }).format(new Date(result.fechaEvento))}</dd></div>
                     {result.siguientePaso && <div><dt>Siguiente paso</dt><dd>{result.siguientePaso.replaceAll("_", " ")}</dd></div>}
                   </dl>
+                  <section className="timeline" aria-labelledby="timeline-title">
+                    <div className="timeline-heading">
+                      <h3 id="timeline-title">Historial del caso</h3>
+                      <span>{timeline?.eventos.length ?? 0} eventos</span>
+                    </div>
+                    {timeline && timeline.eventos.length > 0 ? (
+                      <ol>
+                        {timeline.eventos.map((event) => (
+                          <li key={event.id}>
+                            <span className="timeline-dot" aria-hidden="true" />
+                            <div>
+                              <strong>{event.tipoEvento.replaceAll("_", " ")}</strong>
+                              <time dateTime={event.fecha}>
+                                {new Intl.DateTimeFormat("es", { dateStyle: "medium", timeStyle: "short" }).format(new Date(event.fecha))}
+                              </time>
+                            </div>
+                          </li>
+                        ))}
+                      </ol>
+                    ) : (
+                      <p className="timeline-empty">Todavía no hay movimientos visibles para este caso.</p>
+                    )}
+                  </section>
                 </article>
               )}
             </section>
