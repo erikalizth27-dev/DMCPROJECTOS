@@ -76,9 +76,15 @@ export function obtenerSiniestro(
 export function obtenerLineaTiempo(
   siniestroId: number,
   accessToken?: string,
+  despuesDe = 0,
+  cantidad = 20,
 ): Promise<LineaTiempoSiniestro> {
+  const query = new URLSearchParams({
+    despuesDe: String(despuesDe),
+    cantidad: String(cantidad),
+  });
   return request<LineaTiempoSiniestro>(
-    `/siniestros/${siniestroId}/linea-tiempo?cantidad=20`,
+    `/siniestros/${siniestroId}/linea-tiempo?${query}`,
     {},
     accessToken,
   );
