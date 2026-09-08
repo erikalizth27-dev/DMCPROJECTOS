@@ -13,6 +13,8 @@ class Settings:
     database_schema: str = "siniestro_facil"
     identity_issuer: str | None = None
     identity_audience: str | None = None
+    evidence_bucket: str = "project-77c17016-86bc-4fc4-a97-siniestro-evidencias"
+    evidence_upload_expiration_minutes: int = 15
     log_level: str = "INFO"
 
     @classmethod
@@ -25,6 +27,13 @@ class Settings:
             database_schema=os.getenv("DATABASE_SCHEMA", "siniestro_facil"),
             identity_issuer=os.getenv("IDENTITY_ISSUER"),
             identity_audience=os.getenv("IDENTITY_AUDIENCE"),
+            evidence_bucket=os.getenv(
+                "EVIDENCE_BUCKET",
+                "project-77c17016-86bc-4fc4-a97-siniestro-evidencias",
+            ),
+            evidence_upload_expiration_minutes=int(
+                os.getenv("EVIDENCE_UPLOAD_EXPIRATION_MINUTES", "15")
+            ),
             log_level=os.getenv("LOG_LEVEL", "INFO").upper(),
         )
 
