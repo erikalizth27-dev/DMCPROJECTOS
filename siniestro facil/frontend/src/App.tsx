@@ -43,6 +43,89 @@ function Icon({ name }: { name: "shield" | "file" | "search" | "arrow" }) {
   return <svg viewBox="0 0 24 24" aria-hidden="true">{paths[name]}</svg>;
 }
 
+interface Guidance {
+  title: string;
+  description: string;
+}
+
+const guidanceByState: Partial<Record<Siniestro["estadoActual"], Guidance>> = {
+  reportado: {
+    title: "Validaremos la cobertura",
+    description: "Mantén disponible el medio de contacto registrado por si necesitamos confirmar información.",
+  },
+  validando_cobertura: {
+    title: "La cobertura está en revisión",
+    description: "Puedes seguir consultando este caso; aquí aparecerá cualquier cambio o solicitud.",
+  },
+  asistencia_coordinada: {
+    title: "Sigue las indicaciones de la asistencia",
+    description: "La respuesta del proveedor y los cambios del caso aparecerán en el historial.",
+  },
+  evidencia_pendiente: {
+    title: "Prepara la evidencia solicitada",
+    description: "Conserva los archivos originales de las fotografías y documentos para adjuntarlos cuando se soliciten.",
+  },
+  en_evaluacion: {
+    title: "El caso está siendo evaluado",
+    description: "Consulta el historial para conocer cuándo se programe la inspección o se registre una decisión.",
+  },
+  inspeccion_programada: {
+    title: "Revisa la coordinación de la inspección",
+    description: "Mantén disponible el medio de contacto registrado para recibir las indicaciones correspondientes.",
+  },
+  presupuesto_recibido: {
+    title: "El presupuesto está en revisión",
+    description: "La aprobación, observación o rechazo se mostrará en el estado y en el historial.",
+  },
+  autorizado: {
+    title: "La atención fue autorizada",
+    description: "Consulta el historial para conocer el avance de la reparación o indemnización.",
+  },
+  observado: {
+    title: "El caso requiere información adicional",
+    description: "Revisa el historial y mantén disponible tu medio de contacto para atender la observación.",
+  },
+  rechazado: {
+    title: "Revisa la decisión registrada",
+    description: "Consulta el historial del caso para ver la información que puede mostrarse a tu perfil.",
+  },
+  en_reparacion: {
+    title: "La reparación está en curso",
+    description: "Los cambios informados por el proceso aparecerán en el historial.",
+  },
+  listo_para_entrega: {
+    title: "El vehículo está listo para entrega",
+    description: "Sigue las indicaciones registradas para completar la entrega.",
+  },
+  indemnizado: {
+    title: "La indemnización fue registrada",
+    description: "Consulta el historial para revisar el avance final del caso.",
+  },
+  cerrado: {
+    title: "El caso está cerrado",
+    description: "El historial permanece disponible para consultar los movimientos visibles.",
+  },
+};
+
+function NextStepCard({ claim }: { claim: Siniestro }) {
+  const fallback = claim.siguientePaso?.replaceAll("_", " ") ?? "Consulta el historial del caso";
+  const guidance = guidanceByState[claim.estadoActual] ?? {
+    title: fallback,
+    description: "Consulta el historial para conocer las actualizaciones disponibles.",
+  };
+
+  return (
+    <section className="next-step-card" aria-labelledby="next-step-title">
+      <span aria-hidden="true">→</span>
+      <div>
+        <p>Qué hacer ahora</p>
+        <h3 id="next-step-title">{guidance.title}</h3>
+        <p>{guidance.description}</p>
+      </div>
+    </section>
+  );
+}
+
 function App() {
   const { session, signOut } = useAuth();
   const [view, setView] = useState<View>("reportar");
@@ -233,8 +316,9 @@ function App() {
                   <dl>
                     <div><dt>Evento</dt><dd>{result.tipoEvento}</dd></div>
                     <div><dt>Fecha</dt><dd>{new Intl.DateTimeFormat("es", { dateStyle: "medium", timeStyle: "short" }).format(new Date(result.fechaEvento))}</dd></div>
-                    {result.siguientePaso && <div><dt>Siguiente paso</dt><dd>{result.siguientePaso.replaceAll("_", " ")}</dd></div>}
+                    {result.siguientePaso && <div><dt>Siguiente paso</dt><dd>{(guidanceByState[result.estadoActual]?.title ?? result.siguientePaso.replaceAll("_", " "))}</dd></div>}
                   </dl>
+                  <NextStepCard claim={result} />
                   <section className="timeline" aria-labelledby="timeline-title">
                     <div className="timeline-heading">
                       <h3 id="timeline-title">Historial del caso</h3>
