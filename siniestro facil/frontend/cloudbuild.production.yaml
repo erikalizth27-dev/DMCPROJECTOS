@@ -2,13 +2,14 @@ substitutions:
   _REGION: us-central1
   _REPOSITORY: siniestro-facil
   _SERVICE: siniestro-facil-frontend-prod
+  _FRONTEND_SERVICE_ACCOUNT: siniestro-frontend-prod@${PROJECT_ID}.iam.gserviceaccount.com
   _BFF_URL: https://siniestro-facil-bff-prod-6oegsjqmba-uc.a.run.app
   _IDENTITY_PLATFORM_API_KEY: REEMPLAZAR
 
 steps:
   - id: validate
     name: node:22.20.0
-    dir: siniestro facil/frontend
+    dir: frontend
     entrypoint: bash
     args:
       - -ceu
@@ -29,14 +30,14 @@ steps:
       - --build-arg
       - PUBLIC_IDENTITY_CONFIG=${_IDENTITY_PLATFORM_API_KEY}
       - --tag
-      - ${_REGION}-docker.pkg.dev/${PROJECT_ID}/${_REPOSITORY}/frontend:${SHORT_SHA}
-      - siniestro facil/frontend
+      - ${_REGION}-docker.pkg.dev/${PROJECT_ID}/${_REPOSITORY}/frontend:${_IMAGE_TAG}
+      - frontend
 
   - id: push
     name: gcr.io/cloud-builders/docker
     args:
       - push
-      - ${_REGION}-docker.pkg.dev/${PROJECT_ID}/${_REPOSITORY}/frontend:${SHORT_SHA}
+      - ${_REGION}-docker.pkg.dev/${PROJECT_ID}/${_REPOSITORY}/frontend:${_IMAGE_TAG}
 
   - id: deploy
     name: gcr.io/google.com/cloudsdktool/cloud-sdk:slim
@@ -48,7 +49,8 @@ steps:
       - --project=${PROJECT_ID}
       - --region=${_REGION}
       - --platform=managed
-      - --image=${_REGION}-docker.pkg.dev/${PROJECT_ID}/${_REPOSITORY}/frontend:${SHORT_SHA}
+      - --image=${_REGION}-docker.pkg.dev/${PROJECT_ID}/${_REPOSITORY}/frontend:${_IMAGE_TAG}
+      - --service-account=${_FRONTEND_SERVICE_ACCOUNT}
       - --allow-unauthenticated
       - --no-cpu-boost
       - --min=0
@@ -58,7 +60,7 @@ steps:
       - --concurrency=80
 
 images:
-  - ${_REGION}-docker.pkg.dev/${PROJECT_ID}/${_REPOSITORY}/frontend:${SHORT_SHA}
+  - ${_REGION}-docker.pkg.dev/${PROJECT_ID}/${_REPOSITORY}/frontend:${_IMAGE_TAG}
 
 options:
   logging: CLOUD_LOGGING_ONLY
