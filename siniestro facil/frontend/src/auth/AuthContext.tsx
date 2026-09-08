@@ -1,5 +1,5 @@
-import { createContext, ReactNode, useContext, useMemo, useState } from "react";
-import { AuthSession, signInWithEmail } from "./identityPlatform";
+import { createContext, ReactNode, useContext, useEffect, useMemo, useState } from "react";
+import { AuthSession, refreshAuthSession, signInWithEmail } from "./identityPlatform";
 
 interface AuthContextValue {
   session: AuthSession | null;
@@ -11,6 +11,35 @@ const AuthContext = createContext<AuthContextValue | null>(null);
 
 export function AuthProvider({ children }: { children: ReactNode }) {
   const [session, setSession] = useState<AuthSession | null>(null);
+
+  useEffect(() => {
+    if (!session) {
+      return;
+    }
+
+    let cancelled = false;
+    const refreshDelay = Math.max(
+      session.expiresAt - Date.now() - 5 * 60 * 1000,
+      0,
+    );
+    const timeoutId = window.setTimeout(async () => {
+      try {
+        const refreshed = await refreshAuthSession(session);
+        if (!cancelled) {
+          setSession(refreshed);
+        }
+      } catch {
+        if (!cancelled) {
+          setSession(null);
+        }
+      }
+    }, refreshDelay);
+
+    return () => {
+      cancelled = true;
+      window.clearTimeout(timeoutId);
+    };
+  }, [session]);
 
   const value = useMemo<AuthContextValue>(
     () => ({
