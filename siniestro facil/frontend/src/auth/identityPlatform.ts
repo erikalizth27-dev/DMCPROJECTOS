@@ -1,3 +1,10 @@
+interface RefreshTokenResponse {
+  expires_in: string;
+  refresh_token: string;
+  id_token: string;
+  user_id: string;
+}
+
 interface IdentityPlatformResponse {
   idToken: string;
   refreshToken: string;
@@ -62,6 +69,44 @@ export async function signInWithEmail(
     user: {
       id: body.localId,
       email: body.email,
+    },
+  };
+}
+
+export async function refreshAuthSession(
+  session: AuthSession,
+): Promise<AuthSession> {
+  if (!apiKey) {
+    throw new AuthenticationError("El acceso todavía no está configurado.");
+  }
+
+  const body = new URLSearchParams({
+    grant_type: "refresh_token",
+    refresh_token: session.refreshToken,
+  });
+  const response = await fetch(
+    `https://securetoken.googleapis.com/v1/token?key=${encodeURIComponent(apiKey)}`,
+    {
+      method: "POST",
+      headers: { "Content-Type": "application/x-www-form-urlencoded" },
+      body,
+    },
+  );
+
+  if (!response.ok) {
+    throw new AuthenticationError(
+      "Tu sesión finalizó. Ingresa nuevamente para continuar.",
+    );
+  }
+
+  const refreshed = (await response.json()) as RefreshTokenResponse;
+  return {
+    idToken: refreshed.id_token,
+    refreshToken: refreshed.refresh_token,
+    expiresAt: Date.now() + Number(refreshed.expires_in) * 1000,
+    user: {
+      id: refreshed.user_id,
+      email: session.user.email,
     },
   };
 }
