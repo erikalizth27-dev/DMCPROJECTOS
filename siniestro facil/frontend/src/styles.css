@@ -267,3 +267,22 @@ footer { min-height: 4rem; display: flex; justify-content: space-between; align-
 }
 .next-step-card h3 { margin: .2rem 0 .25rem; color: var(--navy); font-size: 1rem; }
 .next-step-card div > p:last-child { color: #416268; font-size: .9rem; }
+
+.evidence-panel {
+  margin-top: 1.35rem;
+  padding: 1rem;
+  background: #fff;
+  border: 1px solid #cfe5e1;
+  border-radius: .8rem;
+}
+.evidence-panel h3 { margin: 0; color: var(--navy); font-size: 1rem; }
+.evidence-panel > div > p { margin: .35rem 0 1rem; color: var(--muted); font-size: .9rem; line-height: 1.5; }
+.evidence-panel form { display: grid; gap: .8rem; }
+.evidence-panel input[type="file"] { padding: .6rem; background: #f8fbfb; }
+.evidence-panel .notice { margin: 0; }
+.evidence-panel .primary-action { width: fit-content; }
+.evidence-file { margin: 0; color: #416268; font-size: .84rem; overflow-wrap: anywhere; }
+
+@media (max-width: 560px) {
+  .evidence-panel .primary-action { width: 100%; }
+}
