@@ -38,3 +38,19 @@ export interface ApiError {
   correlationId: string;
   detalles?: string[];
 }
+
+export interface EventoLineaTiempo {
+  id: number;
+  tipoEvento: string;
+  actorId?: string | null;
+  fecha: string;
+  detalle: Record<string, unknown>;
+  nivelDetalle: string;
+}
+
+export interface LineaTiempoSiniestro {
+  siniestroId: number;
+  nivelDetalle: string;
+  eventos: EventoLineaTiempo[];
+  siguienteCursor?: number | null;
+}
