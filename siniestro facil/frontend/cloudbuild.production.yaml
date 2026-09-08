@@ -2,7 +2,7 @@ substitutions:
   _REGION: us-central1
   _REPOSITORY: siniestro-facil
   _SERVICE: siniestro-facil-frontend-prod
-  _FRONTEND_SERVICE_ACCOUNT: siniestro-frontend-prod@${PROJECT_ID}.iam.gserviceaccount.com
+  _FRONTEND_SERVICE_ACCOUNT: siniestro-frontend-prod@project-77c17016-86bc-4fc4-a97.iam.gserviceaccount.com
   _BFF_URL: https://siniestro-facil-bff-prod-6oegsjqmba-uc.a.run.app
   _IDENTITY_PLATFORM_API_KEY: REEMPLAZAR
 
