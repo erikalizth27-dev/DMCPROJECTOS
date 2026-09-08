@@ -219,3 +219,18 @@ footer { min-height: 4rem; display: flex; justify-content: space-between; align-
 .timeline li strong { color: var(--navy); font-size: .92rem; text-transform: capitalize; }
 .timeline time, .timeline-empty { color: var(--muted); font-size: .84rem; }
 .timeline-empty { margin: 1rem 0 0; }
+
+.timeline-error { margin: .5rem 0 0; color: var(--danger); font-size: .9rem; }
+.timeline-more {
+  width: 100%;
+  min-height: 2.75rem;
+  margin-top: .5rem;
+  color: var(--teal-dark);
+  background: transparent;
+  border: 1px solid #abd4ce;
+  border-radius: .65rem;
+  font-weight: 800;
+}
+.timeline-more:hover { background: var(--mint); }
+.timeline-more:focus-visible { outline: 3px solid rgba(8, 127, 120, .2); outline-offset: 2px; }
+.timeline-more:disabled { opacity: .6; cursor: wait; }
