@@ -1,0 +1,10 @@
+[
+  {
+    "origin": [
+      "https://siniestro-facil-frontend-prod-6oegsjqmba-uc.a.run.app"
+    ],
+    "method": ["PUT"],
+    "responseHeader": ["Content-Type", "x-goog-hash"],
+    "maxAgeSeconds": 900
+  }
+]

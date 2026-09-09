@@ -1,4 +1,12 @@
-import type { ApiError, CrearSiniestro, LineaTiempoSiniestro, Siniestro } from "../types";
+import type {
+  ApiError,
+  CargaEvidenciaAutorizada,
+  CrearSiniestro,
+  EvidenciaRegistrada,
+  LineaTiempoSiniestro,
+  Siniestro,
+  SolicitudCargaEvidencia,
+} from "../types";
 
 const baseUrl = (import.meta.env.VITE_API_BASE_URL as string | undefined)?.replace(/\/$/, "");
 
@@ -86,6 +94,54 @@ export function obtenerLineaTiempo(
   return request<LineaTiempoSiniestro>(
     `/siniestros/${siniestroId}/linea-tiempo?${query}`,
     {},
+    accessToken,
+  );
+}
+
+export function solicitarCargaEvidencia(
+  siniestroId: number,
+  payload: SolicitudCargaEvidencia,
+  accessToken: string,
+): Promise<CargaEvidenciaAutorizada> {
+  return request<CargaEvidenciaAutorizada>(
+    `/siniestros/${siniestroId}/evidencias/url-carga`,
+    { method: "POST", body: JSON.stringify(payload) },
+    accessToken,
+  );
+}
+
+export async function cargarArchivoEvidencia(
+  autorizacion: CargaEvidenciaAutorizada,
+  archivo: File,
+): Promise<void> {
+  const response = await fetch(autorizacion.urlCarga, {
+    method: "PUT",
+    headers: { "Content-Type": autorizacion.tipoContenido },
+    body: archivo,
+  });
+  if (!response.ok) {
+    throw new ApiClientError("No fue posible cargar el archivo.", response.status);
+  }
+}
+
+export function registrarEvidencia(
+  siniestroId: number,
+  payload: {
+    tipoEvidencia: string;
+    contenidoOriginalUri: string;
+    hash: string;
+    fuente: string;
+    metadatos: Record<string, unknown>;
+  },
+  accessToken: string,
+): Promise<EvidenciaRegistrada> {
+  return request<EvidenciaRegistrada>(
+    `/siniestros/${siniestroId}/evidencias`,
+    {
+      method: "POST",
+      headers: { "Idempotency-Key": crypto.randomUUID() },
+      body: JSON.stringify(payload),
+    },
     accessToken,
   );
 }

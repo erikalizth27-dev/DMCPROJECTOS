@@ -54,3 +54,31 @@ export interface LineaTiempoSiniestro {
   eventos: EventoLineaTiempo[];
   siguienteCursor?: number | null;
 }
+
+export type TipoContenidoEvidencia =
+  | "image/jpeg"
+  | "image/png"
+  | "application/pdf";
+
+export interface SolicitudCargaEvidencia {
+  nombreArchivo: string;
+  tipoContenido: TipoContenidoEvidencia;
+  tamanoBytes: number;
+}
+
+export interface CargaEvidenciaAutorizada {
+  urlCarga: string;
+  contenidoOriginalUri: string;
+  expiraEn: string;
+  tipoContenido: TipoContenidoEvidencia;
+}
+
+export interface EvidenciaRegistrada {
+  id: number;
+  siniestroId: number;
+  tipoEvidencia: string;
+  contenidoOriginalUri: string;
+  hash: string;
+  fechaRecepcion: string;
+  versionDerivadaDe?: number | null;
+}

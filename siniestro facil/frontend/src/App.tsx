@@ -1,6 +1,14 @@
 import { FormEvent, useState } from "react";
-import { ApiClientError, crearSiniestro, obtenerLineaTiempo, obtenerSiniestro } from "./api/client";
-import type { CrearSiniestro, LineaTiempoSiniestro, Siniestro } from "./types";
+import {
+  ApiClientError,
+  cargarArchivoEvidencia,
+  crearSiniestro,
+  obtenerLineaTiempo,
+  obtenerSiniestro,
+  registrarEvidencia,
+  solicitarCargaEvidencia,
+} from "./api/client";
+import type { CrearSiniestro, LineaTiempoSiniestro, Siniestro, TipoContenidoEvidencia } from "./types";
 import { useAuth } from "./auth/AuthContext";
 import { LoginScreen } from "./auth/LoginScreen";
 
@@ -137,6 +145,9 @@ function App() {
   const [busy, setBusy] = useState(false);
   const [timelineBusy, setTimelineBusy] = useState(false);
   const [timelineError, setTimelineError] = useState<string | null>(null);
+  const [evidenceFile, setEvidenceFile] = useState<File | null>(null);
+  const [evidenceBusy, setEvidenceBusy] = useState(false);
+  const [evidenceNotice, setEvidenceNotice] = useState<{ tone: "error" | "success"; text: string } | null>(null);
 
   if (!session) {
     return <LoginScreen />;
@@ -239,6 +250,74 @@ function App() {
     }
   }
 
+  async function submitEvidence(event: FormEvent) {
+    event.preventDefault();
+    setEvidenceNotice(null);
+    if (!result || !evidenceFile) {
+      setEvidenceNotice({ tone: "error", text: "Selecciona un archivo para adjuntar." });
+      return;
+    }
+
+    const allowedTypes = new Set<TipoContenidoEvidencia>([
+      "image/jpeg",
+      "image/png",
+      "application/pdf",
+    ]);
+    if (!allowedTypes.has(evidenceFile.type as TipoContenidoEvidencia)) {
+      setEvidenceNotice({ tone: "error", text: "Selecciona un archivo JPG, PNG o PDF." });
+      return;
+    }
+    if (evidenceFile.size > 10 * 1024 * 1024) {
+      setEvidenceNotice({ tone: "error", text: "El archivo no puede superar 10 MB." });
+      return;
+    }
+
+    setEvidenceBusy(true);
+    try {
+      const tipoContenido = evidenceFile.type as TipoContenidoEvidencia;
+      const autorizacion = await solicitarCargaEvidencia(
+        result.id,
+        {
+          nombreArchivo: evidenceFile.name,
+          tipoContenido,
+          tamanoBytes: evidenceFile.size,
+        },
+        accessToken,
+      );
+      await cargarArchivoEvidencia(autorizacion, evidenceFile);
+      const digest = await crypto.subtle.digest("SHA-256", await evidenceFile.arrayBuffer());
+      const hash = [...new Uint8Array(digest)]
+        .map((byte) => byte.toString(16).padStart(2, "0"))
+        .join("");
+      await registrarEvidencia(
+        result.id,
+        {
+          tipoEvidencia: tipoContenido.startsWith("image/") ? "fotografia" : "documento",
+          contenidoOriginalUri: autorizacion.contenidoOriginalUri,
+          hash,
+          fuente: "frontend_web",
+          metadatos: {
+            nombreArchivo: evidenceFile.name,
+            tipoContenido,
+            tamanoBytes: evidenceFile.size,
+          },
+        },
+        accessToken,
+      );
+      setEvidenceFile(null);
+      setEvidenceNotice({ tone: "success", text: "Evidencia adjuntada correctamente." });
+    } catch (error) {
+      setEvidenceNotice({
+        tone: "error",
+        text: error instanceof ApiClientError
+          ? error.message
+          : "No fue posible adjuntar la evidencia.",
+      });
+    } finally {
+      setEvidenceBusy(false);
+    }
+  }
+
   return (
     <div className="app-shell">
       <header className="topbar">
@@ -319,6 +398,38 @@ function App() {
                     {result.siguientePaso && <div><dt>Siguiente paso</dt><dd>{(guidanceByState[result.estadoActual]?.title ?? result.siguientePaso.replaceAll("_", " "))}</dd></div>}
                   </dl>
                   <NextStepCard claim={result} />
+                  <section className="evidence-panel" aria-labelledby="evidence-title">
+                    <div>
+                      <h3 id="evidence-title">Adjuntar evidencia</h3>
+                      <p>Agrega fotografías o documentos originales. Formatos JPG, PNG o PDF; máximo 10 MB.</p>
+                    </div>
+                    <form onSubmit={submitEvidence}>
+                      <label>
+                        Archivo
+                        <input
+                          type="file"
+                          accept=".jpg,.jpeg,.png,.pdf,image/jpeg,image/png,application/pdf"
+                          onChange={(event) => {
+                            setEvidenceFile(event.target.files?.[0] ?? null);
+                            setEvidenceNotice(null);
+                          }}
+                        />
+                      </label>
+                      {evidenceFile && (
+                        <p className="evidence-file">
+                          {evidenceFile.name} · {(evidenceFile.size / 1024 / 1024).toFixed(2)} MB
+                        </p>
+                      )}
+                      {evidenceNotice && (
+                        <div className={`notice ${evidenceNotice.tone}`} role="status">
+                          {evidenceNotice.text}
+                        </div>
+                      )}
+                      <button className="primary-action" disabled={evidenceBusy || !evidenceFile}>
+                        {evidenceBusy ? "Adjuntando…" : "Adjuntar evidencia"}
+                      </button>
+                    </form>
+                  </section>
                   <section className="timeline" aria-labelledby="timeline-title">
                     <div className="timeline-heading">
                       <h3 id="timeline-title">Historial del caso</h3>

@@ -11,9 +11,11 @@ from siniestro_facil.api.errors import BusinessError
 from siniestro_facil.api.schemas import (
     CambiarEstadoRequest,
     CambiarEstadoResponse,
+    CargaEvidenciaResponse,
     EvidenciaResponse,
     CrearSiniestroRequest,
     RegistrarEvidenciaRequest,
+    SolicitarCargaEvidenciaRequest,
     SiniestroResponse,
     VerificarCoberturaRequest,
     VerificarCoberturaResponse,
@@ -47,6 +49,10 @@ from siniestro_facil.config import Settings
 from siniestro_facil.db import create_database_engine
 from siniestro_facil.domain.enums import EstadoSiniestro
 from siniestro_facil.domain.identity import AuthenticatedPrincipal
+from siniestro_facil.infrastructure.evidence_upload import (
+    EvidenceUploadError,
+    EvidenceUploadService,
+)
 from siniestro_facil.infrastructure.policy_adapter import (
     InMemoryPolicyAdapter,
     PolicySnapshot,
@@ -209,6 +215,55 @@ def create_claim(
         fechaEvento=result.fecha_evento,
         tipoEvento=result.tipo_evento,
         siguientePaso=result.siguiente_paso,
+    )
+
+
+@lru_cache(maxsize=1)
+def get_evidence_upload_service() -> EvidenceUploadService:
+    settings = Settings.from_environment()
+    return EvidenceUploadService(
+        settings.evidence_bucket,
+        settings.evidence_upload_expiration_minutes,
+    )
+
+
+@router.post(
+    "/{siniestro_id}/evidencias/url-carga",
+    response_model=CargaEvidenciaResponse,
+)
+def authorize_evidence_upload(
+    siniestro_id: int,
+    request: SolicitarCargaEvidenciaRequest,
+    principal: AuthenticatedPrincipal = Depends(get_authenticated_principal),
+    claim_service: GetClaimViewService = Depends(get_claim_view_service),
+    upload_service: EvidenceUploadService = Depends(
+        get_evidence_upload_service
+    ),
+) -> CargaEvidenciaResponse:
+    try:
+        claim_service.execute(siniestro_id, principal)
+    except ClaimNotVisible as exc:
+        raise BusinessError(
+            "CLAIM-NOT-FOUND",
+            "Siniestro no encontrado",
+            404,
+        ) from exc
+
+    try:
+        result = upload_service.create_signed_upload(
+            siniestro_id,
+            request.nombre_archivo,
+            request.tipo_contenido,
+            request.tamano_bytes,
+        )
+    except EvidenceUploadError as exc:
+        raise BusinessError(exc.code, exc.message, exc.status_code) from exc
+
+    return CargaEvidenciaResponse(
+        urlCarga=result.upload_url,
+        contenidoOriginalUri=result.original_uri,
+        expiraEn=result.expires_at,
+        tipoContenido=result.content_type,
     )
 
 
