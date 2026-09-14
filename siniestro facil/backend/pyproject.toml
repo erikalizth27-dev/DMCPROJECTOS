@@ -23,6 +23,7 @@ dependencies = [
 gcp = [
   "google-cloud-pubsub>=2.27,<3",
   "google-cloud-tasks>=2.18,<3",
+  "google-cloud-storage>=3.1,<4",
 ]
 test = [
   "httpx>=0.28,<1",
