@@ -12,6 +12,11 @@ gcloud storage buckets add-iam-policy-binding "gs://${BUCKET}" \
   --member="serviceAccount:${BACKEND_SA}" \
   --role="roles/storage.objectCreator"
 
+gcloud storage buckets add-iam-policy-binding "gs://${BUCKET}" \
+  --project="${PROJECT_ID}" \
+  --member="serviceAccount:${BACKEND_SA}" \
+  --role="roles/storage.objectViewer"
+
 gcloud iam service-accounts add-iam-policy-binding "${BACKEND_SA}" \
   --project="${PROJECT_ID}" \
   --member="serviceAccount:${BACKEND_SA}" \

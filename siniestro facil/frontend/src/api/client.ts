@@ -114,10 +114,15 @@ export async function cargarArchivoEvidencia(
   autorizacion: CargaEvidenciaAutorizada,
   archivo: File,
 ): Promise<void> {
+  const formData = new FormData();
+  for (const [nombre, valor] of Object.entries(autorizacion.camposCarga)) {
+    formData.append(nombre, valor);
+  }
+  formData.append("file", archivo);
+
   const response = await fetch(autorizacion.urlCarga, {
-    method: "PUT",
-    headers: { "Content-Type": autorizacion.tipoContenido },
-    body: archivo,
+    method: "POST",
+    body: formData,
   });
   if (!response.ok) {
     throw new ApiClientError("No fue posible cargar el archivo.", response.status);

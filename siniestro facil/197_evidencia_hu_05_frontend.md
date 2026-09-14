@@ -5,9 +5,9 @@
 Se incorporó el flujo autenticado para adjuntar fotografías y documentos a un siniestro visible:
 
 1. React valida formato y límite de 10 MiB.
-2. FastAPI valida nuevamente y emite una URL firmada V4.
-3. React carga el original directamente al bucket privado.
-4. React calcula SHA-256 y registra la evidencia mediante el endpoint existente.
+2. FastAPI valida nuevamente y emite una política firmada V4 POST con límite de tamaño.
+3. React envía el formulario firmado y carga el original directamente al bucket privado.
+4. React calcula SHA-256; el backend verifica en GCS la URI, pertenencia, tamaño, MIME y hash antes de registrar la evidencia.
 5. El BFF conserva la autenticación de usuario y el aislamiento del backend privado.
 
 ## Archivos principales

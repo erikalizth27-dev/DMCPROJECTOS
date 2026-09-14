@@ -261,6 +261,7 @@ def authorize_evidence_upload(
 
     return CargaEvidenciaResponse(
         urlCarga=result.upload_url,
+        camposCarga=result.upload_fields,
         contenidoOriginalUri=result.original_uri,
         expiraEn=result.expires_at,
         tipoContenido=result.content_type,
@@ -277,10 +278,36 @@ def register_claim_evidence(
     request: RegistrarEvidenciaRequest,
     idempotency_key: str = Header(alias="Idempotency-Key"),
     principal: AuthenticatedPrincipal = Depends(get_authenticated_principal),
+    claim_service: GetClaimViewService = Depends(get_claim_view_service),
+    upload_service: EvidenceUploadService = Depends(
+        get_evidence_upload_service
+    ),
     service: RegisterEvidenceService = Depends(
         get_register_evidence_service
     ),
 ) -> EvidenciaResponse:
+    try:
+        claim_service.execute(siniestro_id, principal)
+    except ClaimNotVisible as exc:
+        raise BusinessError(
+            "CLAIM-NOT-FOUND",
+            "Siniestro no encontrado",
+            404,
+        ) from exc
+
+    try:
+        upload_service.validate_uploaded_object(
+            siniestro_id,
+            request.contenido_original_uri,
+            request.hash,
+        )
+    except EvidenceUploadError as exc:
+        raise BusinessError(
+            exc.code,
+            exc.message,
+            exc.status_code,
+        ) from exc
+
     command = RegisterEvidenceCommand(
         claim_id=siniestro_id,
         evidence_type=request.tipo_evidencia,

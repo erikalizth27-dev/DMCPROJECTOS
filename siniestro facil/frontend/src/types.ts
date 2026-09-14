@@ -68,6 +68,7 @@ export interface SolicitudCargaEvidencia {
 
 export interface CargaEvidenciaAutorizada {
   urlCarga: string;
+  camposCarga: Record<string, string>;
   contenidoOriginalUri: string;
   expiraEn: string;
   tipoContenido: TipoContenidoEvidencia;

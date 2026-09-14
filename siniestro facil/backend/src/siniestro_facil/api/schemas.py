@@ -89,6 +89,7 @@ class SolicitarCargaEvidenciaRequest(ApiModel):
 
 class CargaEvidenciaResponse(ApiModel):
     url_carga: str = Field(alias="urlCarga")
+    campos_carga: dict[str, str] = Field(alias="camposCarga")
     contenido_original_uri: str = Field(alias="contenidoOriginalUri")
     expira_en: datetime = Field(alias="expiraEn")
     tipo_contenido: str = Field(alias="tipoContenido")

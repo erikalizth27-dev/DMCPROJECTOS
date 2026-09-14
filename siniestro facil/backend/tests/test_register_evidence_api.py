@@ -4,6 +4,8 @@ from fastapi.testclient import TestClient
 
 from siniestro_facil.api.routes.claims import (
     get_authenticated_principal,
+    get_claim_view_service,
+    get_evidence_upload_service,
     get_register_evidence_service,
 )
 from siniestro_facil.application.register_evidence import (
@@ -64,9 +66,29 @@ def principal() -> AuthenticatedPrincipal:
     )
 
 
+class VisibleClaimService:
+    def execute(self, siniestro_id, authenticated_principal):
+        del siniestro_id, authenticated_principal
+        return None
+
+
+class UploadedObjectValidator:
+    def validate_uploaded_object(
+        self,
+        siniestro_id,
+        original_uri,
+        sha256_hex,
+    ):
+        del siniestro_id, original_uri, sha256_hex
+
+
 def client() -> TestClient:
     app = create_app()
     app.dependency_overrides[get_authenticated_principal] = principal
+    app.dependency_overrides[get_claim_view_service] = VisibleClaimService
+    app.dependency_overrides[get_evidence_upload_service] = (
+        UploadedObjectValidator
+    )
     app.dependency_overrides[get_register_evidence_service] = (
         lambda: RegisterEvidenceService(ApiEvidenceRepository())
     )
