@@ -1,7 +1,8 @@
 [
   {
     "origin": [
-      "https://siniestro-facil-frontend-prod-6oegsjqmba-uc.a.run.app"
+      "https://siniestro-facil-frontend-prod-6oegsjqmba-uc.a.run.app",
+      "https://siniestro-facil-frontend-prod-112296734690.us-central1.run.app"
     ],
     "method": ["POST"],
     "responseHeader": ["Content-Type", "x-goog-hash"],
