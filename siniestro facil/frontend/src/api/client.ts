@@ -64,7 +64,7 @@ export function crearSiniestro(
   accessToken?: string,
 ): Promise<Siniestro> {
   return request<Siniestro>(
-    "/siniestros",
+    "/api/v1/siniestros",
     {
       method: "POST",
       headers: { "Idempotency-Key": crypto.randomUUID() },
@@ -78,7 +78,7 @@ export function obtenerSiniestro(
   siniestroId: number,
   accessToken?: string,
 ): Promise<Siniestro> {
-  return request<Siniestro>(`/siniestros/${siniestroId}`, {}, accessToken);
+  return request<Siniestro>(`/api/v1/siniestros/${siniestroId}`, {}, accessToken);
 }
 
 export function obtenerLineaTiempo(
@@ -92,7 +92,7 @@ export function obtenerLineaTiempo(
     cantidad: String(cantidad),
   });
   return request<LineaTiempoSiniestro>(
-    `/siniestros/${siniestroId}/linea-tiempo?${query}`,
+    `/api/v1/siniestros/${siniestroId}/linea-tiempo?${query}`,
     {},
     accessToken,
   );
@@ -104,7 +104,7 @@ export function solicitarCargaEvidencia(
   accessToken: string,
 ): Promise<CargaEvidenciaAutorizada> {
   return request<CargaEvidenciaAutorizada>(
-    `/siniestros/${siniestroId}/evidencias/url-carga`,
+    `/api/v1/siniestros/${siniestroId}/evidencias/url-carga`,
     { method: "POST", body: JSON.stringify(payload) },
     accessToken,
   );
@@ -141,7 +141,7 @@ export function registrarEvidencia(
   accessToken: string,
 ): Promise<EvidenciaRegistrada> {
   return request<EvidenciaRegistrada>(
-    `/siniestros/${siniestroId}/evidencias`,
+    `/api/v1/siniestros/${siniestroId}/evidencias`,
     {
       method: "POST",
       headers: { "Idempotency-Key": crypto.randomUUID() },
