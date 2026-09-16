@@ -306,6 +306,20 @@ function App() {
       );
       setEvidenceFile(null);
       setEvidenceNotice({ tone: "success", text: "Evidencia adjuntada correctamente." });
+      setTimelineError(null);
+      try {
+        const refreshedTimeline = await obtenerLineaTiempo(
+          result.id,
+          accessToken,
+        );
+        setTimeline(refreshedTimeline);
+      } catch (error) {
+        setTimelineError(
+          error instanceof ApiClientError
+            ? error.message
+            : "La evidencia fue registrada, pero no fue posible actualizar el historial.",
+        );
+      }
     } catch (error) {
       setEvidenceNotice({
         tone: "error",
