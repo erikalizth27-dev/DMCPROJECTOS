@@ -140,8 +140,12 @@ BEGIN
         RETURNING id_proveedor INTO v_grua;
 
         INSERT INTO asistencia (
-            id_siniestro, id_proveedor, estado_solicitud, numero_intento
-        ) VALUES (v_siniestro, v_grua, 'aceptada', 1);
+            id_siniestro, id_proveedor, tipo_asistencia, motivo,
+            estado_solicitud, numero_intento
+        ) VALUES (
+            v_siniestro, v_grua, 'grua',
+            'Asistencia sintetica de prueba', 'aceptada', 1
+        );
 
         INSERT INTO inspeccion (id_siniestro, fecha_programada)
         VALUES (
