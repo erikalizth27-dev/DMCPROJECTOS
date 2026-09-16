@@ -15,6 +15,10 @@ export function isAllowedApiPath(path) {
   return path === "/api/v1" || path.startsWith("/api/v1/");
 }
 
+export function isAllowedOrigin(origin, allowedOrigins) {
+  return typeof origin === "string" && allowedOrigins.includes(origin);
+}
+
 export function selectRequestHeaders(headers) {
   const selected = {};
   for (const name of FORWARDED_REQUEST_HEADERS) {
@@ -35,7 +39,8 @@ export function createApp(config, dependencies = {}) {
 
   app.use((req, res, next) => {
     const origin = req.get("origin");
-    if (origin === config.frontendOrigin) {
+    const originAllowed = isAllowedOrigin(origin, config.frontendOrigins);
+    if (originAllowed) {
       res.set({
         "Access-Control-Allow-Origin": origin,
         "Access-Control-Allow-Credentials": "true",
@@ -46,7 +51,7 @@ export function createApp(config, dependencies = {}) {
       });
     }
     if (req.method === "OPTIONS") {
-      return origin === config.frontendOrigin
+      return originAllowed
         ? res.sendStatus(204)
         : res.status(403).json({ detail: "Origen no autorizado" });
     }
