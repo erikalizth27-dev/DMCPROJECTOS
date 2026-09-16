@@ -76,12 +76,9 @@ class PostgreSQLEvidenceRepository:
                 select(
                     exists()
                     .select_from(Siniestro)
-                    .join(
-                        Poliza,
-                        Poliza.id_poliza == Siniestro.id_poliza,
-                    )
                     .where(
                         Siniestro.id_siniestro == claim_id,
+                        Poliza.id_poliza == Siniestro.id_poliza,
                         Poliza.id_asegurado == identity.id_asegurado,
                     )
                 )
