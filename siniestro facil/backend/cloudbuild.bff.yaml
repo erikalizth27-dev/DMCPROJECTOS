@@ -4,7 +4,7 @@ substitutions:
   _BFF_SERVICE: siniestro-facil-bff-prod
   _BFF_SERVICE_ACCOUNT: siniestro-bff-prod@${PROJECT_ID}.iam.gserviceaccount.com
   _BACKEND_URL: https://siniestro-facil-backend-prod-112296734690.us-central1.run.app
-  _FRONTEND_ORIGIN: https://REEMPLAZAR_FRONTEND
+  _FRONTEND_ORIGINS: https://siniestro-facil-frontend-prod-6oegsjqmba-uc.a.run.app,https://siniestro-facil-frontend-prod-112296734690.us-central1.run.app
 
 steps:
   - id: test-bff
@@ -43,7 +43,7 @@ steps:
       - --platform=managed
       - --image=${_REGION}-docker.pkg.dev/${PROJECT_ID}/${_REPOSITORY}/bff:${SHORT_SHA}
       - --service-account=${_BFF_SERVICE_ACCOUNT}
-      - --set-env-vars=BACKEND_URL=${_BACKEND_URL},BACKEND_AUDIENCE=${_BACKEND_URL},FRONTEND_ORIGIN=${_FRONTEND_ORIGIN}
+      - --set-env-vars=^|^BACKEND_URL=${_BACKEND_URL}|BACKEND_AUDIENCE=${_BACKEND_URL}|FRONTEND_ORIGINS=${_FRONTEND_ORIGINS}
       - --allow-unauthenticated
       - --no-cpu-boost
       - --min=0
